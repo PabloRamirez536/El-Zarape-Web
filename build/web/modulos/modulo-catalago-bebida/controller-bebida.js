@@ -1,158 +1,204 @@
 /*Copyright 2024*/
-// Array para almacenar las bebidas
 let bebidas = [];
 
-// Función para mostrar el formulario de agregar/editar bebida
-function mostrarFormulario(index = null) {
-    let titulo = index !== null ? 'Editar Bebida' : 'Agregar Bebida';
-    let botonTexto = index !== null ? 'Guardar' : 'Agregar';
+function cargarCategoria() {
+    return fetch('http://localhost:8080/Zarape/api/producto/getAllCategoriaBebida')
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
+            .catch(error => console.error('Error al cargar categorias:', error));
+}
 
+function mostrarFormulario(index = null) {
+    let titulo = index !== null ? 'Editar Producto' : 'Agregar Producto';
+    let botonTexto = index !== null ? 'Guardar' : 'Agregar';
+    let idProducto = '';
     let nombre = '';
     let descripcion = '';
-    let foto = '';
+    let imagen = "../../recursos/media/refresco.png";  // Ruta de la imagen
     let precio = '';
     let categoria = '';
+    let activo = true;
 
+    // Verificar si es una edición
     if (index !== null) {
-        // Si es una edición, cargar los datos de la bebida seleccionada
         let bebida = bebidas[index];
-        nombre = bebida.nombre || '';
-        descripcion = bebida.descripcion || '';
-        foto = bebida.foto || '';
-        precio = bebida.precio || '';
-        categoria = bebida.categoria || '';
+        idProducto = bebida.idProducto || '';
+        nombre = bebida.producto.nombre || '';
+        descripcion = bebida.producto.descripcion || '';
+        precio = bebida.producto.precio || '';
+        activo = bebida.producto.activo || false;
+        categoria = bebida.producto && bebida.producto.idCategoria ? bebida.producto.idCategoria : '';
+        // Usar la imagen existente si está disponible
+        imagen = bebida.producto.foto || imagen;
     }
 
+    // Mostrar el formulario con Swal
     Swal.fire({
         title: titulo,
-        html: `
-            <form id="formulario-bebida-modal">
-                <label for="bebida-nombre">Nombre:</label><br>
-                <input type="text" id="bebida-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
-                <label for="bebida-descripcion">Descripción:</label><br>
-                <input type="text" id="bebida-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}"><br>
-                <label for="foto-bebida">Foto Bebida:</label><br>
-                <input type="file" id="foto-bebida" class="swal2-input" accept="image/*"><br>
-                <img id="foto-bebida-preview" src="${foto}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
-                <label for="bebida-precio">Precio:</label><br>
-                <input type="number" id="bebida-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br>
-                <label for="bebida-categoria">Categoría:</label><br>
-                <select id="bebida-categoria" class="swal2-input">
-                    <option value="Jugos" ${categoria === 'Jugos' ? 'selected' : ''}>Jugos</option>
-                    <option value="Refrescos" ${categoria === 'Refrescos' ? 'selected' : ''}>Refrescos</option>
-                    <option value="Cervezas" ${categoria === 'Cervezas' ? 'selected' : ''}>Cervezas</option>
-                </select><br>
-            </form>
-        `,
+        html: `<form id="formulario-cliente-modal">
+                <label for="producto-nombre">Nombre:</label><br>
+                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
+                <label for="producto-descripcion">Descripción:</label><br>
+                <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}"><br>
+                <label for="producto-foto">Foto Producto:</label><br>
+                <input type="file" id="producto-foto" class="swal2-input" accept="image/*"><br>
+                <img id="producto-preview" src="${imagen}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
+                <label for="producto-precio">Precio:</label><br>
+                <input type="number" id="producto-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br>
+                <label for="producto-categoria">Categoria:</label><br><br>
+                <select id="producto-categoria" class="swal2-input">
+                    <option value="">Selecciona una categoria</option>
+                </select><br><br>
+                <label for="producto-activo">Estatus:</label><br>
+                <input type="checkbox" id="producto-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
+            </form>`,
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
         confirmButtonText: botonTexto,
         cancelButtonText: 'Cancelar',
         preConfirm: () => {
-            return new Promise((resolve) => {
-                let nombreNuevo = document.getElementById('bebida-nombre').value.trim();
-                let descripcionNueva = document.getElementById('bebida-descripcion').value.trim();
-                let fotoBebidaNueva = document.getElementById('foto-bebida').files[0]; // Obtener el archivo de la imagen
-                let precioNuevo = document.getElementById('bebida-precio').value.trim();
-                let categoriaNuevo = document.getElementById('bebida-categoria').value.trim();
+            let nombreNuevo = document.getElementById('producto-nombre').value.trim();
+            let descripcionNueva = document.getElementById('producto-descripcion').value.trim();
+            let precioNuevo = document.getElementById('producto-precio').value.trim();
+            let activoNuevo = document.getElementById('producto-activo').checked;
+            let categoriaSeleccionada = document.getElementById('producto-categoria').value;
 
-                // Validar campos obligatorios
-                if (!nombreNuevo || !descripcionNueva || !precioNuevo || !categoriaNuevo) {
-                    Swal.showValidationMessage('Por favor, complete todos los campos.');
-                    resolve(false);
-                } else {
-                    let reader = new FileReader();
-                    reader.onload = function (e) {
-                        let fotoBebidaURL = e.target.result;
-                        resolve({
-                            nombre: nombreNuevo,
-                            descripcion: descripcionNueva,
-                            foto: fotoBebidaURL,
-                            precio: precioNuevo,
-                            categoria: categoriaNuevo
-                        });
-                    };
-                    if (fotoBebidaNueva) {
-                        reader.readAsDataURL(fotoBebidaNueva);
-                    } else {
-                        resolve({
-                            nombre: nombreNuevo,
-                            descripcion: descripcionNueva,
-                            foto: foto,
-                            precio: precioNuevo,
-                            categoria: categoriaNuevo
-                        });
+            // Validar que los campos no estén vacíos
+            if (!nombreNuevo || !descripcionNueva || !precioNuevo || !categoriaSeleccionada) {
+                Swal.showValidationMessage('Por favor, complete todos los campos y seleccione una categoría.');
+                return false;
+            }
 
-                    }
+            // Convertir precio a número entero
+            const precioEntero = parseInt(precioNuevo);
+            if (isNaN(precioEntero) || precioEntero < 0) {
+                Swal.showValidationMessage('Por favor, ingrese un precio válido (número entero positivo).');
+                return false;
+            }
+            return Promise.resolve({
+                idProducto: index !== null ? bebidas[index].idProducto : null,
+                producto: {
+                    nombre: nombreNuevo,
+                    descripcion: descripcionNueva,
+                    foto: imagen, // Usar la imagen predeterminada
+                    precio: precioEntero, //Solo se permiten números entereos con dos caracteres
+                    activo: activoNuevo
+                },
+                categoria: {
+                    idCategoria: parseInt(categoriaSeleccionada) // Enviar la categoría seleccionada
                 }
             });
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            if (index !== null) {
-                bebidas[index] = result.value;
-                guardarBebidas(index); // Llamar con índice para editar
-            } else {
-                bebidas.push(result.value);
-                guardarBebidas(); // Llamar sin índice para agregar
-            }
-            actualizarTablaBebidas(); // Actualizar la tabla de bebidas
+            const bebidaData = result.value;
+            let params = {
+                datosBebida: JSON.stringify(bebidaData)
+            };
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: new URLSearchParams(params)
+            };
+
+            // Determinar la URL y enviar la solicitud
+            fetch(index !== null ? 'http://localhost:8080/Zarape/api/producto/updateBebida' : 'http://localhost:8080/Zarape/api/producto/insertBebida', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (index !== null) {
+                            // Actualizar la bebida existente
+                            bebidas[index] = data;
+                            Swal.fire('¡Bebida actualizada!', 'Los datos de la bebida han sido actualizados.', 'success');
+                        } else {
+                            // Agregar la nueva bebida
+                            bebidas.push(data);
+                            Swal.fire('¡Bebida agregada!', 'La nueva bebida ha sido agregada.', 'success');
+                        }
+                        actualizarTablaBebidas();
+                    })
+                    .catch(error => Swal.fire('Error', 'Hubo un problema al guardar la bebida.', 'error'));
+            console.log("Datos enviados:", JSON.stringify(bebidaData));
         }
     });
 
-    // Mostrar vista previa de la imagen seleccionada
-    document.getElementById('foto-bebida').addEventListener('change', function () {
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('foto-bebida-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(this.files[0]);
-    });
+    // Cargar categorías disponibles
+    cargarCategoria().then(categorias => {
+        const bebidaSelect = document.getElementById('producto-categoria');
+        bebidaSelect.innerHTML = '<option value="">Selecciona una categoria</option>'; // Agregar opción por defecto
+
+        console.log("Categoría seleccionada (bebida):", categoria); // Depuración
+        console.log("Categorías disponibles:", categorias); // Depuración
+
+        categorias.forEach(categoriaItem => {
+            // Comparar correctamente los valores
+            const isSelected = parseInt(categoria) === parseInt(categoriaItem.idCategoria);
+            bebidaSelect.innerHTML += `<option value="${categoriaItem.idCategoria}" ${isSelected ? 'selected' : ''}>
+        ${categoriaItem.descripcion}
+    </option>`;
+        });
+    }).catch(error => console.error('Error al cargar categorias:', error));
+
 }
 
-// Función para actualizar la tabla con las bebidas actuales
 function actualizarTablaBebidas() {
-    let tbody = document.getElementById('tbody-bebidas');
-    tbody.innerHTML = ''; // Limpiar el tbody
-
-    let registrosPorPagina = document.getElementById('registros-por-pagina').value;
-    let busqueda = document.getElementById('busqueda-bebida').value.toUpperCase();
-
-    let bebidasFiltradas = bebidas.filter(sucursal => {
-        return Object.values(sucursal).some(value =>
-            String(value).toUpperCase().includes(busqueda)
-        );
-    });
-
-    let bebidasMostradas = (registrosPorPagina === "all") ? bebidasFiltradas : bebidasFiltradas.slice(0, parseInt(registrosPorPagina));
-
-    bebidasMostradas.forEach((bebida, index) => {
-        let tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${bebida.nombre}</td>
-            <td>${bebida.descripcion}</td>
-            <td style="text-align: center; vertical-align: middle;"><img src="${bebida.foto}" style="max-width: 60px; max-height: 60px;"></td>
-            <td>$${bebida.precio}</td>
-            <td>${bebida.categoria}</td>
-            <td>
-                <button class="icon-button" onclick="mostrarFormulario(${index})">
-                    <img src="../../recursos/media/editar.png" alt="Icono Editar" class="icon.acciones">
-                </button>
-                <button class="icon-button" onclick="eliminarBebida(${index})">
-                    <img src="../../recursos/media/borrar.png" alt="Icono Eliminar" class="icon.acciones">
-                </button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+    let ruta = "http://localhost:8080/Zarape/api/producto/getAllBebida";
+    fetch(ruta)
+            .then(response => response.json())
+            .then(data => {
+                bebidas = data; // Asignar los datos a la variable global
+                const tabla = document.getElementById('tabla-bebidas').getElementsByTagName('tbody')[0];
+                tabla.innerHTML = '';
+                // Recorrer los datos y agregar filas a la tabla
+                data.forEach((bebida, index) => {
+                    let fila = tabla.insertRow();
+                    fila.innerHTML = `
+                <td>${bebida.idProducto}</td>
+                <td>${bebida.producto.nombre}</td>
+                <td>${bebida.producto.descripcion}</td>
+                <td>
+                    <img src="${bebida.producto.foto}" alt="Foto de Producto" style="max-width: 60px; max-height: 60px;" />
+                </td>
+                <td>${bebida.producto.precio}</td>
+                <td>${bebida.producto.activo ? 'Activo' : 'Inactivo'}</td>
+                <td>
+                    <button class="icon-button" onclick="mostrarFormulario(${index})">
+                        <img src="../../recursos/media/editar.png" alt="Icono Editar" class="icon-acciones">
+                    </button>
+                    <button class="icon-button" onclick="eliminarProductoBebida(${index})">
+                        <img src="../../recursos/media/borrar.png" alt="Icono Eliminar" class="icon-acciones">
+                    </button>
+                </td>
+                `;
+                });
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
 }
 
-// Función para eliminar una bebida
-function eliminarBebida(index) {
+window.onload = function () {
+    actualizarTablaBebidas(); // Asegúrate de cargar las bebidas al inicio
+};
+function eliminarProductoBebida(index) {
+    // Verificar si la bebida ya está inactiva
+    const productoBebida = bebidas[index];
+    if (!productoBebida.producto.activo) {
+        // Si la bebida ya está inactiva, mostrar un mensaje
+        Swal.fire({
+            title: 'Esta bebida ya está inactiva',
+            text: 'No puedes inactivar una bebida inactiva.',
+            icon: 'info',
+            confirmButtonColor: '#805A3B',
+            confirmButtonText: 'Aceptar'
+        });
+        return; // Salir de la función si la bebida ya está inactiva
+    }
+
+    // Si el cliente está activo, proceder con la confirmación de eliminación
     Swal.fire({
         title: '¿Estás seguro de eliminar esta bebida?',
-        text: '¡No podrás revertir esto!',
+        text: 'El estatus cambiara a Inactivo!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
@@ -161,88 +207,57 @@ function eliminarBebida(index) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            bebidas.splice(index, 1);
-            actualizarTablaBebidas();
-            Swal.fire({
-                title: '¡Eliminado!',
-                text: 'La bebida ha sido eliminada exitosamente.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#805A3B'
-            });
-            guardarBebidasSinMensaje();
+            const bebidaId = productoBebida.idProducto;
+            // Crear el objeto con los parámetros para la solicitud
+            const params = {idProducto: bebidaId};
+            // Hacer la solicitud POST (simulando eliminación lógica)
+            fetch('http://localhost:8080/Zarape/api/producto/eliminarBebida', {
+                method: 'POST', // Usamos POST ya que el backend espera esta solicitud
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(params)  // Convertir los parámetros en el formato adecuado
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            bebidas[index].producto.activo = false; // Actualizar el estado de la bebida en la lista
+                            actualizarTablaBebidas(); // Actualizar la tabla de bebidas
+                            Swal.fire('¡Eliminado!', 'La bebida ha sido inactivada exitosamente.', 'success');
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al inactivar la bebida.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Hubo un problema al inactivar la bebida.', 'error');
+                    });
         }
     });
 }
-
-// Función para guardar las bebidas sin mostrar mensaje
-function guardarBebidasSinMensaje() {
-    localStorage.setItem('bebidas', JSON.stringify(bebidas));
-}
-
-// Función para guardar las bebidas (simulación de guardar en localStorage)
-function guardarBebidas(index = null) {
-    localStorage.setItem('bebidas', JSON.stringify(bebidas));
-
-    if (index !== null) {
-        Swal.fire({
-            title: '¡Editado!',
-            text: 'La bebida fue editada exitosamente.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#805A3B'
-        });
-    } else {
-        Swal.fire({
-            title: '¡Guardado!',
-            text: 'La bebida se ha agregado exitosamente.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#805A3B'
-        });
-}
-}
-
-// Función para cargar las bebidas desde localStorage al cargar la página
-window.onload = function () {
-    fetch("../../modulos/modulo-catalago-bebida/data-bebida.json")
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (jsondata) {
-                bebidas = jsondata;
-                actualizarTablaBebidas();
-            })
-            .catch(function (error) {
-                console.error('Error al cargar las bebidas:', error);
-            });
-};
-
-// Función para buscar bebida por cualquier campo
 function buscarBebida() {
-    let input = document.getElementById('busqueda-bebida');
-    let filter = input.value.toUpperCase();
-    let tbody = document.getElementById('tbody-bebidas');
-    let tr = tbody.getElementsByTagName('tr');
+    let query = document.getElementById('busqueda-bebida').value.toLowerCase(); // Obtener texto de búsqueda y convertirlo a minúsculas
+    let tabla = document.getElementById('tabla-bebidas').getElementsByTagName('tbody')[0];
+    let filas = tabla.getElementsByTagName('tr'); // Obtener todas las filas de la tabla
 
-    for (let i = 0; i < tr.length; i++) {
-        let mostrarFila = false;
-
-        // Recorrer cada celda de la fila
-        for (let j = 0; j < tr[i].cells.length - 1; j++) {
-            let td = tr[i].cells[j];
-            if (td) {
-                let textValue = td.textContent || td.innerText;
-                if (textValue.toUpperCase().indexOf(filter) > -1) {
-                    mostrarFila = true;
-                    break;
-                }
+    // Iterar sobre las filas de la tabla y mostrar solo las que coinciden con la búsqueda
+    for (let i = 0; i < filas.length; i++) {
+        let fila = filas[i];
+        let columnas = fila.getElementsByTagName('td'); // Obtener las columnas de la fila
+        let match = false;
+        // Comprobar si alguna de las columnas contiene el texto de búsqueda
+        for (let j = 0; j < columnas.length; j++) {
+            let textoColumna = columnas[j].textContent || columnas[j].innerText;
+            if (textoColumna.toLowerCase().indexOf(query) > -1) {
+                match = true; // Si hay coincidencia, mostrar la fila
+                break;
             }
         }
-        if (mostrarFila) {
-            tr[i].style.display = '';
+
+// Mostrar u ocultar la fila según si coincide con la búsqueda
+        if (match) {
+            fila.style.display = '';
         } else {
-            tr[i].style.display = 'none';
+            fila.style.display = 'none';
         }
     }
 }
+

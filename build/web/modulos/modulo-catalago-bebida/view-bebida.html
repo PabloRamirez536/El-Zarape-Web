@@ -47,32 +47,19 @@
                 </div>
             </div>
         </div>
-
-        <div class="row mb-3">
-            <div class="col">
-                <!-- Selector para número de registros por página -->
-                <label for="registros-por-pagina">Mostrar:</label>
-                <select id="registros-por-pagina" onchange="actualizarTablaBebidas()">
-                    <option value="5">5</option>
-                    <option value="10" selected>10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="all">Todos</option>
-                </select>
-                registros por página
-            </div>
-        </div>
+        
 
         <!-- Tabla para mostrar las sucursales -->
         <div class="table-responsive">
             <table id="tabla-bebidas">
                 <thead>
                     <tr>
+                        <th>IdBebida</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Foto</th>
                         <th>Precio</th>
-                        <th>Categoria</th>
+                        <th>Estatus</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
