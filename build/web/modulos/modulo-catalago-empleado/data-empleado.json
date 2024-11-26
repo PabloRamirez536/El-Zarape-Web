@@ -1,0 +1,72 @@
+[
+    {
+        "nombre": "Juan",
+        "apellidoPaterno": "Perez",
+        "apellidoMaterno": "Gomez",
+        "puesto": "Cocinero",
+        "sucursal": "Sucursal Norte"
+    },
+    {
+        "nombre": "Maria",
+        "apellidoPaterno": "Lopez",
+        "apellidoMaterno": "Martinez",
+        "puesto": "Administrador",
+        "sucursal": "Sucursal Centro"
+    },
+    {
+        "nombre": "Carlos",
+        "apellidoPaterno": "Hernandez",
+        "apellidoMaterno": "Sanchez",
+        "puesto": "Cocinero",
+        "sucursal": "Sucursal Norte"
+    },
+    {
+        "nombre": "Ana",
+        "apellidoPaterno": "Garcia",
+        "apellidoMaterno": "Ramirez",
+        "puesto": "Administrador",
+        "sucursal": "Sucursal Este"
+    },
+    {
+        "nombre": "Pedro",
+        "apellidoPaterno": "Gonzalez",
+        "apellidoMaterno": "Torres",
+        "puesto": "Cocinero",
+        "sucursal": "Sucursal Valle"
+    },
+    {
+        "nombre": "Laura",
+        "apellidoPaterno": "Fernandez",
+        "apellidoMaterno": "Morales",
+        "puesto": "Administrador",
+        "sucursal": "Sucursal Playa"
+    },
+    {
+        "nombre": "Luis",
+        "apellidoPaterno": "Rodriguez",
+        "apellidoMaterno": "Diaz",
+        "puesto": "Cocinero",
+        "sucursal": "Sucursal Valle"
+    },
+    {
+        "nombre": "Elena",
+        "apellidoPaterno": "Martinez",
+        "apellidoMaterno": "Vazquez",
+        "puesto": "Administrador",
+        "sucursal": "Sucursal Norte"
+    },
+    {
+        "nombre": "Jorge",
+        "apellidoPaterno": "Ramirez",
+        "apellidoMaterno": "Cruz",
+        "puesto": "Cocinero",
+        "sucursal": "Sucursal Playa"
+    },
+    {
+        "nombre": "Lucia",
+        "apellidoPaterno": "Diaz",
+        "apellidoMaterno": "Ortega",
+        "puesto": "Administrador",
+        "sucursal": "Sucursal Tradicional"
+    }
+]

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>Catálogo Clientes</title>
+        <link rel="shortcut icon" href="../../recursos/media/logoSinFondo.png">
+        <meta name="nombre" content="Catálogo Clientes">
+        <meta name="description" content="Página del catálogo de clientes">
+        <meta name="keywords" content="cliente, catálogo, CRUD, agregar, eliminar, editar, consultar">
+        <meta name="author" content="Estrella Marina Antimo González">
+        <meta name="date" content="Noviembre, 2024">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../../style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../../style/css/modulos-style.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <div class="container-fluid cabeza fixed-top" id="cabeza">
+            <img src="../../recursos/media/menu.png" alt="" class="hamburguer" id="hamburguer-icon">
+            <header class="row">
+                <div class="col-12 titulo">
+                    <h1 class="text-light text-center" style="font-weight: bold;" >Clientes</h1>
+                </div>
+            </header>
+        </div>
+
+        <div id="menu-container"></div>
+
+        <br><br><br>
+
+        <div class="container mt-5">
+            <div class="row mb-3">
+                <div class="col">
+                    <button class="btn btn-primary personalizado" onclick="mostrarFormulario()">Agregar Cliente</button>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" id="busqueda-cliente" class="form-control" placeholder="Buscar Cliente..." oninput="buscarCliente()">
+                        <div class="input-group-append" style="margin-left: 10px;">
+                            <button class="btn btn-outline-secondary personalizado" type="button" onclick="buscarCliente()">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="tabla-clientes">
+                    <thead>
+                        <tr>
+                            <th>ID Cliente</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Teléfono</th>
+                            <th>Usuario</th>
+                            <th>Contraseña</th>
+                            <th>Estado</th>
+                            <th>Ciudad</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-clientes">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script src="controller-cliente.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../style/js/bootstrap.bundle.js" type="text/javascript"></script>
+        <script src="../../style/js/main-burguer.js" type="text/javascript"></script>
+    </body>
+</html>

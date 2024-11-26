@@ -1,0 +1,87 @@
+[
+    {
+      "nombre": "Jugo de Naranja de 1/2 litro",
+      "descripcion": "Delicioso jugo de naranja fresco.",
+      "foto": "../../recursos/recursos-menu/jugoNaranja.jpg",
+      "precio": "35",
+      "categoria": "Jugos"
+    },
+    {
+      "nombre": "Jugo de Manzana de 1/2 litro",
+      "descripcion": "Refrescante jugo de manzana natural.",
+      "foto": "../../recursos/recursos-menu/jugoManzana.jpg",
+      "precio": "30",
+      "categoria": "Jugos"
+    },
+    {
+      "nombre": "Jugo de Mango de 1/2 litro",
+      "descripcion": "Exótico jugo de mango tropical.",
+      "foto": "../../recursos/recursos-menu/jugoMango.jpg",
+      "precio": "40",
+      "categoria": "Jugos"
+    },
+    {
+      "nombre": "Jugo de Zanahoria de 1/2 litro",
+      "descripcion": "Saludable jugo de zanahoria recién exprimido.",
+      "foto": "../../recursos/recursos-menu/jugoZanahoria.jpg",
+      "precio": "30",
+      "categoria": "Jugos"
+    },
+    {
+      "nombre": "Coca-Cola de 600ml",
+      "descripcion": "Refresco clásico con burbujas y sabor único.",
+      "foto": "../../recursos/recursos-menu/cocacola.jpg",
+      "precio": "25",
+      "categoria": "Refrescos"
+    },
+    {
+      "nombre": "Refresco Fanta de 600ml",
+      "descripcion": "Refresco afrutado con sabor a naranja.",
+      "foto": "../../recursos/recursos-menu/fanta.jpg",
+      "precio": "22",
+      "categoria": "Refrescos"
+    },
+    {
+      "nombre": "Sprite de 600ml",
+      "descripcion": "Refresco refrescante con un toque cítrico.",
+      "foto": "../../recursos/recursos-menu/sprite.jpg",
+      "precio": "20",
+      "categoria": "Refrescos"
+    },
+    {
+      "nombre": "Fresca de 600ml",
+      "descripcion": "Refresco clásico con sabor a Toronja.",
+      "foto": "../../recursos/recursos-menu/fresca.jpg",
+      "precio": "25",
+      "categoria": "Refrescos"
+    },
+    {
+      "nombre": "Cerveza Corona de 355ml",
+      "descripcion": "Cerveza mexicana clásica con sabor refrescante.",
+      "foto": "../../recursos/recursos-menu/cervezaCorona.jpg",
+      "precio": "32",
+      "categoria": "Cervezas"
+    },
+    {
+      "nombre": "Cerveza Tecate de 355ml",
+      "descripcion": "Cerveza mexicana con un toque de frescura.",
+      "foto": "../../recursos/recursos-menu/cervezaTecate.png",
+      "precio": "30",
+      "categoria": "Cervezas"
+    },
+    {
+      "nombre": "Cerveza Heineken de 355ml",
+      "descripcion": "Cerveza mexicana con un sabor distintivo.",
+      "foto": "../../recursos/recursos-menu/cervezaHeinken.jpg",
+      "precio": "35",
+      "categoria": "Cervezas"
+    },
+    {
+      "nombre": "Cerveza Ultra de 355ml",
+      "descripcion": "Cerveza mexicana con sabor auténtico.",
+      "foto": "../../recursos/recursos-menu/cervezaUltra.jpg",
+      "precio": "28",
+      "categoria": "Cervezas"
+    }
+  ]
+  

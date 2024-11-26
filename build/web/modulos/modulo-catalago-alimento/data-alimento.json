@@ -1,0 +1,121 @@
+[
+    {
+        "nombre": "Chile Relleno",
+        "descripcion": "Chile relleno con crema y granada.",
+        "foto": "../../recursos/recursos-menu/chiles.jpg",
+        "precio": "90",
+        "categoria": "Platillos Principales"
+    },
+    {
+        "nombre": "Enchiladas Verdes",
+        "descripcion": "Orden de 4 enchilas verdes con crema y queso, rellenas con pollo.",
+        "foto": "../../recursos/recursos-menu/enchiladas.jpg",
+        "precio": "120",
+        "categoria": "Platillos Principales"
+    },
+    {
+        "nombre": "Pozole Rojo",
+        "descripcion": "Plato de pozole rojo con lechuga, oregano, incluye 4 tostadas.",
+        "foto": "../../recursos/recursos-menu/pozole.jpg",
+        "precio": "90",
+        "categoria": "Platillos Principales"
+    },
+    {
+        "nombre": "Sopes",
+        "descripcion": "Orden con 4 sopes de frijoles con chorizo, crema, cebolla, repollo y aguacate.",
+        "foto": "../../recursos/recursos-menu/sopes.jpg",
+        "precio": "45",
+        "categoria": "Platillos Principales"
+    },
+    {
+        "nombre": "Tacos",
+        "descripcion": "Orden de 4 tacos de pastor con cebolla y cilantro.",
+        "foto": "../../recursos/recursos-menu/tacos.jpg",
+        "precio": "72",
+        "categoria": "Platillos Principales"
+    },
+    {
+        "nombre": "Tamal",
+        "descripcion": "Tamal de rajas con pollo.",
+        "foto": "../../recursos/recursos-menu/tamales.jpg",
+        "precio": "18",
+        "categoria": "Platillos Principales"
+    },
+    {
+        "nombre": "Ensalada César",
+        "descripcion": "Ensalada con lechuga pollo y especias.",
+        "foto": "../../recursos/recursos-menu/ensaladaCesar.jpg",
+        "precio": "70",
+        "categoria": "Ensaladas"
+    },
+    {
+        "nombre": "Ensalada Quinoa",
+        "descripcion": "Ensalada con pimiento, Zanahoria, cebolla y quinoa.",
+        "foto": "../../recursos/recursos-menu/ensaladaQuinoa.jpg",
+        "precio": "80",
+        "categoria": "Ensaladas"
+    },
+    {
+        "nombre": "Ensalada Griega",
+        "descripcion": "Ensalada con aceitunas, jitomate cherry, lechuga, cebolla y especias.",
+        "foto": "../../recursos/recursos-menu/ensaladaGriega.jpg",
+        "precio": "75",
+        "categoria": "Ensaladas"
+    },
+    {
+        "nombre": "Ensalada Caprese",
+        "descripcion": "Ensalada con jitomate, queso y especias.",
+        "foto": "../../recursos/recursos-menu/ensaladaCaprese.jpg",
+        "precio": "80",
+        "categoria": "Ensaladas"
+    },
+    {
+        "nombre": "Ensalada de Espinaca",
+        "descripcion": "Ensalada con espinaca, queso, ajonjoli y especias.",
+        "foto": "../../recursos/recursos-menu/ensaladaEspinaca.jpg",
+        "precio": "70",
+        "categoria": "Ensaladas"
+    },
+    {
+        "nombre": "Ensalada de Frutas",
+        "descripcion": "Ensalada con fresa, moras, durazno, uva y granada.",
+        "foto": "../../recursos/recursos-menu/ensaladaFruta.jpg",
+        "precio": "65",
+        "categoria": "Ensaladas"
+    },
+    {
+        "nombre": "Pastel de Chocolate",
+        "descripcion": "Rebanada de pastel de vainilla con frutas.",
+        "foto": "../../recursos/recursos-menu/pastel.jpg",
+        "precio": "50",
+        "categoria": "Postres"
+    },
+    {
+        "nombre": "Flan Napolitano",
+        "descripcion": "Rebanada de flana napolitano con caramelo.",
+        "foto": "../../recursos/recursos-menu/flan.jpg",
+        "precio": "30",
+        "categoria": "Postres"
+    },
+    {
+        "nombre": "Cheesecake",
+        "descripcion": "Rebana de Cheesecake con moras y mermelada.",
+        "foto": "../../recursos/recursos-menu/cheesecake.jpg",
+        "precio": "70",
+        "categoria": "Postres"
+    },
+    {
+        "nombre": "Brownie",
+        "descripcion": "Brownie de chocolate con chispas.",
+        "foto": "../../recursos/recursos-menu/brownie.jpg",
+        "precio": "55",
+        "categoria": "Postres"
+    },
+    {
+        "nombre": "Tiramisú",
+        "descripcion": "Rebana de tiramisu con moras, galletas y espolvoreado con canela.",
+        "foto": "../../recursos/recursos-menu/tiramisu.jpg",
+        "precio": "60",
+        "categoria": "Postres"
+    }
+]

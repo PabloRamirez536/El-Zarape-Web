@@ -1,0 +1,184 @@
+<!-- Copyright 2024 -->
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <title>Restaurante "El Zarape"</title>
+        <link rel="shortcut icon" href="recursos/media/logoSinFondo.png">
+        <meta name="nombre" content="El Zarape">
+        <meta name="description" content="Página de inicio de el Zarape">
+        <meta name="keywords" content="comida, alimentos, bebidas, zarape, index">
+        <meta name="author" content="TechnoVision">
+        <meta name="date" content="Junio, 22 2024">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <link href="style/css/index.css" rel="stylesheet" type="text/css" />
+        <link href="menu/style/css/menu-cliente.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <header class="row">
+                <div class="col-12 titulo">
+                    <h1 class="text-light text-center" style="font-weight: bold;">Restaurante "El Zarape"</h1>
+                </div>
+            </header>
+        </div>
+
+        <div class="menuprincipal">
+
+            <nav class="navbar navbar-expand-md ">
+                <div class="container-fluid">
+                    <!-- Icono o nombre -->
+
+                    <div class="logo">
+                        <a href="./index.html"><img src="recursos/media/logoSinFondo.png" alt="medidas" width="80px"></a>
+                    </div>
+                    <!-- Botón del menu -->
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="color: black">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Elementos del menu colapsable -->
+
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="navbar-nav me-auto">
+                            <li></li><li></li><li></li>
+                            <li class="nav-item" style="display:none;">
+                                <a class="nav-link" href="#" onclick="cargarVistaAlimento();"><strong>Alimentos</strong></a>
+                            </li>
+                            <li class="nav-item" style="display:none;">
+                                <a class="nav-link" href="#" onclick="cargarVistaBebida();"><strong>Bebidas</strong></a>
+                            </li>
+                            <li class="nav-item" style="display:none;">
+                                <a class="nav-link" href="#" onclick="cargarVistaCombo();"><strong>Combos</strong></a>
+                            </li>
+                            <li class="nav-item" style="display:none;">
+                                <a class="nav-link" href="#"><img src="recursos/media/carrito-de-compras.png" class="carrito-icon" alt="carrito"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Logo que al hacer clic abre el formulario de login -->
+                    <div class="btn-group dropstart">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="recursos/media/user.png" alt="medidas" width="80px">
+                        </button>
+                        <ul class="dropdown-menu" id="menu-usuario">
+                            <!-- Este menú se actualizará dinámicamente -->
+                            <li><a class="dropdown-item" href="#" onclick="mostrarFormularioLogin();">Iniciar Sesión</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="mostrarFormulario();">Crear Cuenta</a></li>
+                        </ul>
+                    </div>
+
+                </div>  
+            </nav>
+        </div> 
+
+        <section id="contenedorPrincipal">
+            <header class="header" id="inicio">
+                <div class="cotenedor head">
+                    <h1 class="titulo-img">"El Zarape"</h1>
+                    <p class="copy">¡Sumérgete en un mundo de sabores auténticos de México! Descubre la pasión en cada bocado.
+                    </p>
+                </div>
+            </header>
+
+            <div class="col-12 esencia">
+                <section class="contenedor">
+                    <h1 class="subtitulo">Descubre la esencia de "El Zarape" , donde la tradición y la innovación se fusionan.
+                    </h1>
+                    <div class="contenedor-informacion">
+                        <img src="recursos/media/comida.jpg" alt="">
+                        <div class="checklist-informacion">
+                            <div class="informacion">
+                                <h5 class="n-informacion"> En "El Zarape", cada platillo cuenta una historia única que te
+                                    transportará a las calles de México.
+                                </h5>
+                                <br>
+                                <h5 class="n-informacion">Nuestro compromiso es ofrecerte una experiencia culinaria inolvidable,
+                                    llena de autenticidad y pasión.
+                                </h5>
+                                <br>
+                                <h5 class="n-informacion">¡Ven y únete a nuestra familia gastronómica para vivir momentos
+                                    inolvidables juntos!
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-12 galeria">
+                <section class="gallery" id="galeria">
+                    <div class="contenedor">
+                        <h1 class="subtitulo">¡Esto sí es sabor!</h1>
+                        <div class="contenedor-galeria">
+                            <img src="recursos/recursos-menu/chiles.jpg" alt="" class="img-galeria">
+                            <img src="recursos/recursos-menu/pozole.jpg" alt="" class="img-galeria">
+                            <img src="recursos/recursos-menu/ensaladaCesar.jpg" alt="" class="img-galeria">
+                            <img src="recursos/recursos-menu/ensaladaQuinoa.jpg" alt="" class="img-galeria">
+                            <img src="recursos/recursos-menu/flan.jpg" alt="" class="img-galeria">
+                            <img src="recursos/recursos-menu/cheesecake.jpg" alt="" class="img-galeria">
+                        </div>
+                    </div>
+                </section>
+                <div class="imagen-light">
+                    <img src="recursos/media/close.svg" alt="" class="close">
+                    <img src="" alt="" class="agregar-imagen">
+                </div>
+            </div>
+
+            <div class="col-12" id="compra">
+                <section class="contenedor">
+                    <h1 class="subtitulo">Pasos a seguir para ordenar</h1>
+                    <section class="experts">
+
+                        <div class="cont-expert">
+                            <img src="recursos/media/compra.png" alt="">
+                            <h3 class="n-expert"><strong>1.- </strong>Ordena tus alimentos a consumir.</h3>
+                        </div>
+                        <div class="cont-expert">
+                            <img src="recursos/media/pago.png" alt="">
+                            <h3 class="n-expert"><strong>2.- </strong>Paga tu orden.</h3>
+                        </div>
+                        <div class="cont-expert">
+                            <img src="recursos/media/sonido.png" alt="">
+                            <h3 class="n-expert"><strong>3.- </strong>Espera a que tu comida este lista (sonará avisador).</h3>
+                        </div>
+                        <div>
+                            <h1 class="subtitulo">¡Listo, disfruta tu comida!</h1>
+
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </section>
+
+        <footer id="contacto">
+            <div class="contenedor footer-content">
+                <div class="contact-us">
+                    <h1 class="brand">Restaurante “El Zarape”</h1>
+                    <br>
+                    <h2>¡Somos expertos en comida mexicana!</h2>
+                    <br>
+                    <a href="./gestion/gestion-login/view-login.html" style="color: #fff">
+                        <h3>Iniciar Sesion</h3>
+                    </a>
+                </div>
+            </div>
+            <div class="line"></div>
+            <p>© Copyright 2024. Technovision</p>
+        </footer>
+        
+        <script src="login-cliente.js" type="text/javascript"></script>
+        <script src="js/lightbox.js" type="text/javascript"></script>
+        <script src="style/js/bootstrap.bundle.js" type="text/javascript"></script>
+        <script src="style/js/main-menu.js" type="text/javascript"></script>
+        <script src="menu/funciones-menu.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
+
+</html>

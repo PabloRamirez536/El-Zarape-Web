@@ -1,0 +1,289 @@
+[
+    {
+        "nombre": "Combo San Lunes",
+        "precio": 160.00,
+        "descripcion": "Incluye 1 chile relleno, 1 sope de choizo con frijoles y 1 jugo de naranja de 1/2 litro.",
+        "fotoCombo": "../../recursos/recursos-menu/comboSanLunes.jpg",
+        "alimentos": [
+            {
+                "nombre": "Chile Relleno",
+                "cantidad": 1,
+                "precioUnitario": 90,
+                "precioTotal": 90
+            },
+            {
+                "nombre": "Sope de Choizo con Frijoles",
+                "cantidad": 1,
+                "precioUnitario": 45,
+                "precioTotal": 45
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Jugo de Naranja",
+                "cantidad": 1,
+                "precioUnitario": 35,
+                "precioTotal": 35
+            }
+        ]
+    },
+    {
+        "nombre": "Combo San Martes",
+        "precio": 350.00,
+        "descripcion": "Incluye 2 ordenes de enchilas, 2 tamales, 1 brownie y 2 jugos de manzana de 1/2 litro.",
+        "fotoCombo": "../../recursos/recursos-menu/comboSanMartes.jpg",
+        "alimentos": [
+            {
+                "nombre": "Ordenes de Enchiladas",
+                "cantidad": 2,
+                "precioUnitario": 120,
+                "precioTotal": 240
+            },
+            {
+                "nombre": "Tamales",
+                "cantidad": 2,
+                "precioUnitario": 18,
+                "precioTotal": 36
+            },
+            {
+                "nombre": "Brownie",
+                "cantidad": 1,
+                "precioUnitario": 55,
+                "precioTotal": 55
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Jugo de Manzana",
+                "cantidad": 2,
+                "precioUnitario": 30,
+                "precioTotal": 60
+            }
+        ]
+    },
+    {
+        "nombre": "Combo San Miércoles",
+        "precio": 260.00,
+        "descripcion": "Incluye 2 platos de pozole, 1 orden de tacos de pastor y 2 refrescos Fanta 600 ml.",
+        "fotoCombo": "../../recursos/recursos-menu/comboSanMiercoles.jpg",
+        "alimentos": [
+            {
+                "nombre": "Platos de Pozole",
+                "cantidad": 2,
+                "precioUnitario": 90,
+                "precioTotal": 180
+            },
+            {
+                "nombre": "Orden de Tacos de Pastor",
+                "cantidad": 1,
+                "precioUnitario": 72,
+                "precioTotal": 72
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Refrescos Fanta",
+                "cantidad": 2,
+                "precioUnitario": 22,
+                "precioTotal": 44
+            }
+        ]
+    },
+    {
+        "nombre": "Combo Jueves Norteño",
+        "precio": 410.00,
+        "descripcion": "Incluye 2 ordenes de tacos al pastor, 2 chiles rellenos, 2 tamales y 2 cervezas corona 355ml.",
+        "fotoCombo": "../../recursos/recursos-menu/comboJuevesNorte.jpg",
+        "alimentos": [
+            {
+                "nombre": "Ordenes de Tacos al Pastor",
+                "cantidad": 2,
+                "precioUnitario": 72,
+                "precioTotal": 144
+            },
+            {
+                "nombre": "Chiles Rellenos",
+                "cantidad": 2,
+                "precioUnitario": 90,
+                "precioTotal": 180
+            },
+            {
+                "nombre": "Tamales",
+                "cantidad": 2,
+                "precioUnitario": 18,
+                "precioTotal": 36
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Cervezas Corona",
+                "cantidad": 2,
+                "precioUnitario": 32,
+                "precioTotal": 64
+            }
+        ]
+    },
+    {
+        "nombre": "Combo San Viernes",
+        "precio": 190.00,
+        "descripcion": "Incluye 1 flan napolitano, 2 ordenes de tacos al pastor, 2 refrescos coca-cola 600ml.",
+        "fotoCombo": "../../recursos/recursos-menu/comboSanViernes.jpg",
+        "alimentos": [
+            {
+                "nombre": "Flan Napolitano",
+                "cantidad": 1,
+                "precioUnitario": 30,
+                "precioTotal": 30
+            },
+            {
+                "nombre": "Ordenes de Tacos al Pastor",
+                "cantidad": 2,
+                "precioUnitario": 72,
+                "precioTotal": 144
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Refrescos Coca-Cola",
+                "cantidad": 2,
+                "precioUnitario": 25,
+                "precioTotal": 50
+            }
+        ]
+    },
+    {
+        "nombre": "Combo Vuelve a la Vida",
+        "precio": 510.00,
+        "descripcion": "Incluye 3 chiles rellenos, 2 platos de pozole, 2 tamales y 2 refrescos Sprite 600ml.",
+        "fotoCombo": "../../recursos/recursos-menu/comboVuelveALaVida.jpg",
+        "alimentos": [
+            {
+                "nombre": "Chiles Rellenos",
+                "cantidad": 3,
+                "precioUnitario": 90,
+                "precioTotal": 270
+            },
+            {
+                "nombre": "Platos de Pozole",
+                "cantidad": 2,
+                "precioUnitario": 90,
+                "precioTotal": 180
+            },
+            {
+                "nombre": "Tamales",
+                "cantidad": 2,
+                "precioUnitario": 18,
+                "precioTotal": 36
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Refrescos Sprite",
+                "cantidad": 2,
+                "precioUnitario": 20,
+                "precioTotal": 40
+            }
+        ]
+    },
+    {
+        "nombre": "Combo Por Fin Sabado",
+        "precio": 360.00,
+        "descripcion": "Incluye 3 tamales, 2 platos de pozole, 1 orden de tacos al pastor y 2 cervezas corona 355ml.",
+        "fotoCombo": "../../recursos/recursos-menu/comboPorFinSabado.jpg",
+        "alimentos": [
+            {
+                "nombre": "Tamales",
+                "cantidad": 3,
+                "precioUnitario": 18,
+                "precioTotal": 54
+            },
+            {
+                "nombre": "Platos de Pozole",
+                "cantidad": 2,
+                "precioUnitario": 90,
+                "precioTotal": 180
+            },
+            {
+                "nombre": "Orden de Tacos al Pastor",
+                "cantidad": 1,
+                "precioUnitario": 72,
+                "precioTotal": 72
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Cervezas Corona",
+                "cantidad": 2,
+                "precioUnitario": 32,
+                "precioTotal": 64
+            }
+        ]
+    },
+    {
+        "nombre": "Combo Pareja Enamorada",
+        "precio": 260.00,
+        "descripcion": "Incluye 2 helados de vainilla, 2 ordenes de tacos al pastor, 1 pastel de vainilla.",
+        "fotoCombo": "../../recursos/recursos-menu/comboParejaEnamorada.jpg",
+        "alimentos": [
+            {
+                "nombre": "Helados de Vainilla",
+                "cantidad": 2,
+                "precioUnitario": 50,
+                "precioTotal": 100
+            },
+            {
+                "nombre": "Ordenes de Tacos al Pastor",
+                "cantidad": 2,
+                "precioUnitario": 72,
+                "precioTotal": 144
+            },
+            {
+                "nombre": "Pastel de Vainilla",
+                "cantidad": 1,
+                "precioUnitario": 50,
+                "precioTotal": 50
+            }
+        ],
+        "bebidas": []
+    },
+    {
+        "nombre": "Combo Dominguero",
+        "precio": 570.00,
+        "descripcion": "Incluye 2 platos de pozole, 3 ordenes de tacos al pastor, 3 tamales, 2 helados de vainilla y 2 refrescos coca-cola 600 ml.",
+        "fotoCombo": "../../recursos/recursos-menu/comboDominguero.jpg",
+        "alimentos": [
+            {
+                "nombre": "Platos de Pozole",
+                "cantidad": 2,
+                "precioUnitario": 90,
+                "precioTotal": 180
+            },
+            {
+                "nombre": "Ordenes de Tacos al Pastor",
+                "cantidad": 3,
+                "precioUnitario": 72,
+                "precioTotal": 216
+            },
+            {
+                "nombre": "Tamales",
+                "cantidad": 3,
+                "precioUnitario": 18,
+                "precioTotal": 54
+            },
+            {
+                "nombre": "Helados de Vainilla",
+                "cantidad": 2,
+                "precioUnitario": 50,
+                "precioTotal": 100
+            }
+        ],
+        "bebidas": [
+            {
+                "nombre": "Refrescos Coca-Cola",
+                "cantidad": 2,
+                "precioUnitario": 25,
+                "precioTotal": 50
+            }
+        ]
+    }
+]

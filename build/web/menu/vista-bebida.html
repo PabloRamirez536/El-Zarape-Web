@@ -1,0 +1,223 @@
+    <section class="container mt-1 pt-1">
+        <h2 class="section-title">Jugos</h2>
+        <div class="row">
+            <div class="col-md-3 mb-3" onclick="select(0)">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/jugoNaranja.jpg" class="card-img-top imgx" alt="Jugo de Naranja"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Jugo de Naranja de 1/2 litro</h5>
+                        <p class="card-text">Delicioso jugo de naranja fresco.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio0" class="form-control datos" name="precio[0]" value="35" disabled>
+                        <label for="cantidad0">Cantidad:</label>
+                        <input type="number" id="cantidad0" min="1" max="5" class="form-control" name="cantidad[0]"
+                            value="1" onchange="calcular('0')">
+                        <label>Total:</label>
+                        <input type="text" id="total0" class="form-control datos" name="total[0]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/jugoManzana.jpg" class="card-img-top" alt="Jugo de Manzana"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Jugo de Manzana de 1/2 litro</h5>
+                        <p class="card-text">Refrescante jugo de manzana natural.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio1" class="form-control datos" name="precio[1]" value="30" disabled>
+                        <label for="cantidad1">Cantidad:</label>
+                        <input type="number" id="cantidad1" min="1" max="5" class="form-control" name="cantidad[1]"
+                            value="1" onchange="calcular('1')">
+                        <label>Total:</label>
+                        <input type="text" id="total1" class="form-control datos" name="total[1]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/jugoMango.jpg" class="card-img-top" alt="Jugo de Mango"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Jugo de Mango de 1/2 litro</h5>
+                        <p class="card-text">Exótico jugo de mango tropical.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio2" class="form-control datos" name="precio[2]" value="40" disabled>
+                        <label for="cantidad2">Cantidad:</label>
+                        <input type="number" id="cantidad2" min="1" max="5" class="form-control" name="cantidad[2]"
+                            value="1" onchange="calcular('2')">
+                        <label>Total:</label>
+                        <input type="text" id="total2" class="form-control datos" name="total[2]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/jugoZanahoria.jpg" class="card-img-top" alt="Jugo de Zanahoria"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Jugo de Zanahoria de 1/2 litro</h5>
+                        <p class="card-text">Saludable jugo de zanahoria recién exprimido.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio3" class="form-control datos" name="precio[3]" value="30" disabled>
+                        <label for="cantidad3">Cantidad:</label>
+                        <input type="number" id="cantidad3" min="1" max="5" class="form-control" name="cantidad[3]"
+                            value="1" onchange="calcular('3')">
+                        <label>Total:</label>
+                        <input type="text" id="total3" class="form-control datos" name="total[3]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mt-1 pt-1">
+        <h2 class="section-title">Refrescos</h2>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/cocacola.jpg" class="card-img-top img" alt="Coca-Cola"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Coca-Cola de 600ml</h5>
+                        <p class="card-text">Refresco clásico con burbujas y sabor único.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio4" class="form-control datos" name="precio[4]" value="25" disabled>
+                        <label for="cantidad4">Cantidad:</label>
+                        <input type="number" id="cantidad4" min="1" max="5" class="form-control" name="cantidad[4]"
+                            value="1" onchange="calcular('4')">
+                        <label>Total:</label>
+                        <input type="text" id="total4" class="form-control datos" name="total[4]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/fanta.jpg" class="card-img-top img" alt="Refresco Fanta"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Refresco Fanta de 600ml</h5>
+                        <p class="card-text">Refresco afrutado con sabor a naranja.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio5" class="form-control datos" name="precio[5]" value="22" disabled>
+                        <label for="cantidad5">Cantidad:</label>
+                        <input type="number" id="cantidad5" min="1" max="5" class="form-control" name="cantidad[5]"
+                            value="1" onchange="calcular('5')">
+                        <label>Total:</label>
+                        <input type="text" id="total5" class="form-control datos" name="total[5]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/sprite.jpg" class="card-img-top img" alt="Sprite"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Sprite de 600ml</h5>
+                        <p class="card-text">Refresco refrescante con un toque cítrico.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio6" class="form-control datos" name="precio[6]" value="20" disabled>
+                        <label for="cantidad6">Cantidad:</label>
+                        <input type="number" id="cantidad6" min="1" max="5" class="form-control" name="cantidad[6]"
+                            value="1" onchange="calcular('6')">
+                        <label>Total:</label>
+                        <input type="text" id="total6" class="form-control datos" name="total[6]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/fresca.jpg" class="card-img-top img" alt="Pepsi"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Fresca de 600ml</h5>
+                        <p class="card-text">Refresco clásico con sabor a Toronja.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio7" class="form-control datos" name="precio[7]" value="25" disabled>
+                        <label for="cantidad7">Cantidad:</label>
+                        <input type="number" id="cantidad7" min="1" max="5" class="form-control" name="cantidad[7]"
+                            value="1" onchange="calcular('7')">
+                        <label>Total:</label>
+                        <input type="text" id="total7" class="form-control datos" name="total[7]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mt-1 pt-1">
+        <h2 class="section-title">Cervezas</h2>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/cervezaCorona.jpg" class="card-img-top img" alt="Cerveza Corona"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Cerveza Corona de 355ml</h5>
+                        <p class="card-text">Cerveza mexicana clásica con sabor refrescante.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio8" class="form-control datos" name="precio[8]" value="32" disabled>
+                        <label for="cantidad8">Cantidad:</label>
+                        <input type="number" id="cantidad8" min="1" max="5" class="form-control" name="cantidad[8]"
+                            value="1" onchange="calcular('8')">
+                        <label>Total:</label>
+                        <input type="text" id="total8" class="form-control datos" name="total[8]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/cervezaTecate.png" class="card-img-top img" alt="Cerveza Tecate"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Cerveza Tecate de 355ml</h5>
+                        <p class="card-text">Cerveza mexicana con un toque de frescura.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio9" class="form-control datos" name="precio[9]" value="30" disabled>
+                        <label for="cantidad9">Cantidad:</label>
+                        <input type="number" id="cantidad9" min="1" max="5" class="form-control" name="cantidad[9]"
+                            value="1" onchange="calcular('9')">
+                        <label>Total:</label>
+                        <input type="text" id="total9" class="form-control datos" name="total[9]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/cervezaHeinken.jpg" class="card-img-top img" alt="Cerveza Heineken"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Cerveza Heineken de 355ml</h5>
+                        <p class="card-text">Cerveza mexicana con un sabor distintivo.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio10" class="form-control datos" name="precio[10]" value="35"
+                            disabled>
+                        <label for="cantidad10">Cantidad:</label>
+                        <input type="number" id="cantidad10" min="1" max="5" class="form-control" name="cantidad[10]"
+                            value="1" onchange="calcular('10')">
+                        <label>Total:</label>
+                        <input type="text" id="total10" class="form-control datos" name="total[10]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="./recursos/recursos-menu/cervezaUltra.jpg" class="card-img-top img" alt="Cerveza Ultra"/>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">Cerveza Ultra de 355ml</h5>
+                        <p class="card-text">Cerveza mexicana con sabor auténtico.</p>
+                        <label>Precio:</label>
+                        <input type="text" id="precio11" class="form-control datos" name="precio[11]" value="28"
+                            disabled>
+                        <label for="cantidad11">Cantidad:</label>
+                        <input type="number" id="cantidad11" min="1" max="5" class="form-control" name="cantidad[11]"
+                            value="1" onchange="calcular('11')">
+                        <label>Total:</label>
+                        <input type="text" id="total11" class="form-control datos" name="total[11]" value="0" disabled>
+                        <button type="button" class="btn btn-danger mt-2 align-self-center" onclick="agregar()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

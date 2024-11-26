@@ -1,0 +1,133 @@
+/*Copyright 2024*/
+body {
+    font-family: Arial;
+}
+
+.titulo {
+    background-color: #C60000;
+    font-family: Arial;
+}
+
+.header {
+    background-color: #d9534f;
+    color: black;
+    text-align: center;
+    padding: 10px;
+}
+
+/*Imagen*/
+
+.contenedor {
+    width: 90%;
+    max-width: 1200px;
+    overflow: hidden;
+    margin: auto;
+    padding: 60px 0;
+}
+
+.header {
+    height: 85vh;
+    background-image: linear-gradient(to top, hsla(0, 0%, 37%, 0.4) 0%, hsla(0, 0%, 8%, 0.4) 100%), url('../../recursos/media/platos-ingredientes-comida-mexicana-transformed.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #FEF2E4;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.login-container img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 0;
+    font-size: larger;
+    margin-right: 10px;
+    flex: 1;
+    text-align: right;
+}
+
+.form-control {
+    flex: 2;
+}
+
+.login-container button {
+    background-color: #b52b27;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+/*footer*/
+footer {
+    background: #805A3B;
+    padding-bottom: 0.1px;
+}
+
+.footer-content {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.contact-us {
+    width: 100%;
+    color: #fff;
+}
+
+.brand {
+    font-weight: 500;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.brand+p {
+    font-weight: 500;
+}
+
+p {
+    text-align: center;
+    align-items: center;
+    color: #fff;
+}
+
+.line {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 3px;
+    height: 5px;
+    background: #fff;
+    margin-bottom: 30px;
+}

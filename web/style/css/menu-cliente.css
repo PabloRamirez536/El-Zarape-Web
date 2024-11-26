@@ -1,0 +1,153 @@
+/*Copyright 2024*/
+body {
+    background-color: #FD974F;
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.titulo {
+    background-color: #C60000;
+    font-family: Arial;
+}
+
+/*menu inicia*/
+.menuprincipal {
+    display: flex;
+    align-items: center;
+    background: rgb(255, 251, 251);
+}
+
+.logo {
+    margin-left: 20px;
+    margin-right: 350px;
+}
+
+.nav-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.nav-list li {
+    margin: 0 50px;
+}
+
+.nav-list li a {
+    font-family: Arial;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    padding: 20px;
+    display: block;
+    text-align: center;
+}
+
+.nav-list li a:hover {
+    border-radius: 10px;
+    background: #C60000;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.carrito-icon {
+    height: 50px;
+    width: auto;
+}
+
+.cantidad {
+    border: none;
+    float: left;
+    width: 30px;
+    margin-right: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+    text-align: center;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    color: #000000;
+}
+
+.section-title {
+    width: 100%;
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #000000;
+    border-bottom: 3px solid #000000;
+    display: inline-block;
+}
+
+.alimentos {
+    height: 200px;
+    width: auto;
+}
+
+.combo {
+    height: 200px;
+    width: auto;
+}
+
+.card-img-top:hover {
+    border: solid;
+    border-color: #000000;
+}
+
+footer {
+    background: #805A3B;
+    padding-bottom: 0.1px;
+}
+
+.footer-content {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.contact-us {
+    width: 100%;
+    color: #fff;
+}
+
+.brand {
+    font-weight: 500;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.brand+p {
+    font-weight: 500;
+}
+
+.line {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 3px;
+    height: 5px;
+    background: #fff;
+    margin-bottom: 30px;
+}
+
+p {
+    text-align: center;
+    align-items: center;
+    color: #fff;
+}

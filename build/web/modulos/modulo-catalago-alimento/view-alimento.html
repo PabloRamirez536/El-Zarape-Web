@@ -1,0 +1,92 @@
+<!-- Copyright 2024 -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Catálogo Alimentos</title>
+    <link rel="shortcut icon" href="../../recursos/media/logoSinFondo.png">
+    <meta name="nombre" content="Catálogo Aliemto">
+    <meta name="description" content="Página del catálogo de alimento">
+    <meta name="keywords" content="alimento, catálogo, CRUD, agregar, eliminar, editar, consultar">
+    <meta name="author" content="TechnoVision">
+    <meta name="date" content="Junio, 28 2024">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../style/css/modulos-style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="container-fluid cabeza fixed-top" id="cabeza">
+        <img src="../../recursos/media/menu.png" alt="" class="hamburguer" id="hamburguer-icon">
+        <header class="row">
+            <div class="col-12 titulo">
+                <h1 class="text-light text-center" style="font-weight: bold;">Alimentos</h1>
+            </div>
+        </header>
+    </div>
+
+    <div id="menu-container"></div>
+
+    <br><br><br>
+
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col">
+                <!-- Botón para agregar y editar sucursales -->
+                <button class="btn btn-primary personalizado" onclick="mostrarFormulario()">Agregar Alimento</button>
+            </div>
+            <div class="col">
+                <!-- Campo de búsqueda de sucursales -->
+                <div class="input-group">
+                    <input type="text" id="busqueda-alimento" class="form-control" placeholder="Buscar Alimento..."
+                        oninput="buscarAlimento()">
+                    <div class="input-group-append" style="margin-left: 10px;">
+                        <button class="btn btn-outline-secondary personalizado" type="button">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <!-- Selector para número de registros por página -->
+                <label for="registros-por-pagina">Mostrar:</label>
+                <select id="registros-por-pagina" onchange="actualizarTablaAlimentos()">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="all">Todos</option>
+                </select>
+                registros por página
+            </div>
+        </div>
+
+        <!-- Tabla para mostrar las sucursales -->
+        <div class="table-responsive">
+            <table id="tabla-alimentos">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Foto</th>
+                        <th>Precio</th>
+                        <th>Categoria</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-alimentos">
+                    <!-- Aquí se añadirán las sucursales dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../../style/js/main-burguer.js" type="text/javascript"></script>
+    <script src="./controller-alimentos.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../style/js/bootstrap.bundle.js" type="text/javascript"></script>
+</body>
+
+</html>

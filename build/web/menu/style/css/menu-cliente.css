@@ -1,0 +1,99 @@
+/*Copyright 2024*/
+.cantidad {
+    border: none;
+    float: left;
+    width: 30px;
+    margin-right: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+    text-align: center;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    color: #000000;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body button {
+    align-self: center;
+}
+
+
+.section-title {
+    width: 100%;
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #000000;
+    border-bottom: 3px solid #000000;
+    display: inline-block;
+}
+
+.alimentos {
+    height: 200px;
+    width: auto;
+}
+
+.combo {
+    height: 200px;
+    width: auto;
+}
+
+.card-img-top:hover {
+    border: solid;
+    border-color: #000000;
+}
+
+footer {
+    background: #805A3B;
+    padding-bottom: 0.1px;
+}
+
+.footer-content {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.contact-us {
+    width: 100%;
+    color: #fff;
+}
+
+.brand {
+    font-weight: 500;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.brand+p {
+    font-weight: 500;
+}
+
+.line {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 3px;
+    height: 5px;
+    background: #fff;
+    margin-bottom: 30px;
+}
+
+p {
+    text-align: center;
+    align-items: center;
+    color: #fff;
+}
