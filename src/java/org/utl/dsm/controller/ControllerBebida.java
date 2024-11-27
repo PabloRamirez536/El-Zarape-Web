@@ -16,7 +16,7 @@ import org.utl.dsm.model.Producto;
  *
  * @author Miguel Hernandez
  */
-public class ControllerProductoBebida {
+public class ControllerBebida {
 
     public Bebida insertBebidaObjeto(Bebida b) {
         System.out.println("lo que llega al statement");

@@ -1,7 +1,7 @@
 let bebidas = [];
 
 function cargarCategoria() {
-    return fetch('http://localhost:8080/Zarape/api/producto/getAllCategoriaBebida')
+    return fetch('http://localhost:8080/Zarape/api/bebida/getAllCategoriaBebida')
             .then(response => response.json())
             .then(data => {
                 return data;
@@ -97,7 +97,7 @@ function mostrarFormulario(index = null) {
             };
 
             // Determinar la URL y enviar la solicitud
-            fetch(index !== null ? 'http://localhost:8080/Zarape/api/producto/updateBebida' : 'http://localhost:8080/Zarape/api/producto/insertBebida', requestOptions)
+            fetch(index !== null ? 'http://localhost:8080/Zarape/api/bebida/updateBebida' : 'http://localhost:8080/Zarape/api/bebida/insertBebida', requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         if (index !== null) {
@@ -136,7 +136,7 @@ function mostrarFormulario(index = null) {
 }
 
 function actualizarTablaBebidas() {
-    let ruta = "http://localhost:8080/Zarape/api/producto/getAllBebida";
+    let ruta = "http://localhost:8080/Zarape/api/bebida/getAllBebida";
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -147,13 +147,13 @@ function actualizarTablaBebidas() {
                 data.forEach((bebida, index) => {
                     let fila = tabla.insertRow();
                     fila.innerHTML = `
-                <td>${bebida.idProducto}</td>
+                <td>${bebida.idBebida}</td>
                 <td>${bebida.producto.nombre}</td>
                 <td>${bebida.producto.descripcion}</td>
                 <td>
                     <img src="${bebida.producto.foto}" alt="Foto de Producto" style="max-width: 60px; max-height: 60px;" />
                 </td>
-                <td>${bebida.producto.precio}</td>
+                <td>${bebida.producto.precio.toFixed(2)}</td>
                 <td>${bebida.categoria.descripcion}</td>
                 <td>${bebida.producto.activo ? 'Activo' : 'Inactivo'}</td>
                 <td>
@@ -204,7 +204,7 @@ function eliminarProductoBebida(index) {
             // Crear el objeto con los parámetros para la solicitud
             const params = {idProducto: bebidaId};
             // Hacer la solicitud POST (simulando eliminación lógica)
-            fetch('http://localhost:8080/Zarape/api/producto/eliminarBebida', {
+            fetch('http://localhost:8080/Zarape/api/bebida/eliminarBebida', {
                 method: 'POST', // Usamos POST ya que el backend espera esta solicitud
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'

@@ -1,161 +1,203 @@
-/*Copyright 2024*/
-// Array para almacenar los alimentos
 let alimentos = [];
 
-// Función para mostrar el formulario de agregar/editar bebida
-function mostrarFormulario(index = null) {
-    let titulo = index !== null ? 'Editar Alimento' : 'Agregar Alimento';
-    let botonTexto = index !== null ? 'Guardar' : 'Agregar';
+window.onload = function () {
+    actualizarTablaAlimentos();
+};
 
+function cargarCategoria() {
+    return fetch('http://localhost:8080/Zarape/api/alimento/getAllCategoriaAlimento')
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
+            .catch(error => console.error('Error al cargar categorias:', error));
+}
+
+function mostrarFormulario(index = null) {
+    let titulo = index !== null ? 'Editar Producto' : 'Agregar Producto';
+    let botonTexto = index !== null ? 'Guardar' : 'Agregar';
+    let idProducto = '';
     let nombre = '';
     let descripcion = '';
-    let foto = '';
+    let imagen = "../../recursos/media/alimentos.jpg";  // Ruta de la imagen
     let precio = '';
     let categoria = '';
+    let activo = true;
 
+    // Verificar si es una edición
     if (index !== null) {
-        // Si es una edición, cargar los datos del alimento seleccionado
         let alimento = alimentos[index];
-        nombre = alimento.nombre || '';
-        descripcion = alimento.descripcion || '';
-        foto = alimento.foto || '';
-        precio = alimento.precio || '';
-        categoria = alimento.categoria || '';
+        idProducto = alimento.idProducto || '';
+        nombre = alimento.producto.nombre || '';
+        descripcion = alimento.producto.descripcion || '';
+        precio = alimento.producto.precio || '';
+        activo = alimento.producto.activo || false;
+        categoria = alimento.producto && alimento.producto.idCategoria ? alimento.producto.idCategoria : '';
+        // Usar la imagen existente si está disponible
+        imagen = alimento.producto.foto || imagen;
     }
 
+    // Mostrar el formulario con Swal
     Swal.fire({
         title: titulo,
-        html: `
-            <form id="formulario-alimento-modal">
-                <label for="alimento-nombre">Nombre:</label><br>
-                <input type="text" id="alimento-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
-                <label for="alimento-descripcion">Descripción:</label><br>
-                <input type="text" id="alimento-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}"><br>
-                <label for="foto-alimento">Foto Alimento:</label><br>
-                <input type="file" id="foto-alimento" class="swal2-input" accept="image/*"><br>
-                <img id="foto-alimento-preview" src="${foto}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
-                <label for="alimento-precio">Precio:</label><br>
-                <input type="number" id="alimento-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br>
-                <label for="alimento-categoria">Categoría:</label><br>
-                <select id="alimento-categoria" class="swal2-input">
-                    <option value="Platillos Principales" ${categoria === 'Platillos Principales' ? 'selected' : ''}>Platillos Principales</option>
-                    <option value="Ensaladas" ${categoria === 'Ensaladas' ? 'selected' : ''}>Ensaladas</option>
-                    <option value="Postres" ${categoria === 'Postres' ? 'selected' : ''}>Postres</option>
-                </select><br>
-            </form>
-        `,
-
+        html: `<form id="formulario-cliente-modal">
+                <label for="producto-nombre">Nombre:</label><br>
+                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
+                <label for="producto-descripcion">Descripción:</label><br>
+                <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}"><br>
+                <label for="producto-foto">Foto Producto:</label><br>
+                <input type="file" id="producto-foto" class="swal2-input" accept="image/*"><br>
+                <img id="producto-preview" src="${imagen}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
+                <label for="producto-precio">Precio:</label><br>
+                <input type="number" id="producto-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br>
+                <label for="producto-categoria">Categoría:</label><br><br>
+                <select id="producto-categoria" class="swal2-input">
+                    <option value="">Selecciona una categoria</option>
+                </select><br><br>
+                <label for="producto-activo">Estatus:</label><br>
+                <input type="checkbox" id="producto-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
+            </form>`,
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
         confirmButtonText: botonTexto,
         cancelButtonText: 'Cancelar',
         preConfirm: () => {
-            return new Promise((resolve) => {
-                let nombreNuevo = document.getElementById('alimento-nombre').value.trim();
-                let descripcionNueva = document.getElementById('alimento-descripcion').value.trim();
-                let fotoAlimentoNueva = document.getElementById('foto-alimento').files[0]; // Obtener el archivo de la imagen
-                let precioNuevo = document.getElementById('alimento-precio').value.trim();
-                let categoriaNuevo = document.getElementById('alimento-categoria').value.trim();
+            let nombreNuevo = document.getElementById('producto-nombre').value.trim();
+            let descripcionNueva = document.getElementById('producto-descripcion').value.trim();
+            let precioNuevo = document.getElementById('producto-precio').value.trim();
+            let activoNuevo = document.getElementById('producto-activo').checked;
+            let categoriaSeleccionada = document.getElementById('producto-categoria').value;
 
-                // Validar campos obligatorios
-                if (!nombreNuevo || !descripcionNueva || !precioNuevo || !categoriaNuevo) {
-                    Swal.showValidationMessage('Por favor, complete todos los campos.');
-                    resolve(false);
-                } else {
-                    let reader = new FileReader();
-                    reader.onload = function (e) {
-                        let fotoAlimentoURL = e.target.result;
-                        resolve({
-                            nombre: nombreNuevo,
-                            descripcion: descripcionNueva,
-                            foto: fotoAlimentoURL,
-                            precio: precioNuevo,
-                            categoria: categoriaNuevo
-                        });
-                    };
-                    if (fotoAlimentoNueva) {
-                        reader.readAsDataURL(fotoAlimentoNueva);
-                    } else {
-                        resolve({
-                            nombre: nombreNuevo,
-                            descripcion: descripcionNueva,
-                            foto: foto,
-                            precio: precioNuevo,
-                            categoria: categoriaNuevo
-                        });
+            // Validar que los campos no estén vacíos
+            if (!nombreNuevo || !descripcionNueva || !precioNuevo || !categoriaSeleccionada) {
+                Swal.showValidationMessage('Por favor, complete todos los campos y seleccione una categoría.');
+                return false;
+            }
 
-                    }
+            return Promise.resolve({
+                idProducto: index !== null ? alimentos[index].idProducto : null,
+                producto: {
+                    nombre: nombreNuevo,
+                    descripcion: descripcionNueva,
+                    foto: imagen, // Usar la imagen predeterminada
+                    precio: parseFloat(precioNuevo),
+                    activo: activoNuevo
+                },
+                categoria: {
+                    idCategoria: parseInt(categoriaSeleccionada) // Enviar la categoría seleccionada
                 }
             });
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            if (index !== null) {
-                alimentos[index] = result.value;
-                guardarAlimentos(index); // Llamar con índice para editar
-            } else {
-                alimentos.push(result.value);
-                guardarAlimentos(); // Llamar sin índice para agregar
-            }
-            actualizarTablaAlimentos(); // Actualizar la tabla de alimentos
+            const alimentoData = result.value;
+            let params = {
+                datosAlimento: JSON.stringify(alimentoData)
+            };
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: new URLSearchParams(params)
+            };
+
+            // Determinar la URL y enviar la solicitud
+            fetch(index !== null ? 'http://localhost:8080/Zarape/api/alimento/updateAlimento' : 'http://localhost:8080/Zarape/api/alimento/insertAlimento', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (index !== null) {
+                            // Actualizar el alimento existente
+                            alimentos[index] = data;
+                            Swal.fire('¡Alimento actualizado!', 'Los datos del alimento han sido actualizados.', 'success');
+                        } else {
+                            // Agregar el nuevo alimento
+                            alimentos.push(data);
+                            Swal.fire('¡Alimento agregado!', 'El nuevo alimento ha sido agregado.', 'success');
+                        }
+                        actualizarTablaAlimentos();
+                    })
+                    .catch(error => Swal.fire('Error', 'Hubo un problema al guardar el alimento.', 'error'));
+            console.log("Datos enviados:", JSON.stringify(alimentoData));
         }
     });
 
-    // Mostrar vista previa de la imagen seleccionada
-    document.getElementById('foto-alimento').addEventListener('change', function () {
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('foto-alimento-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(this.files[0]);
-    });
+    // Cargar categorías disponibles
+    cargarCategoria().then(categorias => {
+        const alimentoSelect = document.getElementById('producto-categoria');
+        alimentoSelect.innerHTML = '<option value="">Selecciona una categoria</option>'; // Agregar opción por defecto
+
+        console.log("Categoría seleccionada (alimento):", categoria); // Depuración
+        console.log("Categorías disponibles:", categorias); // Depuración
+
+        categorias.forEach(categoriaItem => {
+            // Comparar correctamente los valores
+            const isSelected = parseInt(categoria) === parseInt(categoriaItem.idCategoria);
+            alimentoSelect.innerHTML += `<option value="${categoriaItem.idCategoria}" ${isSelected ? 'selected' : ''}>
+        ${categoriaItem.descripcion}
+    </option>`;
+        });
+    }).catch(error => console.error('Error al cargar categorias:', error));
 }
 
-// Función para actualizar la tabla con los alimentos actuales
+
+// Actualizar la tabla de alimentos
 function actualizarTablaAlimentos() {
+    let ruta = "http://localhost:8080/Zarape/api/alimento/getAllAlimento";
+    fetch(ruta)
+        .then(response => response.json())
+        .then(data => {
+            alimentos = data; // Asignar los datos a la variable global
+            const tabla = document.getElementById('tabla-alimentos').getElementsByTagName('tbody')[0];
+            tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
 
-    let tbody = document.getElementById('tbody-alimentos');
-    tbody.innerHTML = ''; // Limpiar el tbody
-
-    let registrosPorPagina = document.getElementById('registros-por-pagina').value;
-    let busqueda = document.getElementById('busqueda-alimento').value.toUpperCase();
-
-    let alimentosFiltrados = alimentos.filter(sucursal => {
-        return Object.values(sucursal).some(value =>
-            String(value).toUpperCase().includes(busqueda)
-        );
-    });
-
-    let alimentosMostrados = (registrosPorPagina === "all") ? alimentosFiltrados : alimentosFiltrados.slice(0, parseInt(registrosPorPagina));
-
-
-    alimentosMostrados.forEach((alimento, index) => {
-        let tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${alimento.nombre}</td>
-            <td>${alimento.descripcion}</td>
-            <td style="text-align: center; vertical-align: middle;"><img src="${alimento.foto}" style="max-width: 60px; max-height: 60px;"></td>
-            <td>$${alimento.precio}</td>
-            <td>${alimento.categoria}</td>
-            <td>
-                <button class="icon-button" onclick="mostrarFormulario(${index})">
-                    <img src="../../recursos/media/editar.png" alt="Icono Editar" class="icon.acciones">
-                </button>
-                <button class="icon-button" onclick="eliminarAlimento(${index})">
-                    <img src="../../recursos/media/borrar.png" alt="Icono Eliminar" class="icon.acciones">
-                </button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+            // Recorrer los datos y agregar filas a la tabla
+            data.forEach((alimento, index) => {
+                let fila = tabla.insertRow();
+                fila.innerHTML = `
+                    <td>${alimento.idAlimento}</td>
+                    <td>${alimento.producto.nombre}</td>
+                    <td>${alimento.producto.descripcion}</td>
+                    <td>${alimento.categoria ? alimento.categoria.descripcion : 'Sin categoría'}</td> 
+                    <td>
+                        <img src="${alimento.producto.foto}" alt="Foto de Producto" style="max-width: 60px; max-height: 60px;" />
+                    </td>
+                    <td>${alimento.producto.precio.toFixed(2)}</td>
+                    <td>${alimento.producto.activo ? 'Activo' : 'Inactivo'}</td>
+                    <td>
+                        <button class="icon-button" onclick="mostrarFormulario(${index})">
+                            <img src="../../recursos/media/editar.png" alt="Icono Editar" class="icon-acciones">
+                        </button>
+                        <button class="icon-button" onclick="eliminarAlimento(${index})">
+                            <img src="../../recursos/media/borrar.png" alt="Icono Eliminar" class="icon-acciones">
+                        </button>
+                    </td>
+                `;
+            });
+        })
+        .catch(error => console.error('Error al cargar productos:', error));
 }
 
-// Función para eliminar un alimento
+
 function eliminarAlimento(index) {
+    // Obtener el producto
+    const productoAlimento = alimentos[index];
+
+    // Verificar si el producto ya está inactivo
+    if (!productoAlimento.producto.activo) {
+        Swal.fire({
+            title: 'Este producto ya está inactivo',
+            text: 'No puedes inactivar un producto que ya está inactivo.',
+            icon: 'info',
+            confirmButtonColor: '#805A3B',
+            confirmButtonText: 'Aceptar'
+        });
+        return;  // Salir de la función si el producto ya está inactivo
+    }
+
+    // Confirmación de eliminación
     Swal.fire({
-        title: '¿Estás seguro de eliminar este alimento?',
-        text: '¡No podrás revertir esto!',
+        title: '¿Estás seguro de eliminar este producto?',
+        text: 'El estatus cambiará a Inactivo.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
@@ -164,89 +206,62 @@ function eliminarAlimento(index) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            alimentos.splice(index, 1);
-            actualizarTablaAlimentos();
-            Swal.fire({
-                title: '¡Eliminado!',
-                text: 'El alimento ha sido eliminado exitosamente.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#805A3B'
-            });
-            guardarAlimentosSinMensaje();
+            const alimentoId = productoAlimento.idProducto;
+
+            // Crear los parámetros para la solicitud
+            const params = {idProducto: alimentoId};
+
+            // Hacer la solicitud POST para eliminar (marcar como inactivo)
+            fetch('http://localhost:8080/Zarape/api/alimento/eliminarAlimento', {
+                method: 'POST', // Usamos POST ya que el backend espera esta solicitud
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(params)  // Convertir los parámetros en el formato adecuado
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            // Actualizar la tabla de productos (volver a cargarla)
+                            actualizarTablaAlimentos();  // Recargar la tabla con los productos actualizados
+                            Swal.fire('¡Eliminado!', 'El producto ha sido inactivado correctamente.', 'success');
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al inactivar el producto.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Hubo un problema al inactivar el producto.', 'error');
+                    });
         }
     });
 }
 
-// Función para guardar los alimentos sin mostrar mensaje
-function guardarAlimentosSinMensaje() {
-    localStorage.setItem('alimentos', JSON.stringify(alimentos));
-}
-
-// Función para guardar los alimentos (simulación de guardar en localStorage)
-function guardarAlimentos(index = null) {
-    localStorage.setItem('alimentos', JSON.stringify(alimentos));
-
-    if (index !== null) {
-        Swal.fire({
-            title: '¡Editado!',
-            text: 'El alimento fue editado exitosamente.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#805A3B'
-        });
-    } else {
-        Swal.fire({
-            title: '¡Guardado!',
-            text: 'El alimento se ha agregado exitosamente.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#805A3B'
-        });
-    }
-}
-
-
-// Función para cargar los alimentos desde localStorage al cargar la página
-window.onload = function () {
-    fetch("../../modulos/modulo-catalago-alimento/data-alimento.json")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (jsondata) {
-            alimentos = jsondata;
-            actualizarTablaAlimentos();
-        })
-        .catch(function (error) {
-            console.error('Error al cargar los alimentos:', error);
-        });
-};
-
-// Función para buscar alimento por cualquier campo
 function buscarAlimento() {
-    let input = document.getElementById('busqueda-alimento');
-    let filter = input.value.toUpperCase();
-    let tbody = document.getElementById('tbody-alimentos');
-    let tr = tbody.getElementsByTagName('tr');
+    let query = document.getElementById('busqueda-alimento').value.toLowerCase();  // Obtener texto de búsqueda y convertirlo a minúsculas
+    let tabla = document.getElementById('tabla-alimentos').getElementsByTagName('tbody')[0];
+    let filas = tabla.getElementsByTagName('tr');  // Obtener todas las filas de la tabla
 
-    for (let i = 0; i < tr.length; i++) {
-        let mostrarFila = false;
+    // Iterar sobre las filas de la tabla y mostrar solo las que coinciden con la búsqueda
+    for (let i = 0; i < filas.length; i++) {
+        let fila = filas[i];
+        let columnas = fila.getElementsByTagName('td');  // Obtener las columnas de la fila
+        let match = false;
 
-        // Recorrer cada celda de la fila
-        for (let j = 0; j < tr[i].cells.length - 1; j++) {
-            let td = tr[i].cells[j];
-            if (td) {
-                let textValue = td.textContent || td.innerText;
-                if (textValue.toUpperCase().indexOf(filter) > -1) {
-                    mostrarFila = true;
-                    break;
-                }
+        // Comprobar si alguna de las columnas contiene el texto de búsqueda
+        for (let j = 0; j < columnas.length; j++) {
+            let textoColumna = columnas[j].textContent || columnas[j].innerText;
+            if (textoColumna.toLowerCase().indexOf(query) > -1) {
+                match = true;  // Si hay coincidencia, mostrar la fila
+                break;
             }
         }
-        if (mostrarFila) {
-            tr[i].style.display = '';
+
+        // Mostrar u ocultar la fila según si coincide con la búsqueda
+        if (match) {
+            fila.style.display = '';
         } else {
-            tr[i].style.display = 'none';
+            fila.style.display = 'none';
         }
     }
 }
+
+

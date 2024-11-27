@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
-import org.utl.dsm.controller.ControllerProductoBebida;
+import org.utl.dsm.controller.ControllerBebida;
 import org.utl.dsm.model.Bebida;
 import org.utl.dsm.model.Categoria;
 
@@ -29,8 +29,8 @@ import org.utl.dsm.model.Categoria;
  *
  * @author Miguel Hernandez
  */
-@Path("producto")
-public class RESTProducto {
+@Path("bebida")
+public class RESTBebida {
 
     @Path("insertBebida")
     @POST
@@ -40,7 +40,7 @@ public class RESTProducto {
     ) {
         System.out.println(bebida);
         Gson gson = new Gson();
-        ControllerProductoBebida cp = new ControllerProductoBebida();
+        ControllerBebida cp = new ControllerBebida();
         Bebida b = gson.fromJson(bebida, Bebida.class);
         System.out.println("Bebida:" + b.getProducto().getNombre());
         cp.insertBebidaObjeto(b);
@@ -61,7 +61,7 @@ public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String 
         // Aquí puedes procesar la imagen si la necesitas
         // Foto procesada como InputStream, por ejemplo, guardarla en el servidor
 
-        ControllerProductoBebida controller = new ControllerProductoBebida();
+        ControllerBebida controller = new ControllerBebida();
         controller.updateBebidaObjeto(bebida);
         out = "{\"result\":\"Bebida actualizada con éxito\"}";
     } catch (Exception e) {
@@ -79,9 +79,9 @@ public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String 
         List<Bebida> lista = null;
         Gson gson = new Gson();
         String out = null;
-        ControllerProductoBebida cs = null;
+        ControllerBebida cs = null;
         try {
-            cs = new ControllerProductoBebida();
+            cs = new ControllerBebida();
             lista = cs.getAllObjetoBebida();
             out = gson.toJson(lista);
         } catch (Exception e) {
@@ -99,9 +99,9 @@ public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String 
         List<Categoria> lista = null;
         Gson gson = new Gson();
         String out = null;
-        ControllerProductoBebida cs = null;
+        ControllerBebida cs = null;
         try {
-            cs = new ControllerProductoBebida();
+            cs = new ControllerBebida();
             lista = cs.getAllCategoriaBebida();
             out = gson.toJson(lista);
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String 
     public Response deletePersona(@FormParam("idProducto") int idProducto) {
         System.out.println(idProducto);
         String out;
-        ControllerProductoBebida cp = new ControllerProductoBebida();
+        ControllerBebida cp = new ControllerBebida();
         try {
             cp.eliminarBebida(idProducto);
             out = """

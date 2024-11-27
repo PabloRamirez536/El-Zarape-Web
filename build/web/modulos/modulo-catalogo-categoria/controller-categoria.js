@@ -14,7 +14,6 @@ function mostrarFormulario(index = null) {
         activo = categoria.activo || false;
     }
 
-    // Mostrar el formulario con Swal
     Swal.fire({
         title: titulo,
         html: `<form id="formulario-cliente-modal">
