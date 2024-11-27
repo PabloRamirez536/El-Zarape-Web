@@ -1,4 +1,3 @@
-/*Copyright 2024*/
 let bebidas = [];
 
 function cargarCategoria() {
@@ -46,8 +45,7 @@ function mostrarFormulario(index = null) {
                 <input type="file" id="producto-foto" class="swal2-input" accept="image/*"><br>
                 <img id="producto-preview" src="${imagen}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
                 <label for="producto-precio">Precio:</label><br>
-                <input type="number" id="producto-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br>
-                <label for="producto-categoria">Categoria:</label><br><br>
+                <input type="number" id="producto-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br><br>
                 <select id="producto-categoria" class="swal2-input">
                     <option value="">Selecciona una categoria</option>
                 </select><br><br>
@@ -72,19 +70,13 @@ function mostrarFormulario(index = null) {
                 return false;
             }
 
-            // Convertir precio a número entero
-            const precioEntero = parseInt(precioNuevo);
-            if (isNaN(precioEntero) || precioEntero < 0) {
-                Swal.showValidationMessage('Por favor, ingrese un precio válido (número entero positivo).');
-                return false;
-            }
             return Promise.resolve({
                 idProducto: index !== null ? bebidas[index].idProducto : null,
                 producto: {
                     nombre: nombreNuevo,
                     descripcion: descripcionNueva,
                     foto: imagen, // Usar la imagen predeterminada
-                    precio: precioEntero, //Solo se permiten números entereos con dos caracteres
+                    precio: parseFloat(precioNuevo),
                     activo: activoNuevo
                 },
                 categoria: {
@@ -162,6 +154,7 @@ function actualizarTablaBebidas() {
                     <img src="${bebida.producto.foto}" alt="Foto de Producto" style="max-width: 60px; max-height: 60px;" />
                 </td>
                 <td>${bebida.producto.precio}</td>
+                <td>${bebida.categoria.descripcion}</td>
                 <td>${bebida.producto.activo ? 'Activo' : 'Inactivo'}</td>
                 <td>
                     <button class="icon-button" onclick="mostrarFormulario(${index})">

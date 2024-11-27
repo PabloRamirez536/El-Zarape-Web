@@ -93,9 +93,12 @@ public class ControllerProductoBebida {
         pr.setPrecio(rs.getDouble("precio"));
         pr.setIdCategoria(rs.getInt("idCategoria"));
         pr.setActivo(rs.getBoolean("activo"));
+        Categoria ca = new Categoria();
+        ca.setDescripcion(rs.getString("categoria"));
         Bebida be = new Bebida();
         be.setIdBebida(rs.getInt("idBebida"));
         be.setIdProducto(rs.getInt("idProducto"));
+        be.setCategoria(ca);
         be.setProducto(pr);
         return be;
     }
