@@ -239,13 +239,13 @@ function eliminarCliente(index) {
 
     // Si el cliente está activo, proceder con la confirmación de eliminación
     Swal.fire({
-        title: '¿Estás seguro de eliminar este cliente?',
-        text: 'El estatus cambiara a Inactivo!',
+        title: '¿Estás seguro de desactivar este cliente?',
+        text: '¡El estatus cambiara a Inactivo!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
-        confirmButtonText: 'Sí, eliminar',
+        confirmButtonText: 'Sí, desactivar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -265,7 +265,7 @@ function eliminarCliente(index) {
             .then(response => {
                 if (response.ok) {
                     cargarTablaClientes(); // Actualizar la tabla de clientes
-                    Swal.fire('¡Eliminado!', 'El cliente ha sido inavtivado exitosamente.', 'success');
+                    Swal.fire('¡Eliminado!', 'El cliente ha sido inactivado exitosamente.', 'success');
                 } else {
                     Swal.fire('Error', 'Hubo un problema al inactivar el cliente.', 'error');
                 }

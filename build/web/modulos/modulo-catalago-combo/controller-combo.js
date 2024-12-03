@@ -337,13 +337,13 @@ function mostrarDetalle(index) {
 // Función para eliminar un combo
 function eliminarCombo(index) {
     Swal.fire({
-        title: '¿Estás seguro de eliminar este combo?',
-        text: "¡No podrás revertir esto!",
+        title: '¿Estás seguro de desactivar este combo?',
+        text: "¡El estatus cambiara a Inactivo!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
-        confirmButtonText: 'Sí, eliminarlo',
+        confirmButtonText: 'Sí, desactivar',
         cancelButtonText: 'No, cancelar'
     }).then((result) => {
         if (result.isConfirmed) {

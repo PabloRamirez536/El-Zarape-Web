@@ -190,13 +190,13 @@ function eliminarProductoBebida(index) {
 
     // Si el cliente está activo, proceder con la confirmación de eliminación
     Swal.fire({
-        title: '¿Estás seguro de eliminar esta bebida?',
-        text: 'El estatus cambiara a Inactivo!',
+        title: '¿Estás seguro de desactivar esta bebida?',
+        text: '¡El estatus cambiara a Inactivo!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
-        confirmButtonText: 'Sí, eliminar',
+        confirmButtonText: 'Sí, desactivar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {

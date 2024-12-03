@@ -165,7 +165,7 @@ function eliminarCategoria(index) {
                     .then(response => {
                         if (response.ok) {
                             actualizarTablaCategorias(); // Actualizar la tabla de categoria
-                            Swal.fire('¡Eliminado!', 'La bebida ha sido inavtivada exitosamente.', 'success');
+                            Swal.fire('¡Eliminado!', 'La bebida ha sido inactivada exitosamente.', 'success');
                         } else {
                             Swal.fire('Error', 'Hubo un problema al inactivar la bebida.', 'error');
                         }

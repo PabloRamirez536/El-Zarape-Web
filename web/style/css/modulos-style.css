@@ -80,15 +80,15 @@ th {
 }
 
 .swal2-popup {
-    font-size: 1rem;
+    font-size: 1rem !important;
 }
 
 .swal2-title {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
 }
 
 .swal2-content {
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
 }
 
 .swal2-input,
@@ -97,11 +97,11 @@ th {
 .swal2-select,
 .swal2-radio,
 .swal2-checkbox {
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
 }
 
 .swal2-file-label {
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
 }
 
 .detalle-tabla {

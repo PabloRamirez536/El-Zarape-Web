@@ -196,13 +196,13 @@ function eliminarAlimento(index) {
 
     // Confirmación de eliminación
     Swal.fire({
-        title: '¿Estás seguro de eliminar este producto?',
-        text: 'El estatus cambiará a Inactivo.',
+        title: '¿Estás seguro de desactivar este producto?',
+        text: '¡El estatus cambiará a Inactivo.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
-        confirmButtonText: 'Sí, eliminar',
+        confirmButtonText: 'Sí, desactivar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {

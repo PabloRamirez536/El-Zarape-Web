@@ -39,7 +39,7 @@
             <div class="col">
                 <!-- Campo de búsqueda de sucursales -->
                 <div class="input-group">
-                    <input type="text" id="busqueda-empleado" class="form-control" placeholder="Buscar Empleado..."
+                    <input type="text" id="busqueda-empleado" class="form-control" placeholder="Buscar Empleado"
                         oninput="buscarEmpleado()">
                     <div class="input-group-append" style="margin-left: 10px;">
                         <button class="btn btn-outline-secondary personalizado" type="button">Buscar</button>
@@ -48,31 +48,22 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col">
-                <!-- Selector para número de registros por página -->
-                <label for="registros-por-pagina">Mostrar:</label>
-                <select id="registros-por-pagina" onchange="actualizarTablaEmpleados()">
-                    <option value="5">5</option>
-                    <option value="10" selected>10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="all">Todos</option>
-                </select>
-                registros por página
-            </div>
-        </div>
 
         <!-- Tabla para mostrar las sucursales -->
         <div class="table-responsive">
             <table id="tabla-empleados">
                 <thead>
                     <tr>
+                        <th>Id Empleado</th>
                         <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
-                        <th>Puesto</th>
+                        <th>Apellidos</th>
+                        <th>Telefono</th>
+                        <th>Estado</th>
+                        <th>Ciudad</th>
+                        <th>Usuario</th>
+                        <th>Contrasenia</th>
                         <th>Sucursal</th>
+                        <th>Activo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -83,9 +74,7 @@
         </div>
     </div>
 
-
-
-    <script src="./controller-empleado.js" type="text/javascript"></script>
+    <script src="controller-empleado.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../style/js/bootstrap.bundle.js" type="text/javascript"></script>
     <script src="../../style/js/main-burguer.js" type="text/javascript"></script>
