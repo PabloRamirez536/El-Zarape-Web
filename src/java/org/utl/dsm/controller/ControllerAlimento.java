@@ -130,7 +130,7 @@ public class ControllerAlimento {
     
     
     public List<Categoria> getAllCategoriaAlimento() throws SQLException {
-        String sql = "SELECT * FROM categorias WHERE tipo = 'A'";
+        String sql = "SELECT * FROM categorias WHERE tipo = 'A' AND activo = 1";
         ConexionMysql connMysql = new ConexionMysql();
         Connection conn = connMysql.open();
         PreparedStatement pstmt = conn.prepareStatement(sql);
