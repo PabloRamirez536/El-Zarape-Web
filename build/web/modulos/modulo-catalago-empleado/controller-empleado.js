@@ -83,7 +83,7 @@ function mostrarFormulario(index = null) {
                     <label for="empleado-apellido">Apellidos:</label><br>
                     <input type="text" id="empleado-apellidos" class="swal2-input" placeholder="Apellidos" value="${apellidos}"><br>
            
-                    <label for="empleado-telefono">Telefono:</label><br>
+                    <label for="empleado-telefono">Teléfono:</label><br>
                     <input type="text" id="empleado-telefono" class="swal2-input" placeholder="Telefono" value="${telefono}"><br>
                     
                     <label for="empleado-estado">Estado:</label><br><br>

@@ -161,7 +161,7 @@ function actualizarTablaAlimentos() {
                     <td>
                         <img src="${alimento.producto.foto}" alt="Foto de Producto" style="max-width: 60px; max-height: 60px;" />
                     </td>
-                    <td>${alimento.producto.precio.toFixed(2)}</td>
+                    <td>$${alimento.producto.precio.toFixed(2)}</td>
                     <td>${alimento.producto.activo ? 'Activo' : 'Inactivo'}</td>
                     <td>
                         <button class="icon-button" onclick="mostrarFormulario(${index})">

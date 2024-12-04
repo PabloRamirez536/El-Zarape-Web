@@ -153,7 +153,7 @@ function actualizarTablaBebidas() {
                 <td>
                     <img src="${bebida.producto.foto}" alt="Foto de Producto" style="max-width: 60px; max-height: 60px;" />
                 </td>
-                <td>${bebida.producto.precio.toFixed(2)}</td>
+                <td>$${bebida.producto.precio.toFixed(2)}</td>
                 <td>${bebida.categoria.descripcion}</td>
                 <td>${bebida.producto.activo ? 'Activo' : 'Inactivo'}</td>
                 <td>

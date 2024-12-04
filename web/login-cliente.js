@@ -3,7 +3,9 @@ function mostrarFormularioLogin() {
     Swal.fire({
         title: 'Iniciar sesión',
         html: `
-            <input type="text" id="username" class="swal2-input" placeholder="Nombre de usuario" required>
+            <label for="username">Usuario:</label><br>
+            <input type="text" id="username" class="swal2-input" placeholder="Nombre de usuario" required><br>
+            <label for="password">Contraseña:</label><br>
             <input type="password" id="password" class="swal2-input" placeholder="Contraseña" required>
         `,
         focusConfirm: false,
@@ -145,7 +147,7 @@ function actualizarMenuUsuario(cliente) {
     menuUsuario.innerHTML = `
         <li><a class="dropdown-item" href="#" onclick="editarInformacionCliente(${cliente.idCliente});">Editar Información</a></li>
         <li><a class="dropdown-item" href="#" onclick="desactivarCuenta(${cliente.idCliente});">Desactivar Cuenta</a></li>
-        <li><a class="dropdown-item" href="#" onclick="cerrarSesion();">Cerrar Sesión</a></li>
+        <li><a class="dropdown-item" href="index.html" onclick="cerrarSesion();">Cerrar Sesión</a></li>
     `;
 }
 

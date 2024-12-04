@@ -46,7 +46,7 @@ function mostrarFormulario(index = null) {
     let colonia = '';
     let ciudadNombre = '';
     let estadoNombre = '';
-    let activo = false;
+    let activo = true;
 
     // Verificar si es una edición
     if (index !== null) {
@@ -75,10 +75,8 @@ function mostrarFormulario(index = null) {
 
     Swal.fire({
         title: titulo,
-        html: `<form id="formulario-sucursal-modal">
-        ${index !== null ? `
-        <label for="sucursal-id">ID:</label><br>
-        <input type="text" id="sucursal-id" class="swal2-input" value="${idSucursal}" readonly><br>` : ''}
+        html: `
+            <form id="formulario-sucursal-modal">
         <label for="sucursal-nombre">Nombre:</label><br>
         <input type="text" id="sucursal-nombre" class="swal2-input" value="${nombre}"><br>
         <label for="sucursal-latitud">Latitud:</label><br>
@@ -108,7 +106,8 @@ function mostrarFormulario(index = null) {
         </select><br>
         <label for="sucursal-estatus">Estatus:</label><br>
         <input type="checkbox" id="sucursal-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
-        </form>`,
+            </form>
+        `,
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
