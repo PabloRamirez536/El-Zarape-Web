@@ -33,7 +33,7 @@ function mostrarFormulario(index = null) {
     let activo = true;
 
     function generarContrasena() {
-        let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&/()=?¡*+'";
         let longitud = 12;
         let contrasena = "";
 
@@ -65,13 +65,13 @@ function mostrarFormulario(index = null) {
         html: `
             <form id="formulario-cliente-modal">
                 <label for="cliente-nombre">Nombre:</label><br>
-                <input type="text" id="cliente-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
+                <input type="text" id="cliente-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" pattern="[a-zA-Z\s]{1,45}" maxlength="45" required><br>
                 <label for="cliente-apellidos">Apellidos:</label><br>
-                <input type="text" id="cliente-apellidos" class="swal2-input" placeholder="Apellidos" value="${apellidos}"><br>
+                <input type="text" id="cliente-apellidos" class="swal2-input" placeholder="Apellidos" value="${apellidos}" pattern="[a-zA-Z\s]{1,45}" maxlength="45" required><br>
                 <label for="cliente-telefono">Teléfono:</label><br>
-                <input type="text" id="cliente-telefono" class="swal2-input" placeholder="Teléfono" value="${telefono}"><br>
+                <input type="text" id="cliente-telefono" class="swal2-input" placeholder="Teléfono" value="${telefono}"  pattern="[0-9]{10}" maxlength="10" required><br>
                 <label for="cliente-usuario">Usuario:</label><br>
-                <input type="text" id="cliente-usuario" class="swal2-input" placeholder="Usuario" value="${usuario}"><br>
+                <input type="text" id="cliente-usuario" class="swal2-input" placeholder="Usuario" value="${usuario}" pattern="[a-zA-Z0-9]{1,45}" maxlength="45" required><br>
                 <label for="cliente-contrasenia">Contraseña:</label><br>
                 <input type="text" id="cliente-contrasenia" class="swal2-input" placeholder="Contraseña" value="${contrasenia}" disabled><br>
                 <label for="cliente-estado">Estado:</label><br><br>
@@ -83,7 +83,7 @@ function mostrarFormulario(index = null) {
                     <option value="">Selecciona una ciudad</option>
                 </select><br><br>
                 <label for="cliente-activo">Estatus:</label><br>
-                <input type="checkbox" id="cliente-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
+                <input type="checkbox" id="cliente-activo" class="swal2-checkbox" ${activo ? 'checked' : ''} ${index === null ? 'disabled' : ''}>
             </form>
         `,
         showCancelButton: true,
@@ -100,8 +100,39 @@ function mostrarFormulario(index = null) {
             let ciudadNueva = document.getElementById('cliente-ciudad').value;
             let activoNuevo = document.getElementById('cliente-activo').checked;
 
-            if (!nombreNuevo || !apellidosNuevo || !telefonoNuevo || !usuarioNuevo || !estadoNueva || !ciudadNueva) {
-                Swal.showValidationMessage('Por favor, complete todos los campos.');
+//            if (!nombreNuevo || !apellidosNuevo || !telefonoNuevo || !usuarioNuevo || !estadoNueva || !ciudadNueva) {
+//                Swal.showValidationMessage('Por favor, complete todos los campos.');
+//                return false;
+//            }
+
+            // Validaciones
+            if (!nombreNuevo || !/^[a-zA-Z\s]{1,45}$/.test(nombreNuevo)) {
+                Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres).');
+                return false;
+            }
+
+            if (!apellidosNuevo || !/^[a-zA-Z\s]{1,45}$/.test(apellidosNuevo)) {
+                Swal.showValidationMessage('Los apellidos son obligatorios y deben contener solo letras (máximo 45 caracteres).');
+                return false;
+            }
+
+            if (!telefonoNuevo || !/^[0-9]{10}$/.test(telefonoNuevo)) {
+                Swal.showValidationMessage('El teléfono es obligatorio y debe contener exactamente 10 dígitos.');
+                return false;
+            }
+
+            if (!usuarioNuevo || !/^[a-zA-Z0-9]{1,45}$/.test(usuarioNuevo)) {
+                Swal.showValidationMessage('El usuario es obligatorio, debe tener máximo 45 caracteres y no debe contener espacios.');
+                return false;
+            }
+
+            if (!estadoNueva) {
+                Swal.showValidationMessage('Por favor, seleccione un estado.');
+                return false;
+            }
+
+            if (!ciudadNueva) {
+                Swal.showValidationMessage('Por favor, seleccione una ciudad.');
                 return false;
             }
 
@@ -133,7 +164,7 @@ function mostrarFormulario(index = null) {
                     .then(response => response.json())
                     .then(data => {
                         if (index !== null) {
-                           clientes.push(data);
+                            clientes.push(data);
                             Swal.fire('¡Cliente actualizado!', 'Los datos del cliente han sido actualizados.', 'success');
                         } else {
                             clientes.push(data);
@@ -224,7 +255,7 @@ function cargarTablaClientes() {
 function eliminarCliente(index) {
     // Verificar si el cliente ya está inactivo
     const cliente = clientes[index];
-    
+
     if (!cliente.activo) {
         // Si el cliente está inactivo, mostrar un mensaje
         Swal.fire({
@@ -262,17 +293,17 @@ function eliminarCliente(index) {
                 },
                 body: new URLSearchParams(params)  // Convertir los parámetros en el formato adecuado
             })
-            .then(response => {
-                if (response.ok) {
-                    cargarTablaClientes(); // Actualizar la tabla de clientes
-                    Swal.fire('¡Eliminado!', 'El cliente ha sido inactivado exitosamente.', 'success');
-                } else {
-                    Swal.fire('Error', 'Hubo un problema al inactivar el cliente.', 'error');
-                }
-            })
-            .catch(error => {
-                Swal.fire('Error', 'Hubo un problema al inactivar el cliente.', 'error');
-            });
+                    .then(response => {
+                        if (response.ok) {
+                            cargarTablaClientes(); // Actualizar la tabla de clientes
+                            Swal.fire('¡Eliminado!', 'El cliente ha sido inactivado exitosamente.', 'success');
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al inactivar el cliente.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Hubo un problema al inactivar el cliente.', 'error');
+                    });
         }
     });
 }
