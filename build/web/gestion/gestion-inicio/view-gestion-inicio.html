@@ -34,6 +34,25 @@
     <script src="../../style/js/bootstrap.bundle.js" type="text/javascript"></script>
     <script src="../../style/js/main-burguer.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mostrar saludo al usuario
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el nombre del usuario desde localStorage
+            const username = localStorage.getItem('username');
+            
+            if (username) {
+                // Mostrar el saludo usando SweetAlert2
+                Swal.fire({
+                    title: '¡Hola, ' + username + '!',
+                    text: 'Bienvenido a la Gestión "El Zarape".',
+                    icon: 'success',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -38,19 +38,19 @@ function mostrarFormulario(index = null) {
         title: titulo,
         html: `<form id="formulario-cliente-modal">
                 <label for="producto-nombre">Nombre:</label><br>
-                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
+                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}"required><br>
                 <label for="producto-descripcion">Descripción:</label><br>
-                <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}"><br>
+                <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s]{1,45}" required><br>
                 <label for="producto-foto">Foto Producto:</label><br>
-                <input type="file" id="producto-foto" class="swal2-input" accept="image/*"><br>
+                <input type="file" id="producto-foto" class="swal2-input" accept=".jpg, .png" required><br>
                 <img id="producto-preview" src="${imagen}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
                 <label for="producto-precio">Precio:</label><br>
-                <input type="number" id="producto-precio" class="swal2-input" placeholder="Precio" value="${precio}"><br><br>
-                <select id="producto-categoria" class="swal2-input">
+                <input type="number" id="producto-precio" class="swal2-input" placeholder="Precio" value="${precio}" min="0" max="99.99" step="0.01" required><br><br>
+                <select id="producto-categoria" class="swal2-input" required>
                     <option value="">Selecciona una categoria</option>
                 </select><br><br>
                 <label for="producto-activo">Estatus:</label><br>
-                <input type="checkbox" id="producto-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
+                <input type="checkbox" id="producto-activo" class="swal2-checkbox" ${activo ? 'checked' : ''} ${index === null ? 'disabled' : ''}>
             </form>`,
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
@@ -64,9 +64,33 @@ function mostrarFormulario(index = null) {
             let activoNuevo = document.getElementById('producto-activo').checked;
             let categoriaSeleccionada = document.getElementById('producto-categoria').value;
 
-            // Validar que los campos no estén vacíos
-            if (!nombreNuevo || !descripcionNueva || !precioNuevo || !categoriaSeleccionada) {
-                Swal.showValidationMessage('Por favor, complete todos los campos y seleccione una categoría.');
+            // Validar el nombre
+            if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(nombreNuevo)) {
+                Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres)');
+                return false;
+            }
+
+            // Validar la descripción
+            if (!descripcionNueva || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s]{1,45}$/.test(descripcionNueva)) {
+                Swal.showValidationMessage('La descripción debe contener solo letras, números y tener un máximo de 45 caracteres.');
+                return false;
+            }
+
+            // Validar imagen seleccionada
+            let fotoInput = document.getElementById('producto-foto');
+            if (fotoInput.files.length === 0 || !/(\.jpg|\.png)$/i.test(fotoInput.files[0].name)) {
+                Swal.showValidationMessage('Por favor, seleccione una imagen válida (.jpg, .png).');
+                return false;
+            }
+            // Validar precio
+            if (!precioNuevo || !/^\d+(\.\d{1,2})?$/.test(precioNuevo) || parseFloat(precioNuevo) < 0 || parseFloat(precioNuevo) > 99.99) {
+                Swal.showValidationMessage('El precio debe ser un número entre 0 y 99.99, con hasta dos decimales.');
+                return false;
+            }
+
+            // Validar categoría seleccionada
+            if (!categoriaSeleccionada) {
+                Swal.showValidationMessage('Por favor, seleccione una categoría.');
                 return false;
             }
 

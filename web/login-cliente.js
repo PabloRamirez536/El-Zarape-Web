@@ -31,19 +31,19 @@ function mostrarFormularioLogin() {
 // Función para editar la información del cliente
 function editarInformacionCliente(idCliente) {
     obtenerClientePorId(idCliente)
-        .then(cliente => {
-            if (cliente) {
-                console.log('Datos del cliente obtenidos:', cliente); // Asegúrate de que llegan datos
-                mostrarFormulario(cliente);
-            } else {
-                console.error('Cliente no encontrado');
-                Swal.fire('Error', 'Cliente no encontrado', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error al intentar editar el cliente:', error);
-            Swal.fire('Error', 'Error al obtener la información del cliente', 'error');
-        });
+            .then(cliente => {
+                if (cliente) {
+                    console.log('Datos del cliente obtenidos:', cliente); // Asegúrate de que llegan datos
+                    mostrarFormulario(cliente);
+                } else {
+                    console.error('Cliente no encontrado');
+                    Swal.fire('Error', 'Cliente no encontrado', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al intentar editar el cliente:', error);
+                Swal.fire('Error', 'Error al obtener la información del cliente', 'error');
+            });
 }
 
 // Función para validar el login a través de la API
@@ -105,13 +105,29 @@ function validateLogin(username, password) {
 
 // Verificar si el usuario está autenticado
 document.addEventListener('DOMContentLoaded', function () {
+    const token = localStorage.getItem('token');
     if (localStorage.getItem('usuarioAutenticado') === 'true') {
         activarBotones(); // Muestra los botones del menú si el usuario está autenticado
         const idCliente = localStorage.getItem('idCliente');
         // Puedes cargar más datos del cliente si es necesario
-        actualizarMenuUsuario({ idCliente: idCliente }); // Actualiza el menú
-    } else {
-        cerrarSesion(); // Oculta botones y muestra opciones de login
+        actualizarMenuUsuario({idCliente: idCliente}); // Actualiza el menú
+    }
+    
+    if (token) {
+        // Verificar la validez del token del empleado
+        fetch('http://localhost:8080/Zarape/api/usuario/validateToken?token=' + encodeURIComponent(token), {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Token válido, redirigir a la página de inicio de gestión
+        console.log("Hola, si jalo");
+                window.location.href = 'gestion/gestion-inicio/view-gestion-inicio.html';
+            } else {
+                cerrarSesion(); // Token no válido, cerrar sesión
+            }
+        });
     }
 });
 // Función para activar los botones en el menú
@@ -125,18 +141,18 @@ function activarBotones() {
 
 function obtenerClientePorId(idCliente) {
     return fetch(`http://localhost:8080/Zarape/api/cliente/getClientePorId?idCliente=${idCliente}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al obtener los datos del cliente');
-            }
-            // Convierte la respuesta a JSON y retorna el resultado
-            return response.json();
-        })
-        .catch(error => {
-            console.error('Error al obtener el cliente:', error);
-            Swal.fire('Error', 'No se pudo cargar la información del cliente.', 'error');
-            throw error;
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos del cliente');
+                }
+                // Convierte la respuesta a JSON y retorna el resultado
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error al obtener el cliente:', error);
+                Swal.fire('Error', 'No se pudo cargar la información del cliente.', 'error');
+                throw error;
+            });
 }
 
 
@@ -185,8 +201,12 @@ function desactivarCuenta(idCliente) {
     });
 }
 
+
+
 function cerrarSesion() {
+    localStorage.removeItem('token');
     localStorage.removeItem('usuarioAutenticado');
+    localStorage.removeItem('idCliente');
     Swal.fire({
         icon: 'info',
         title: 'Sesión cerrada',
@@ -235,14 +255,15 @@ function mostrarFormulario(cliente = null) {
     let apellidos = cliente?.persona?.apellidos || '';
     let telefono = cliente?.persona?.telefono || '';
     let usuario = cliente?.usuario?.nombre || '';
-    let contrasenia = cliente?.usuario?.contrasenia || generarContrasena();
+    let contrasenia = cliente ? "*".repeat(12) : generarContrasena()
+    //let contrasenia = "*".repeat(12) || "";
     let ciudad = cliente?.ciudad?.idCiudad || '';
     let estado = cliente?.estado?.idEstado || '';
     let activo = cliente?.activo || true;
 
     // Generador de contraseña
     function generarContrasena() {
-        const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&/()=?¡*+'";
         const longitud = 12;
         let contrasena = "";
         for (let i = 0; i < longitud; i++) {
@@ -266,7 +287,25 @@ function mostrarFormulario(cliente = null) {
                 <label for="cliente-usuario">Usuario:</label><br>
                 <input type="text" id="cliente-usuario" class="swal2-input" placeholder="Usuario" value="${usuario}"><br>
                 <label for="cliente-contrasenia">Contraseña:</label><br>
-                <input type="text" id="cliente-contrasenia" class="swal2-input" placeholder="Contraseña" value="${contrasenia}" disabled><br>
+                <div>
+                        <input 
+                            type="text" 
+                            id="cliente-contrasenia" 
+                            class="swal2-input" 
+                            placeholder="Contraseña" 
+                            value="${contrasenia}" 
+                            disabled 
+                            style="flex: 1; margin: 0;" 
+                        >
+                        <button 
+                            type="button" 
+                            id="btn-generar-contrasenia" 
+                            class="swal2-confirm" 
+                            style="background-color: #805A3B; color: #fff; padding: 0.5rem 1rem; height: auto; font-size: 0.9rem;"
+                        >
+                            Generar Contraseña
+                        </button>
+                    </div>
                 <label for="cliente-estado">Estado:</label><br><br>
                 <select id="cliente-estado" class="swal2-input">
                     <option value="">Selecciona un estado</option>
@@ -276,7 +315,7 @@ function mostrarFormulario(cliente = null) {
                     <option value="">Selecciona una ciudad</option>
                 </select><br><br>
                 <label for="cliente-activo">Estatus:</label><br>
-                <input type="checkbox" id="cliente-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
+                <input type="checkbox" id="cliente-activo" class="swal2-checkbox" ${activo ? 'checked' : ''} ${cliente === null ? 'disabled' : ''}>
             </form>
         `,
         showCancelButton: true,
@@ -284,28 +323,78 @@ function mostrarFormulario(cliente = null) {
         cancelButtonColor: '#C60000',
         confirmButtonText: botonTexto,
         cancelButtonText: 'Cancelar',
+        didOpen: () => { //Se activa el código al iniciar el Swal.fire
+            const btnGenerarContrasenia = document.getElementById('btn-generar-contrasenia');
+            const inputContrasenia = document.getElementById('cliente-contrasenia');
+
+            btnGenerarContrasenia.addEventListener('click', () => {
+                const nuevaContrasenia = generarContrasena();
+                inputContrasenia.value = nuevaContrasenia;
+            });
+        },
         preConfirm: () => {
-            const nombreNuevo = document.getElementById('cliente-nombre').value.trim();
-            const apellidosNuevo = document.getElementById('cliente-apellidos').value.trim();
-            const telefonoNuevo = document.getElementById('cliente-telefono').value.trim();
-            const usuarioNuevo = document.getElementById('cliente-usuario').value.trim();
-            const estadoNueva = document.getElementById('cliente-estado').value;
-            const ciudadNueva = document.getElementById('cliente-ciudad').value;
-            const activoNuevo = document.getElementById('cliente-activo').checked;
+            return new Promise((resolve) => {
+                const nombreNuevo = document.getElementById('cliente-nombre').value.trim();
+                const apellidosNuevo = document.getElementById('cliente-apellidos').value.trim();
+                const telefonoNuevo = document.getElementById('cliente-telefono').value.trim();
+                const usuarioNuevo = document.getElementById('cliente-usuario').value.trim();
+                let contraseniaNueva = document.getElementById('cliente-contrasenia').value.trim();
+                const estadoNueva = document.getElementById('cliente-estado').value;
+                const ciudadNueva = document.getElementById('cliente-ciudad').value;
+                const activoNuevo = document.getElementById('cliente-activo').checked;
 
-            if (!nombreNuevo || !apellidosNuevo || !telefonoNuevo || !usuarioNuevo || !estadoNueva || !ciudadNueva) {
-                Swal.showValidationMessage('Por favor, complete todos los campos.');
-                return false;
-            }
+                // Validaciones
+                if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(nombreNuevo)) {
+                    Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres).');
+                    resolve(false);
+                    return;
+                }
 
-            return {
-                idCliente: idCliente || null,
-                persona: { nombre: nombreNuevo, apellidos: apellidosNuevo, telefono: telefonoNuevo },
-                usuario: { nombre: usuarioNuevo, contrasenia: contrasenia },
-                ciudad: { idCiudad: ciudadNueva },
-                estado: { idEstado: estadoNueva },
-                activo: activoNuevo
-            };
+                if (!apellidosNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(apellidosNuevo)) {
+                    Swal.showValidationMessage('Los apellidos son obligatorios y deben contener solo letras (máximo 45 caracteres).');
+                    resolve(false);
+                    return;
+                }
+
+                if (!telefonoNuevo || !/^[0-9]{10}$/.test(telefonoNuevo)) {
+                    Swal.showValidationMessage('El teléfono es obligatorio y debe contener exactamente 10 dígitos.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!usuarioNuevo || !/^[a-zA-Z0-9]{1,45}$/.test(usuarioNuevo)) {
+                    Swal.showValidationMessage('El usuario es obligatorio, debe tener máximo 45 caracteres y no debe contener espacios.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!estadoNueva) {
+                    Swal.showValidationMessage('Por favor, seleccione un estado.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!ciudadNueva) {
+                    Swal.showValidationMessage('Por favor, seleccione una ciudad.');
+                    resolve(false);
+                    return;
+                }
+
+                if (contraseniaNueva === "************") {
+                    Swal.showValidationMessage('Debes generar una nueva contraseña antes de continuar.');
+                    resolve(false);
+                    return;
+                }
+
+                resolve( {
+                    idCliente: idCliente || null,
+                    persona: {nombre: nombreNuevo, apellidos: apellidosNuevo, telefono: telefonoNuevo},
+                    usuario: {nombre: usuarioNuevo, contrasenia: contraseniaNueva},
+                    ciudad: {idCiudad: ciudadNueva},
+                    estado: {idEstado: estadoNueva},
+                    activo: activoNuevo
+                });
+            });
         }
     }).then((result) => {
         if (result.isConfirmed) {
@@ -317,65 +406,65 @@ function mostrarFormulario(cliente = null) {
 
             const requestOptions = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: new URLSearchParams(params)
             };
 
             const url = cliente !== null
-                ? 'http://localhost:8080/Zarape/api/cliente/actualizarCliente'
-                : 'http://localhost:8080/Zarape/api/cliente/insertarCliente';
+                    ? 'http://localhost:8080/Zarape/api/cliente/actualizarCliente'
+                    : 'http://localhost:8080/Zarape/api/cliente/insertarCliente';
 
             fetch(url, requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    Swal.fire(
-                        cliente !== null ? '¡Cliente actualizado!' : '¡Cliente agregado!',
-                        cliente !== null ? 'Los datos del cliente han sido actualizados.' : 'El nuevo cliente ha sido agregado.',
-                        'success'
-                    );
-                })
-                .catch(error => Swal.fire('Error', 'Hubo un problema al guardar el cliente.', 'error'));
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire(
+                                cliente !== null ? '¡Cliente actualizado!' : '¡Cliente agregado!',
+                                cliente !== null ? 'Los datos del cliente han sido actualizados.' : 'El nuevo cliente ha sido agregado.',
+                                'success'
+                                );
+                    })
+                    .catch(error => Swal.fire('Error', 'Hubo un problema al guardar el cliente.', 'error'));
         }
     });
 
     cargarEstados()
-        .then(estados => {
-            const estadoSelect = document.getElementById('cliente-estado');
-            estadoSelect.innerHTML = '<option value="">Selecciona un estado</option>';
+            .then(estados => {
+                const estadoSelect = document.getElementById('cliente-estado');
+                estadoSelect.innerHTML = '<option value="">Selecciona un estado</option>';
 
-            estados.forEach(estadoItem => {
-                estadoSelect.innerHTML += `<option value="${estadoItem.idEstado}">${estadoItem.nombre}</option>`;
-            });
+                estados.forEach(estadoItem => {
+                    estadoSelect.innerHTML += `<option value="${estadoItem.idEstado}">${estadoItem.nombre}</option>`;
+                });
 
-            if (estado) {
-                estadoSelect.value = estado;
-                cargarCiudadesPorEstado(estado).then(ciudades => {
-                    const ciudadSelect = document.getElementById('cliente-ciudad');
-                    ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
-                    ciudades.forEach(ciudadItem => {
-                        ciudadSelect.innerHTML += `<option value="${ciudadItem.idCiudad}">${ciudadItem.nombre}</option>`;
-                    });
-
-                    if (ciudad) {
-                        ciudadSelect.value = ciudad;
-                    }
-                }).catch(error => console.error('Error al cargar ciudades:', error));
-            }
-
-            estadoSelect.addEventListener('change', () => {
-                const estadoId = estadoSelect.value;
-                const ciudadSelect = document.getElementById('cliente-ciudad');
-                ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
-
-                if (estadoId) {
-                    cargarCiudadesPorEstado(estadoId).then(ciudades => {
+                if (estado) {
+                    estadoSelect.value = estado;
+                    cargarCiudadesPorEstado(estado).then(ciudades => {
+                        const ciudadSelect = document.getElementById('cliente-ciudad');
+                        ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
                         ciudades.forEach(ciudadItem => {
                             ciudadSelect.innerHTML += `<option value="${ciudadItem.idCiudad}">${ciudadItem.nombre}</option>`;
                         });
+
+                        if (ciudad) {
+                            ciudadSelect.value = ciudad;
+                        }
                     }).catch(error => console.error('Error al cargar ciudades:', error));
                 }
-            });
-        })
-        .catch(error => console.error('Error al cargar estados:', error));
+
+                estadoSelect.addEventListener('change', () => {
+                    const estadoId = estadoSelect.value;
+                    const ciudadSelect = document.getElementById('cliente-ciudad');
+                    ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
+
+                    if (estadoId) {
+                        cargarCiudadesPorEstado(estadoId).then(ciudades => {
+                            ciudades.forEach(ciudadItem => {
+                                ciudadSelect.innerHTML += `<option value="${ciudadItem.idCiudad}">${ciudadItem.nombre}</option>`;
+                            });
+                        }).catch(error => console.error('Error al cargar ciudades:', error));
+                    }
+                });
+            })
+            .catch(error => console.error('Error al cargar estados:', error));
 }
 

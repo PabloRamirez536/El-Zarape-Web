@@ -52,7 +52,8 @@ function mostrarFormulario(index = null) {
         apellidos = cliente.persona.apellidos || '';
         telefono = cliente.persona.telefono || '';
         usuario = cliente.usuario.nombre || '';
-        contrasenia = cliente.usuario.contrasenia || '';
+        //contrasenia = cliente.usuario.contrasenia || '';
+        contrasenia = "*".repeat(12) || '';
         ciudad = cliente.ciudad ? cliente.ciudad.idCiudad || '' : '';
         estado = cliente.estado ? cliente.estado.idEstado || '' : '';
         activo = cliente.activo || false;
@@ -73,7 +74,27 @@ function mostrarFormulario(index = null) {
                 <label for="cliente-usuario">Usuario:</label><br>
                 <input type="text" id="cliente-usuario" class="swal2-input" placeholder="Usuario" value="${usuario}" pattern="[a-zA-Z0-9]{1,45}" maxlength="45" required><br>
                 <label for="cliente-contrasenia">Contraseña:</label><br>
-                <input type="text" id="cliente-contrasenia" class="swal2-input" placeholder="Contraseña" value="${contrasenia}" disabled><br>
+                <div>
+                        <input 
+                            type="text" 
+                            id="cliente-contrasenia" 
+                            class="swal2-input" 
+                            placeholder="Contraseña" 
+                            value="${contrasenia}" 
+                            disabled 
+                            style="flex: 1; margin: 0;" 
+                        >
+                        <button 
+                            type="button" 
+                            id="btn-generar-contrasenia" 
+                            class="swal2-confirm" 
+                            style="background-color: #805A3B; color: #fff; padding: 0.5rem 1rem; height: auto; font-size: 0.9rem;"
+                        >
+                            Generar Contraseña
+                        </button>
+                    </div>
+        
+
                 <label for="cliente-estado">Estado:</label><br><br>
                 <select id="cliente-estado" class="swal2-input">
                     <option value="">Selecciona un estado</option>
@@ -91,68 +112,89 @@ function mostrarFormulario(index = null) {
         cancelButtonColor: '#C60000',
         confirmButtonText: botonTexto,
         cancelButtonText: 'Cancelar',
+        didOpen: () => { //Se activa el código al iniciar el Swal.fire
+            const btnGenerarContrasenia = document.getElementById('btn-generar-contrasenia');
+            const inputContrasenia = document.getElementById('cliente-contrasenia');
+
+            btnGenerarContrasenia.addEventListener('click', () => {
+                const nuevaContrasenia = generarContrasena();
+                inputContrasenia.value = nuevaContrasenia;
+            });
+        },
         preConfirm: () => {
-            let nombreNuevo = document.getElementById('cliente-nombre').value.trim();
-            let apellidosNuevo = document.getElementById('cliente-apellidos').value.trim();
-            let telefonoNuevo = document.getElementById('cliente-telefono').value.trim();
-            let usuarioNuevo = document.getElementById('cliente-usuario').value.trim();
-            let estadoNueva = document.getElementById('cliente-estado').value;
-            let ciudadNueva = document.getElementById('cliente-ciudad').value;
-            let activoNuevo = document.getElementById('cliente-activo').checked;
+            return new Promise((resolve) => {
+                let nombreNuevo = document.getElementById('cliente-nombre').value.trim();
+                let apellidosNuevo = document.getElementById('cliente-apellidos').value.trim();
+                let telefonoNuevo = document.getElementById('cliente-telefono').value.trim();
+                let usuarioNuevo = document.getElementById('cliente-usuario').value.trim();
+                let contraseniaNueva = document.getElementById('cliente-contrasenia').value.trim();
+                let estadoNueva = document.getElementById('cliente-estado').value;
+                let ciudadNueva = document.getElementById('cliente-ciudad').value;
+                let activoNuevo = document.getElementById('cliente-activo').checked;
 
-//            if (!nombreNuevo || !apellidosNuevo || !telefonoNuevo || !usuarioNuevo || !estadoNueva || !ciudadNueva) {
-//                Swal.showValidationMessage('Por favor, complete todos los campos.');
-//                return false;
-//            }
 
-            // Validaciones
-            if (!nombreNuevo || !/^[a-zA-Z\s]{1,45}$/.test(nombreNuevo)) {
-                Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres).');
-                return false;
-            }
+                // Validaciones
+                if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(nombreNuevo)) {
+                    Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres).');
+                    resolve(false);
+                    return;
+                }
 
-            if (!apellidosNuevo || !/^[a-zA-Z\s]{1,45}$/.test(apellidosNuevo)) {
-                Swal.showValidationMessage('Los apellidos son obligatorios y deben contener solo letras (máximo 45 caracteres).');
-                return false;
-            }
+                if (!apellidosNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(apellidosNuevo)) {
+                    Swal.showValidationMessage('Los apellidos son obligatorios y deben contener solo letras (máximo 45 caracteres).');
+                    resolve(false);
+                    return;
+                }
 
-            if (!telefonoNuevo || !/^[0-9]{10}$/.test(telefonoNuevo)) {
-                Swal.showValidationMessage('El teléfono es obligatorio y debe contener exactamente 10 dígitos.');
-                return false;
-            }
+                if (!telefonoNuevo || !/^[0-9]{10}$/.test(telefonoNuevo)) {
+                    Swal.showValidationMessage('El teléfono es obligatorio y debe contener exactamente 10 dígitos.');
+                    resolve(false);
+                    return;
+                }
 
-            if (!usuarioNuevo || !/^[a-zA-Z0-9]{1,45}$/.test(usuarioNuevo)) {
-                Swal.showValidationMessage('El usuario es obligatorio, debe tener máximo 45 caracteres y no debe contener espacios.');
-                return false;
-            }
+                if (!usuarioNuevo || !/^[a-zA-Z0-9]{1,45}$/.test(usuarioNuevo)) {
+                    Swal.showValidationMessage('El usuario es obligatorio, debe tener máximo 45 caracteres y no debe contener espacios.');
+                    resolve(false);
+                    return;
+                }
 
-            if (!estadoNueva) {
-                Swal.showValidationMessage('Por favor, seleccione un estado.');
-                return false;
-            }
+                if (!estadoNueva) {
+                    Swal.showValidationMessage('Por favor, seleccione un estado.');
+                    resolve(false);
+                    return;
+                }
 
-            if (!ciudadNueva) {
-                Swal.showValidationMessage('Por favor, seleccione una ciudad.');
-                return false;
-            }
+                if (!ciudadNueva) {
+                    Swal.showValidationMessage('Por favor, seleccione una ciudad.');
+                    resolve(false);
+                    return;
+                }
 
-            return {
-                idCliente: idCliente || null,
-                persona: {nombre: nombreNuevo, apellidos: apellidosNuevo, telefono: telefonoNuevo},
-                usuario: {nombre: usuarioNuevo, contrasenia: contrasenia},
-                ciudad: {idCiudad: ciudadNueva},
-                estado: {idEstado: estadoNueva},
-                activo: activoNuevo
-            };
+                if (contraseniaNueva === "************") {
+                    Swal.showValidationMessage('Debes generar una nueva contraseña antes de continuar.');
+                    resolve(false);
+                    return;
+                }
+                
+
+                resolve({
+                    idCliente: idCliente || null,
+                    persona: {nombre: nombreNuevo, apellidos: apellidosNuevo, telefono: telefonoNuevo},
+                    usuario: {nombre: usuarioNuevo, contrasenia: contraseniaNueva},
+                    ciudad: {idCiudad: ciudadNueva},
+                    estado: {idEstado: estadoNueva},
+                    activo: activoNuevo
+                });
+            });
         }
     }).then((result) => {
         if (result.isConfirmed) {
             const clienteData = result.value;
 
             let params = {
-                datosCliente: JSON.stringify(clienteData)
+                datosCliente: JSON.stringify(clienteData),
+                token: localStorage.getItem('token')
             };
-
 
             const requestOptions = {
                 method: 'POST',
@@ -164,7 +206,7 @@ function mostrarFormulario(index = null) {
                     .then(response => response.json())
                     .then(data => {
                         if (index !== null) {
-                            clientes.push(data);
+                            clientes.push(data,);
                             Swal.fire('¡Cliente actualizado!', 'Los datos del cliente han sido actualizados.', 'success');
                         } else {
                             clientes.push(data);
@@ -217,7 +259,7 @@ function mostrarFormulario(index = null) {
 // Función para cargar y actualizar la tabla de clientes
 function cargarTablaClientes() {
     document.getElementById("busqueda-cliente").value = "";
-    let ruta = "http://localhost:8080/Zarape/api/cliente/getAllClientes";
+    let ruta = "http://localhost:8080/Zarape/api/cliente/getAllClientes?token="+localStorage.getItem('token');
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -233,7 +275,7 @@ function cargarTablaClientes() {
                     <td>${cliente.persona.apellidos}</td>
                     <td>${cliente.persona.telefono}</td>
                     <td>${cliente.usuario.nombre}</td>
-                    <td>${"*".repeat(cliente.usuario.contrasenia.length)}</td>
+                    <td>${"*".repeat(12)}</td>
                     <td>${cliente.estado.nombre}</td>
                     <td>${cliente.ciudad.nombre}</td>
                     <td>${cliente.activo ? 'Activo' : 'Inactivo'}</td>
@@ -283,8 +325,8 @@ function eliminarCliente(index) {
             const clienteId = cliente.idCliente;
 
             // Crear el objeto con los parámetros para la solicitud
-            const params = {idCliente: clienteId};
-
+            const params = {idCliente: clienteId, token: localStorage.getItem('token') };
+            
             // Hacer la solicitud POST (simulando eliminación lógica)
             fetch('http://localhost:8080/Zarape/api/cliente/eliminarCliente', {
                 method: 'POST', // Usamos POST ya que el backend espera esta solicitud

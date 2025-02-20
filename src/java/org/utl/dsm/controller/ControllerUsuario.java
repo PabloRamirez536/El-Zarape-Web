@@ -5,9 +5,15 @@
 package org.utl.dsm.controller;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import java.sql.Connection;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.utl.dsm.bd.ConexionMysql;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -24,7 +30,8 @@ public class ControllerUsuario {
             // Llama al procedimiento almacenado
             CallableStatement cstmt = conn.prepareCall("{CALL sp_iniciar_sesion_empleado(?, ?, ?)}");
             cstmt.setString(1, nombre);
-            cstmt.setString(2, contrasenia);
+            String hashPassw = DigestUtils.sha256Hex(contrasenia);
+            cstmt.setString(2, hashPassw);
             cstmt.registerOutParameter(3, Types.BOOLEAN);
             cstmt.execute();
 
@@ -47,7 +54,8 @@ public class ControllerUsuario {
             // Llama al procedimiento almacenado
             CallableStatement cstmt = conn.prepareCall("{CALL sp_iniciar_sesion_cliente(?, ?, ?, ?)}");
             cstmt.setString(1, nombre);
-            cstmt.setString(2, contrasenia);
+            String hashPassw = DigestUtils.sha256Hex(contrasenia);
+            cstmt.setString(2, hashPassw);
             cstmt.registerOutParameter(3, Types.BOOLEAN); // Para el estado de validación
             cstmt.registerOutParameter(4, Types.INTEGER);  // Para el ID del cliente
             cstmt.execute();
@@ -66,4 +74,88 @@ public class ControllerUsuario {
         }
         return valido;
     }
+
+    public String checkUser(String nombreU) throws Exception {
+        String sql = "SELECT * FROM usuario WHERE nombre =" + "'" + nombreU + "';";
+        ConexionMysql conexion = new ConexionMysql();
+        Connection conn = conexion.open();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        String name = null;
+        String tok = null;
+        String takenizer = null;
+        Date myDate = new Date();
+        String fecha = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss").format(myDate);
+        String sql2 = "";
+        while (rs.next()) {
+            name = rs.getString("nombre");
+            tok = rs.getString(6);
+            tok = tok.trim();
+
+            if (!tok.isEmpty()) {
+                takenizer = tok;
+                sql2 = "UPDATE usuario SET dateLastToken = '" + fecha + "' WHERE nombre = '" + name + "';";
+            } else {
+                String token = "ZARAPE" + "." + name + "." + fecha;
+                takenizer = DigestUtils.md5Hex(token);
+                sql2 = "UPDATE usuario SET lastToken = '" + takenizer + "', dateLastToken = '" + fecha + "' WHERE nombre = '" + name + "';";
+            }
+            Connection connect = conexion.open();
+            PreparedStatement ps = connect.prepareStatement(sql2);
+            ps.executeUpdate();
+
+            return takenizer;
+        }
+        return name;
+
+    }
+
+    public boolean closeCheckUser(String nombreU) throws Exception {
+        String sql = "UPDATE usuario SET lastToken = '' WHERE nombre = ?;";
+        ConexionMysql conexion = new ConexionMysql();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+
+            conn = conexion.open();
+            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, nombreU);
+
+            int filaAfectada = pstmt.executeUpdate();
+
+            return filaAfectada > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error al cerrar sesión: " + e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+    }
+
+    public String validateToken(String token) throws Exception {
+        // Aquí debes incluir la lógica para validar el token
+        // Por ejemplo, verificar si existe en la base de datos y si está activo
+        ConexionMysql conexion = new ConexionMysql();
+        Connection conn = conexion.open();
+
+        String sql = "SELECT nombre FROM usuario WHERE lastToken = ?;";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, token);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("nombre"); // Retorna el nombre si el token es válido
+        } else {
+            return null; // Token no válido
+        }
+    }
+
 }

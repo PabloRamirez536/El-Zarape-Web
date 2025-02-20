@@ -1,8 +1,8 @@
 /* Copyright 2024 */
 function validateForm() {
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-
+    let username = document.getElementById('username').value.trim();
+    let password = document.getElementById('password').value.trim();
+    
     // Mensaje de error
     let errorMessage = document.getElementById('error-message');
     errorMessage.style.display = 'none';
@@ -18,6 +18,10 @@ function validateForm() {
         .then((response) => response.json())
         .then((data) => {
             if (data.status === 'success') {
+                // Guarda el token y el nombre del usuario en localStorage
+                localStorage.setItem('token', data.token || '');
+                localStorage.setItem('username', username);
+                
                 // Redirige a la página de inicio
                 window.location.href = '../gestion-inicio/view-gestion-inicio.html';
             } else {

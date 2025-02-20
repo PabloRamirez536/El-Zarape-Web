@@ -66,7 +66,8 @@ function mostrarFormulario(index = null) {
         ciudad = empleado.ciudad ? empleado.ciudad.idCiudad || '' : '';
         estado = empleado.estado ? empleado.estado.idEstado || '' : '';
         usuario = empleado.usuario.nombre || '';
-        contrasenia = empleado.usuario.contrasenia || '';
+        contrasenia = "*".repeat(12) || '';
+        //contrasenia = empleado.usuario.contrasenia || '';
         sucursal = empleado.sucursal ? empleado.sucursal.idSucursal || '' : '';
         activo = empleado.activo || false;
     } else {
@@ -78,13 +79,13 @@ function mostrarFormulario(index = null) {
         html: `
                 <form id="formulario-empleado-modal">
                     <label for="empleado-nombre">Nombre:</label><br>
-                    <input type="text" id="empleado-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}"><br>
+                    <input type="text" id="empleado-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" pattern="[a-zA-Z\s]{1,45}" maxlength="45" required><br>
             
                     <label for="empleado-apellido">Apellidos:</label><br>
-                    <input type="text" id="empleado-apellidos" class="swal2-input" placeholder="Apellidos" value="${apellidos}"><br>
+                    <input type="text" id="empleado-apellidos" class="swal2-input" placeholder="Apellidos" value="${apellidos}" pattern="[a-zA-Z\s]{1,45}" maxlength="45" required><br>
            
                     <label for="empleado-telefono">Teléfono:</label><br>
-                    <input type="text" id="empleado-telefono" class="swal2-input" placeholder="Telefono" value="${telefono}"><br>
+                    <input type="text" id="empleado-telefono" class="swal2-input" placeholder="Telefono" value="${telefono}" pattern="[0-9]{10}" maxlength="10" required><br>
                     
                     <label for="empleado-estado">Estado:</label><br><br>
                     <select id="empleado-estado" class="swal2-input">
@@ -94,14 +95,32 @@ function mostrarFormulario(index = null) {
                     <label for="empleado-ciudad">Ciudad:</label><br>
                     <br><select id="empleado-ciudad" class="swal2-input">
                     <option value="">Selecciona una ciudad</option>
-                    </select><br><br>
+                    </select><br>
             
                        <label for="empleado-usuario">Usuario:</label><br>
-                    <input type="text" id="empleado-usuario" class="swal2-input" placeholder="Usuario" value="${usuario}"><br>
+                    <input type="text" id="empleado-usuario" class="swal2-input" placeholder="Usuario" value="${usuario}" pattern="[a-zA-Z0-9]{1,45}" maxlength="45" required><br>
             
-                    <label for="empleado-contrasenia">Contrasenia:</label><br>
-                    <input type="text" id="empleado-contrasenia" class="swal2-input" placeholder="Contrasenia" value="${contrasenia}" disabled><br>
-                   
+                    <label for="empleado-contrasenia">Contraseña:</label><br><br>
+                    <div>
+                        <input 
+                            type="text" 
+                            id="empleado-contrasenia" 
+                            class="swal2-input" 
+                            placeholder="Contraseña" 
+                            value="${contrasenia}" 
+                            disabled 
+                            style="flex: 1; margin: 0;" 
+                        >
+                        <button 
+                            type="button" 
+                            id="btn-generar-contrasenia" 
+                            class="swal2-confirm" 
+                            style="background-color: #805A3B; color: #fff; padding: 0.5rem 1rem; height: auto; font-size: 0.9rem;"
+                        >
+                            Generar Contraseña
+                        </button>
+                    </div>
+       
                     <label for="empleado-sucursal">Sucursal:</label><br><br>
                     <select id="empleado-sucursal" class="swal2-input">
                      <option value="">Selecciona una sucursal</option>
@@ -109,7 +128,7 @@ function mostrarFormulario(index = null) {
                    
                     
                     <label for="empleado-activo">Estatus:</label><br>
-                    <input type="checkbox" id="empleado-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
+                    <input type="checkbox" id="empleado-activo" class="swal2-checkbox" ${activo ? 'checked' : ''} ${index === null ? 'disabled' : ''}>
                     </form>
             `,
         showCancelButton: true,
@@ -117,6 +136,15 @@ function mostrarFormulario(index = null) {
         cancelButtonColor: '#C60000',
         confirmButtonText: botonTexto,
         cancelButtonText: 'Cancelar',
+        didOpen: () => { //Se activa el código al iniciar el Swal.fire
+            const btnGenerarContrasenia = document.getElementById('btn-generar-contrasenia');
+            const inputContrasenia = document.getElementById('empleado-contrasenia');
+
+            btnGenerarContrasenia.addEventListener('click', () => {
+                const nuevaContrasenia = generarContrasena();
+                inputContrasenia.value = nuevaContrasenia;
+            });
+        },
         preConfirm: () => {
             return new Promise((resolve) => {
                 let nombreE = document.getElementById('empleado-nombre').value.trim();
@@ -127,26 +155,67 @@ function mostrarFormulario(index = null) {
                 let usuarioE = document.getElementById('empleado-usuario').value.trim();
                 let contraseniaE = document.getElementById('empleado-contrasenia').value.trim();
                 let sucursal = document.getElementById('empleado-sucursal').value;
-                let activoE = document.getElementById('empleado-activo').checked; // true/false
+                let activo = document.getElementById('empleado-activo').checked; // true/false
 
-
-
-                // Validar campos obligatorios
-                    if (!nombreE || !apellidoE || !telefono || !ciudad || !estado || !usuarioE || !sucursal) {
-                        Swal.showValidationMessage('Completar los campos solicitados');
-                        resolve(false);
-                    } else {
-                    resolve({
-                        idEmpleado: idEmpleado || null,
-                        persona: {nombre: nombreE, apellidos: apellidoE, telefono: telefono},
-                        usuario: {nombre: usuarioE, contrasenia: contraseniaE}, // Usar usuarioE y contraseniaE
-                        ciudad: {idCiudad: ciudad},
-                        estado: {idEstado: estado},
-                        activo: activoE,
-                        sucursal: {idSucursal: sucursal}
-
-                    });
+                // Validar campos obligatorios y con expresiones regulares
+                if (!nombreE || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(nombreE)) {
+                    Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres).');
+                    resolve(false);
+                    return;
                 }
+
+                if (!apellidoE || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(apellidoE)) {
+                    Swal.showValidationMessage('Los apellidos son obligatorios y deben contener solo letras (máximo 45 caracteres).');
+                    resolve(false);
+                    return;
+                }
+
+                if (!telefono || !/^[0-9]{10}$/.test(telefono)) {
+                    Swal.showValidationMessage('El teléfono es obligatorio y debe contener exactamente 10 dígitos.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!usuarioE || !/^[a-zA-Z0-9]{1,45}$/.test(usuarioE)) {
+                    Swal.showValidationMessage('El usuario es obligatorio, debe tener máximo 45 caracteres y no debe contener espacios.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!estado) {
+                    Swal.showValidationMessage('Por favor, seleccione un estado.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!ciudad) {
+                    Swal.showValidationMessage('Por favor, seleccione una ciudad.');
+                    resolve(false);
+                    return;
+                }
+
+                if (!sucursal) {
+                    Swal.showValidationMessage('Por favor, seleccione una sucursal.');
+                    resolve(false);
+                    return;
+                }
+
+                if (contraseniaE === "************") {
+                    Swal.showValidationMessage('Debes generar una nueva contraseña antes de continuar.');
+                    resolve(false);
+                    return;
+                }
+
+                // Si todas las validaciones pasan
+                resolve({
+                    idEmpleado: idEmpleado || null,
+                    persona: {nombre: nombreE, apellidos: apellidoE, telefono: telefono},
+                    usuario: {nombre: usuarioE, contrasenia: contraseniaE},
+                    ciudad: {idCiudad: ciudad},
+                    estado: {idEstado: estado},
+                    activo: activo,
+                    sucursal: {idSucursal: sucursal}
+                });
             });
         }
     }).then((result) => {
@@ -224,8 +293,8 @@ function mostrarFormulario(index = null) {
             sucursalSelect.innerHTML += `<option value="${sucursalItem.idSucursal}">${sucursalItem.nombre}</option>`;
         });
         if (sucursal) {
-        sucursalSelect.value = sucursal; // Asignar el valor de la sucursal
-    }
+            sucursalSelect.value = sucursal; // Asignar el valor de la sucursal
+        }
     }).catch(error => console.error('Error al cargar sucursales:', error));
 }
 
@@ -250,7 +319,7 @@ function actualizarEmpleado() {
                 <td>${empleado.estado.nombre}</td>
                 <td>${empleado.ciudad.nombre}</td>
                 <td>${empleado.usuario.nombre}</td>
-                <td>${"*".repeat(empleado.usuario.contrasenia.length)}</td>
+                <td>${"*".repeat(12)}</td>
                 <td>${empleado.sucursal.nombre}</td>
                 <td>${empleado.activo ? 'Activo' : 'Inactivo'}</td>
                 <td>

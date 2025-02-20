@@ -17,6 +17,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 import org.utl.dsm.controller.ControllerCliente;
+import org.utl.dsm.controller.ControllerUsuario;
 import org.utl.dsm.model.Cliente;
 
 /**
@@ -29,21 +30,24 @@ public class RestCliente {
     @Path("getAllClientes")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllClientes(@QueryParam("id") @DefaultValue("0") int id) {
-        List<Cliente> lista = null;
+    public Response getAllClientes(@QueryParam("token") String token) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+
+        List<Cliente> lista;
         Gson gson = new Gson();
-        String out = null;
-        ControllerCliente cs = null;
+        String out;
 
         try {
-            cs = new ControllerCliente();
-            lista = cs.getAllClientes(); // Método en el controlador para obtener los clientes
-            out = gson.toJson(lista); // Convertir la lista a JSON
+            ControllerCliente cs = new ControllerCliente();
+            lista = cs.getAllClientes(); 
+            out = gson.toJson(lista); 
         } catch (Exception e) {
             e.printStackTrace();
-            out = """
-            {"result":"Error de servidor"}
-            """;
+            out = "{\"result\":\"Error de servidor\"}";
         }
         return Response.ok(out).build();
     }
@@ -53,24 +57,25 @@ public class RestCliente {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response insertCliente(
-            @FormParam("datosCliente") @DefaultValue("") String datosCliente
-    ) {
-        String out = "";
+            @FormParam("datosCliente") String datosCliente,
+            @FormParam("token") String token) throws Exception {
+        
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+
+        String out;
         try {
             Gson gson = new Gson();
             ControllerCliente controllerCliente = new ControllerCliente();
-
-            // Convertir el JSON recibido a un objeto Cliente
             Cliente cliente = gson.fromJson(datosCliente, Cliente.class);
-
-            // Llamar al método para insertar el cliente
             controllerCliente.insertarCliente(cliente);
-
-            // Convertir el cliente nuevamente a JSON para la respuesta
             out = gson.toJson(cliente);
         } catch (Exception e) {
             e.printStackTrace();
-            out = "{\"error\":\"Error al insertar el cliente. Por favor, verifica los datos y vuelve a intentarlo.\"}";
+            out = "{\"error\":\"Error al insertar el cliente.\"}";
         }
         return Response.ok(out).build();
     }
@@ -80,24 +85,25 @@ public class RestCliente {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response actualizarCliente(
-            @FormParam("datosCliente") @DefaultValue("") String datosCliente
-    ) {
-        String out = "";
+            @FormParam("datosCliente") String datosCliente,
+            @FormParam("token") String token) throws Exception {
+        
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+
+        String out;
         try {
             Gson gson = new Gson();
             ControllerCliente controllerCliente = new ControllerCliente();
-
-            // Convertir el JSON recibido a un objeto Cliente
             Cliente cliente = gson.fromJson(datosCliente, Cliente.class);
-
-            // Llamar al método para insertar el cliente
             controllerCliente.actualizarCliente(cliente);
-
-            // Convertir el cliente nuevamente a JSON para la respuesta
             out = gson.toJson(cliente);
         } catch (Exception e) {
             e.printStackTrace();
-            out = "{\"error\":\"Error al actualizar el cliente. Por favor, verifica los datos y vuelve a intentarlo.\"}";
+            out = "{\"error\":\"Error al actualizar el cliente.\"}";
         }
         return Response.ok(out).build();
     }
@@ -106,16 +112,26 @@ public class RestCliente {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response eliminarCliente(@FormParam("idCliente") int idCliente) {
+    public Response eliminarCliente(@FormParam("idCliente") int idCliente, 
+                                    @FormParam("token") String token) throws Exception {
+        
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+
         ControllerCliente controller = new ControllerCliente();
         try {
-            controller.eliminarCliente(idCliente); // Llamada a la función de eliminación lógica
+            controller.eliminarCliente(idCliente);
             return Response.ok("{\"result\":\"Cliente eliminado correctamente\"}").build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"result\":\"Error al eliminar cliente\"}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"result\":\"Error al eliminar cliente\"}").build();
         }
     }
+
 
     @Path("getClientePorId")
     @GET
