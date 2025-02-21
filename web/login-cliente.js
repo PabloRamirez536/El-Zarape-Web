@@ -112,22 +112,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Puedes cargar más datos del cliente si es necesario
         actualizarMenuUsuario({idCliente: idCliente}); // Actualiza el menú
     }
-    
+
     if (token) {
         // Verificar la validez del token del empleado
         fetch('http://localhost:8080/Zarape/api/usuario/validateToken?token=' + encodeURIComponent(token), {
             method: 'GET',
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Token válido, redirigir a la página de inicio de gestión
-        console.log("Hola, si jalo");
-                window.location.href = 'gestion/gestion-inicio/view-gestion-inicio.html';
-            } else {
-                cerrarSesion(); // Token no válido, cerrar sesión
-            }
-        });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+
+                        window.location.href = 'gestion/gestion-inicio/view-gestion-inicio.html';
+                    } else {
+                        cerrarSesion(); // Token no válido, cerrar sesión
+                    }
+                });
     }
 });
 // Función para activar los botones en el menú
@@ -386,7 +385,7 @@ function mostrarFormulario(cliente = null) {
                     return;
                 }
 
-                resolve( {
+                resolve({
                     idCliente: idCliente || null,
                     persona: {nombre: nombreNuevo, apellidos: apellidosNuevo, telefono: telefonoNuevo},
                     usuario: {nombre: usuarioNuevo, contrasenia: contraseniaNueva},

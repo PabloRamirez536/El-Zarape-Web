@@ -2,57 +2,72 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <title>Inicio Gestión</title>
-    <link rel="shortcut icon" href="../../recursos/media/logoSinFondo.png">
-    <meta name="nombre" content="Gestión El Zarape">
-    <meta name="description" content="Página de inicio gestion">
-    <meta name="keywords" content="gestion, catalagos">
-    <meta name="author" content="Juan Pablo Ramírez Navarro">
-    <meta name="date" content="Junio, 26 2024">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../style/css/modulos-style.css" rel="stylesheet" type="text/css" />
-</head>
+    <head>
+        <title>Inicio Gestión</title>
+        <link rel="shortcut icon" href="../../recursos/media/logoSinFondo.png">
+        <meta name="nombre" content="Gestión El Zarape">
+        <meta name="description" content="Página de inicio gestion">
+        <meta name="keywords" content="gestion, catalagos">
+        <meta name="author" content="Juan Pablo Ramírez Navarro">
+        <meta name="date" content="Junio, 26 2024">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../../style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../../style/css/modulos-style.css" rel="stylesheet" type="text/css" />
+    </head>
 
-<body>
-    <div class="container-fluid cabeza fixed-top" id="cabeza">
-        <img src="../../recursos/media/menu.png" alt="" class="hamburguer" id="hamburguer-icon">
-        <header class="row">
-            <div class="col-12 titulo">
-                <h1 class="text-light text-center" style="font-weight: bold;">Gestión "El Zarape"</h1>
-            </div>
-        </header>
-    </div>
-    <div id="menu-container"></div>
+    <body>
+        <div class="container-fluid cabeza fixed-top" id="cabeza">
+            <img src="../../recursos/media/menu.png" alt="" class="hamburguer" id="hamburguer-icon">
+            <header class="row">
+                <div class="col-12 titulo">
+                    <h1 class="text-light text-center" style="font-weight: bold;">Gestión "El Zarape"</h1>
+                </div>
+            </header>
+        </div>
+        <div id="menu-container"></div>
 
-    <div class="center-img-container">
-        <img src="../../recursos/media/logoSinFondo.png" alt="Central Image" class="center-img">
-    </div>
+        <div class="center-img-container">
+            <img src="../../recursos/media/logoSinFondo.png" alt="Central Image" class="center-img">
+        </div>
+        <script src="../../style/js/bootstrap.bundle.js" type="text/javascript"></script>
+        <script src="../../style/js/main-burguer.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            // Mostrar saludo al usuario
+            document.addEventListener("DOMContentLoaded", function () {
+                // Obtener el nombre del usuario desde localStorage
+                const username = localStorage.getItem('username');
+                const token = localStorage.getItem('token');
 
-    <script src="../../style/js/bootstrap.bundle.js" type="text/javascript"></script>
-    <script src="../../style/js/main-burguer.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        // Mostrar saludo al usuario
-        document.addEventListener("DOMContentLoaded", function() {
-            // Obtener el nombre del usuario desde localStorage
-            const username = localStorage.getItem('username');
-            
-            if (username) {
-                // Mostrar el saludo usando SweetAlert2
-                Swal.fire({
-                    title: '¡Hola, ' + username + '!',
-                    text: 'Bienvenido a la Gestión "El Zarape".',
-                    icon: 'success',
-                    timer: 5000, // Duración de 5 segundos
-                    showConfirmButton: false, // Oculta el botón de confirmación
-                    timerProgressBar: true // Muestra la barra de progreso
-                });
-            }
-        });
-    </script>
-</body>
+                if (username && token) {
+                    // Mostrar el saludo usando SweetAlert2
+                    Swal.fire({
+                        title: '¡Hola, ' + username + '!',
+                        text: 'Bienvenido a la Gestión "El Zarape".',
+                        icon: 'success',
+                        timer: 5000, // Duración de 5 segundos
+                        showConfirmButton: false, // Oculta el botón de confirmación
+                        timerProgressBar: true // Muestra la barra de progreso
+                    });
+                }
+
+                if (!token) { // Validar si el token no existe
+                    Swal.fire({
+                        title: '¡Acceso denegado!',
+                        text: 'Debes iniciar sesión para realizar esta acción.',
+                        icon: 'warning',
+                        timer: 5000, // Duración de 5 segundos
+                        showConfirmButton: false, // Oculta el botón de confirmación
+                        timerProgressBar: true // Muestra la barra de progreso
+                    }).then(() => {
+                        window.location.href = '../../index.html'; // Redirige a la página de inicio de sesión
+                    });
+                    return; // Detener la ejecución
+                }
+
+            });
+        </script>
+    </body>
 
 </html>

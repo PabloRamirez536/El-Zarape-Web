@@ -175,7 +175,7 @@ function mostrarFormulario(index = null) {
                     resolve(false);
                     return;
                 }
-                
+
 
                 resolve({
                     idCliente: idCliente || null,
@@ -190,10 +190,25 @@ function mostrarFormulario(index = null) {
     }).then((result) => {
         if (result.isConfirmed) {
             const clienteData = result.value;
+            const token = localStorage.getItem('token');
+
+            if (!token) { 
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, 
+                    showConfirmButton: false, 
+                    timerProgressBar: true 
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; 
+            }
 
             let params = {
                 datosCliente: JSON.stringify(clienteData),
-                token: localStorage.getItem('token')
+                token: token
             };
 
             const requestOptions = {
@@ -206,7 +221,7 @@ function mostrarFormulario(index = null) {
                     .then(response => response.json())
                     .then(data => {
                         if (index !== null) {
-                            clientes.push(data,);
+                            clientes.push(data, );
                             Swal.fire('¡Cliente actualizado!', 'Los datos del cliente han sido actualizados.', 'success');
                         } else {
                             clientes.push(data);
@@ -259,7 +274,21 @@ function mostrarFormulario(index = null) {
 // Función para cargar y actualizar la tabla de clientes
 function cargarTablaClientes() {
     document.getElementById("busqueda-cliente").value = "";
-    let ruta = "http://localhost:8080/Zarape/api/cliente/getAllClientes?token="+localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (!token) { // Validar si el token no existe
+        Swal.fire({
+            title: '¡Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000, // Duración de 5 segundos
+            showConfirmButton: false, // Oculta el botón de confirmación
+            timerProgressBar: true // Muestra la barra de progreso
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+        });
+        return; // Detener la ejecución
+    }
+    let ruta = "http://localhost:8080/Zarape/api/cliente/getAllClientes?token=" + token;
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -323,10 +352,25 @@ function eliminarCliente(index) {
     }).then((result) => {
         if (result.isConfirmed) {
             const clienteId = cliente.idCliente;
+            const token = localStorage.getItem('token');
+
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
 
             // Crear el objeto con los parámetros para la solicitud
-            const params = {idCliente: clienteId, token: localStorage.getItem('token') };
-            
+            const params = {idCliente: clienteId, token: token};
+
             // Hacer la solicitud POST (simulando eliminación lógica)
             fetch('http://localhost:8080/Zarape/api/cliente/eliminarCliente', {
                 method: 'POST', // Usamos POST ya que el backend espera esta solicitud

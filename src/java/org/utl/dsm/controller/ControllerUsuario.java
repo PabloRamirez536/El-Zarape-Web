@@ -140,8 +140,6 @@ public class ControllerUsuario {
     }
 
     public String validateToken(String token) throws Exception {
-        // Aquí debes incluir la lógica para validar el token
-        // Por ejemplo, verificar si existe en la base de datos y si está activo
         ConexionMysql conexion = new ConexionMysql();
         Connection conn = conexion.open();
 
@@ -152,7 +150,7 @@ public class ControllerUsuario {
         ResultSet rs = pstmt.executeQuery();
 
         if (rs.next()) {
-            return rs.getString("nombre"); // Retorna el nombre si el token es válido
+            return rs.getString("nombre"); 
         } else {
             return null; // Token no válido
         }
