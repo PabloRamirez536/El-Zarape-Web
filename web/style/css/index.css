@@ -392,3 +392,47 @@ p {
         
     }
 }
+
+
+.container {
+    padding: 20px; /* Espaciado adicional para el contenedor */
+}
+
+.card {
+    width: 100%; /* Hacer que las tarjetas ocupen todo el ancho disponible */
+    margin: 10px 0; /* Espaciado entre tarjetas */
+    border: 2px solid #ccc; /* Añadir un borde a las tarjetas */
+    border-radius: 10px; /* Bordes redondeados */
+    transition: transform 0.2s; /* Efecto de transición al hacer hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Escalar un poco al pasar el mouse */
+}
+
+.card img {
+    width: 100%; /* Asegurarse de que la imagen ocupe todo el ancho de la tarjeta */
+    height: auto; /* Mantener la proporción de la imagen */
+}
+
+.card-body {
+    padding: 15px; /* Espaciado interno en el cuerpo de la tarjeta */
+}
+
+.card-title {
+    font-size: 1.5em; /* Aumentar el tamaño del título */
+}
+
+.card-text {
+    font-size: 1.2em; /* Aumentar el tamaño del texto de descripción */
+}
+
+.form-control {
+    font-size: 1.2em; /* Aumentar el tamaño de los campos de entrada */
+    padding: 10px; /* Aumentar el espaciado interno en los campos de entrada */
+}
+
+.btn {
+    font-size: 1.2em; /* Aumentar el tamaño del texto del botón */
+    padding: 10px 20px; /* Aumentar el espaciado interno del botón */
+}

@@ -38,9 +38,9 @@ function mostrarFormulario(index = null) {
         title: titulo,
         html: `<form id="formulario-cliente-modal">
                 <label for="producto-nombre">Nombre:</label><br>
-                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}"required><br>
+                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}"required><br>
                 <label for="producto-descripcion">Descripción:</label><br>
-                <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s]{1,45}" required><br>
+                <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}" required><br>
                 <label for="producto-foto">Foto Producto:</label><br>
                 <input type="file" id="producto-foto" class="swal2-input" accept=".jpg, .png" required><br>
                 <img id="producto-preview" src="${imagen}" style="max-width: 100%; max-height: 200px; margin-top: 10px;"><br>
@@ -65,13 +65,13 @@ function mostrarFormulario(index = null) {
             let categoriaSeleccionada = document.getElementById('producto-categoria').value;
 
             // Validar el nombre
-            if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,45}$/.test(nombreNuevo)) {
-                Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras (máximo 45 caracteres)');
+            if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}$/.test(nombreNuevo)) {
+                Swal.showValidationMessage('El nombre es obligatorio, debe contener solo letras y números (máximo 45 caracteres)');
                 return false;
             }
 
             // Validar la descripción
-            if (!descripcionNueva || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s]{1,45}$/.test(descripcionNueva)) {
+            if (!descripcionNueva || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}$/.test(descripcionNueva)) {
                 Swal.showValidationMessage('La descripción debe contener solo letras, números y tener un máximo de 45 caracteres.');
                 return false;
             }
