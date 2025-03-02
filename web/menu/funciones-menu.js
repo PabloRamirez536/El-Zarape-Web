@@ -29,7 +29,7 @@ function actualizarComanda() {
         comandaLista.innerHTML += `
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <div class="flex-grow-1" style="font-size: 1.2em;">
-                    ${product.quantity} x ${product.title}
+                    ${product.quantity} x ${product.title} ($${(product.price).toFixed(2)})
                 </div>
                 <div style="font-size: 1.2em; margin-right: 10px;">
                     $${(product.price * product.quantity).toFixed(2)}
@@ -72,6 +72,7 @@ function agregar(index, idProducto) {
         allProducts[existingProductIndex].quantity += cantidad;
     } else {
         const infoProduct = {
+            idProducto: idProducto,
             title: nombre,
             price: precio,
             quantity: cantidad
@@ -108,8 +109,8 @@ function cargarFormulario() {
     });
     const iva = subtotal * 0.16;
     const total = subtotal + iva;
-    
-    if(total == 0){
+
+    if (total == 0) {
         Swal.fire({
             icon: 'error',
             title: 'No hay nada en la comanda',
@@ -435,6 +436,147 @@ function inicializarFormulario(total) {
 
         mostrarFrente();
     });
-
-
 }
+
+
+function validarFormulario() {
+    const numeroTarjeta = document.getElementById('inputNumero').value.replace(/\s+/g, '');
+    const nombreTarjeta = document.getElementById('inputNombre').value.trim();
+    const mesExpiracion = document.getElementById('selectMes').value;
+    const yearExpiracion = document.getElementById('selectYear').value;
+    const ccv = document.getElementById('inputCCV').value.trim();
+
+    // Validar el número de tarjeta
+    if (numeroTarjeta === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'Por favor, ingresa el número de la tarjeta.'
+        });
+        return false;
+    }
+    if (!/^\d{16}$/.test(numeroTarjeta)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Número de tarjeta inválido',
+            text: 'El número de tarjeta debe tener 16 dígitos.'
+        });
+        return false;
+    }
+
+    // Validar el nombre
+    if (nombreTarjeta === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'Por favor, ingresa el nombre de la tarjeta.'
+        });
+        return false;
+    }
+
+    // Validar la fecha de expiración
+    if (mesExpiracion === 'Mes' || yearExpiracion === 'Año') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha de expiración',
+            text: 'Por favor, selecciona la fecha de expiración.'
+        });
+        return false;
+    }
+
+    // Validar el CCV
+    if (ccv === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'Por favor, ingresa el CCV.'
+        });
+        return false;
+    }
+    if (!/^\d{3}$/.test(ccv)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'CCV inválido',
+            text: 'El CCV debe tener 3 dígitos.'
+        });
+        return false;
+    }
+
+    return true; // Todos los campos son válidos
+}
+
+async function procesarPago() {
+
+    if (!validarFormulario()) {
+        return; // Detener el proceso si la validación falla
+    }
+
+    const idCliente = localStorage.getItem("idCliente");
+    const idSucursal = 1;
+
+    if (!idCliente) {
+        alert("No se ha identificado el cliente.");
+        return;
+    }
+
+    if (!Array.isArray(allProducts) || allProducts.length === 0) {
+        alert("No hay productos en el carrito.");
+        return;
+    }
+
+    const productos = allProducts.map(producto => ({
+            cantidad: producto.quantity,
+            precio: producto.price,
+            idProducto: producto.idProducto || null,
+            idCombo: producto.idCombo || null
+        }));
+
+    const datosPago = {
+        idCliente: parseInt(idCliente),
+        idSucursal: idSucursal,
+        productos: productos
+    };
+
+    console.log("Datos de Pago:", JSON.stringify(datosPago));
+
+    try {
+        const response = await fetch('http://localhost:8080/Zarape/api/pago/pagoComanda', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Cambiado a application/json
+            },
+            body: JSON.stringify(datosPago)
+        });
+
+        const responseBody = await response.text(); // Captura la respuesta como texto
+//        console.log("Respuesta del servidor:", responseBody); // Imprime la respuesta
+
+        if (response.ok) {
+//            const data = JSON.parse(responseBody); // Intenta convertir el texto a JSON
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "Pago procesado con éxito. ID de ticket: " + data.idTicket
+            }).then(() => {
+                // Limpiar la comanda
+                allProducts = []; // Vaciar el carrito
+                actualizarComanda();
+                cerrarModal();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "Error al procesar el pago: " + (responseBody.error || "Error desconocido")
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "Hubo un error al procesar el pago."
+        });
+    }
+}
+
