@@ -1,10 +1,45 @@
-<section class="container mt-1 pt-1 cuerpo">
-    <h1 class="section-title">PLATILLOS PRINCIPALES</h1>
-    <div class="row" id="tarjetas-alimentos-pincipales">
-        <!-- Las tarjetas se agregarán aquí -->
+<section class="mt-1 pt-1 cuerpo">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-11 col-lg-9"> <!-- Ocupa 2/3 de la pantalla -->
+                <h1 class="section-title">PLATILLOS PRINCIPALES</h1>
+                <div class="row" id="tarjetas-p">
+                    <!-- Las tarjetas se agregarán aquí -->
+                </div>
+                <h1 class="section-title">POSTRES</h1>
+                <div class="row" id="tarjetas-pos">
+                    <!-- Las tarjetas se agregarán aquí -->
+                </div>
+            </div>
+            <div class="col-md-1 col-lg-3 comanda-section"> <!-- Ocupa 1/3 de la pantalla -->
+                <div class="card">
+                    <h2 class="text-center comanda-title"><strong>Comanda</strong></h2>
+                    <div class="card-body">
+                        <div id="comanda-lista"></div>
+                        <hr>
+                        <div class="mt-2">
+                            <strong style="font-size: 1.2em;">Subtotal: </strong><span id="subtotal" style="font-size: 1.2em;">0.00</span><span style="font-size: 1.2em;"> MXN</span><br>
+                            <strong style="font-size: 1.2em;">IVA (16%): </strong> <span id="iva" style="font-size: 1.2em;">0.00</span><span style="font-size: 1.2em;"> MXN</span><br>
+                            <strong style="font-size: 1.3em;">Total: </strong> <span id="total" style="font-size: 1.3em;">0.00</span><span style="font-size: 1.2em;"> MXN</span><br>
+                            <div class="text-center mt-2">
+                                <button class="btn" style="background-color: #805A3B; color: white;" onclick="cargarFormulario()">Pagar</button>
+                                <button class="btn btn-danger" onclick="cancelar()">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <h1 class="section-title">POSTRES </h1>
-    <div class="row" id="tarjetas-alimentos-postres">
-        <!-- Las tarjetas se agregarán aquí -->
+    
+    
+    <!-- Modal para el formulario de tarjeta -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="contenido-modal">
+                <!-- Aquí se cargará el contenido de viewtarjeta.html -->
+            </div>
+        </div>
     </div>
+    
 </section>

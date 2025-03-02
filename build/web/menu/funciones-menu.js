@@ -1,18 +1,59 @@
-/*Copyright 2024*/
+let allProducts = []; // Inicializar la comanda vacía
 
-let productosAgregados = [];
-
+// Función para calcular el total basado en el precio y la cantidad
 function calcular(index) {
-    const precio = parseFloat(document.getElementById('precio' + index).value);
-    const cantidad = parseInt(document.getElementById('cantidad' + index).value); // Obtener el valor de cantidad
-    const total = document.getElementById('total' + index);
-    total.value = (precio * cantidad).toFixed(2); // Calcular el total
+    var precio = parseFloat(document.getElementById('precio' + index).value);
+    var cantidad = parseFloat(document.getElementById('cantidad' + index).value);
+    var total = document.getElementById('total' + index);
+    total.value = (precio * cantidad).toFixed(2);
 }
+
+function actualizarComanda() {
+    const comandaLista = document.getElementById('comanda-lista');
+    comandaLista.innerHTML = '';
+
+    if (allProducts.length === 0) {
+        // Mostrar mensaje si no hay productos en la comanda
+        comandaLista.innerHTML = '<div class="alert alert-info">La comanda está vacía.</div>';
+
+        // Establecer subtotal, IVA y total a cero
+        document.getElementById('subtotal').innerText = '0.00';
+        document.getElementById('iva').innerText = '0.00';
+        document.getElementById('total').innerText = '0.00';
+
+        return; // Salir si la comanda está vacía
+    }
+
+    let subtotal = 0;
+    allProducts.forEach((product, index) => {
+        comandaLista.innerHTML += `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="flex-grow-1" style="font-size: 1.2em;">
+                    ${product.quantity} x ${product.title}
+                </div>
+                <div style="font-size: 1.2em; margin-right: 10px;">
+                    $${(product.price * product.quantity).toFixed(2)}
+                </div>
+                <button class="btn btn-sm btn-danger ml-2" onclick="eliminarProducto(${index})" style="padding: 0.25rem 0.5rem;">Eliminar</button>
+            </div>
+        `;
+        subtotal += product.price * product.quantity;
+    });
+
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+
+    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+    document.getElementById('iva').innerText = iva.toFixed(2);
+    document.getElementById('total').innerText = total.toFixed(2);
+}
+
 
 function agregar(index, idProducto) {
     const nombre = document.getElementById('cantidad' + index).closest('.card-body').querySelector('.card-title').innerText;
     const precio = parseFloat(document.getElementById('precio' + index).value);
-    const cantidad = parseInt(document.getElementById('cantidad' + index).value);
+    const cantidadInput = document.getElementById('cantidad' + index);
+    let cantidad = parseInt(cantidadInput.value);
 
     // Validar cantidad
     if (isNaN(cantidad) || cantidad < 1 || cantidad > 10) {
@@ -24,20 +65,92 @@ function agregar(index, idProducto) {
         return; // Salir si la validación falla
     }
 
-    // Almacenar los detalles del producto en la variable
-    productosAgregados.push({idProducto, nombre, precio, cantidad});
+    // Verificar si el producto ya está en la comanda
+    const existingProductIndex = allProducts.findIndex(product => product.title === nombre);
+    if (existingProductIndex > -1) {
+        // Si ya existe, sumar la cantidad
+        allProducts[existingProductIndex].quantity += cantidad;
+    } else {
+        const infoProduct = {
+            title: nombre,
+            price: precio,
+            quantity: cantidad
+        };
+        allProducts.push(infoProduct);
+    }
 
-    // Mostrar el mensaje de éxito
-    Swal.fire({
-        position: "top-center",
-        icon: "success",
-        title: "Producto Agregado Exitosamente",
-        showConfirmButton: false,
-        timer: 1500
+    // Restablecer la cantidad a 1 en la tarjeta
+    cantidadInput.value = 1;
+
+    const totalElement = document.getElementById('total' + index); // Asegúrate de que cada tarjeta tenga un ID único para el total
+    if (totalElement) {
+        calcular(index); // Restablecer a 1
+    }
+
+    console.log(allProducts);
+    actualizarComanda(); // Actualiza la comanda después de agregar productos
+}
+
+function eliminarProducto(index) {
+    allProducts.splice(index, 1); // Eliminar el producto de la comanda
+    actualizarComanda(); // Actualizar la vista de la comanda
+}
+
+function cancelar() {
+    allProducts = []; // Limpiar la comanda
+    actualizarComanda(); // Actualizar la vista de la comanda
+}
+
+function cargarFormulario() {
+    let subtotal = 0;
+    allProducts.forEach(product => {
+        subtotal += product.price * product.quantity;
     });
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+    
+    if(total == 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'No hay nada en la comanda',
+            text: 'Pavor de agregar productos a la comanda.',
+        });
+        return; // Salir si la validación falla
+    }
 
-    // Imprimir los productos agregados en la consola
-    console.log(productosAgregados);
+    fetch('menu/view-tarjeta.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar el contenido');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('contenido-modal').innerHTML = data;
+                abrirModal(); // Abre el modal después de cargar el contenido
+                inicializarFormulario(total);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+}
+
+function abrirModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = "block"; // Mostrar el modal
+}
+
+function cerrarModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = "none"; // Ocultar el modal
+}
+
+// Cerrar el modal si se hace clic fuera de él
+window.onclick = function (event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
 }
 
 function actualizarTarjetasAlimentos() {
@@ -45,14 +158,14 @@ function actualizarTarjetasAlimentos() {
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
-                const contenedor1 = document.getElementById('tarjetas-alimentos-pincipales');
-                const contenedor2 = document.getElementById('tarjetas-alimentos-postres');
+                const contenedorP = document.getElementById('tarjetas-p');
+                const contenedorPos = document.getElementById('tarjetas-pos');
 
                 // Recorrer los datos y agregar las tarjetas solo si están activos
                 data.forEach((alimento, index) => {
                     if (alimento.producto.activo) { // Verificar si el alimento está activo
                         if (alimento.categoria.descripcion == "PLATILLOS PRINCIPALES") {
-                            contenedor1.innerHTML += `
+                            contenedorP.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
                                 <img src="./recursos/recursos-menu/${alimento.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
@@ -73,7 +186,7 @@ function actualizarTarjetasAlimentos() {
                         }
 
                         if (alimento.categoria.descripcion == "POSTRES") {
-                            contenedor2.innerHTML += `
+                            contenedorPos.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
                                 <img src="./recursos/recursos-menu/${alimento.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
@@ -106,15 +219,15 @@ function actualizarTarjetasBebidas() {
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
-                const contenedor1 = document.getElementById('tarjetas-bebidas-jugos');
-                const contenedor2 = document.getElementById('tarjetas-bebidas-refrescos');
-                const contenedor3 = document.getElementById('tarjetas-bebidas-cervezas');
+                const contenedorJ = document.getElementById('tarjetas-j');
+                const contenedorR = document.getElementById('tarjetas-r');
+                const contenedorC = document.getElementById('tarjetas-c');
 
                 // Recorrer los datos y agregar las tarjetas solo si están activos
                 data.forEach((bebida, index) => {
                     if (bebida.producto.activo) { // Verificar si el alimento está activo
                         if (bebida.categoria.descripcion == "JUGOS") {
-                            contenedor1.innerHTML += `
+                            contenedorJ.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
                                 <img src="./recursos/recursos-menu/${bebida.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
@@ -133,9 +246,9 @@ function actualizarTarjetasBebidas() {
                         </div>
                         `;
                         }
-                        
+
                         if (bebida.categoria.descripcion == "REFRESCOS") {
-                            contenedor2.innerHTML += `
+                            contenedorR.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
                                 <img src="./recursos/recursos-menu/${bebida.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
@@ -154,9 +267,9 @@ function actualizarTarjetasBebidas() {
                         </div>
                         `;
                         }
-                        
+
                         if (bebida.categoria.descripcion == "CERVEZAS") {
-                            contenedor3.innerHTML += `
+                            contenedorC.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
                                 <img src="./recursos/recursos-menu/${bebida.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
@@ -182,4 +295,146 @@ function actualizarTarjetasBebidas() {
                 });
             })
             .catch(error => console.error('Error al cargar productos de tipo bebidas:', error));
+}
+
+function inicializarFormulario(total) {
+    const tarjeta = document.querySelector('#tarjeta'),
+            formulario = document.querySelector('#formulario-tarjeta'),
+            numeroTarjeta = document.querySelector('#tarjeta .numero'),
+            nombreTarjeta = document.querySelector('#tarjeta .nombre'),
+            logoMarca = document.querySelector('#logo-marca'),
+            firma = document.querySelector('#tarjeta .firma p'),
+            mesExpiracion = document.querySelector('#tarjeta .mes'),
+            yearExpiracion = document.querySelector('#tarjeta .year'),
+            ccv = document.querySelector('#tarjeta .ccv');
+
+    document.getElementById('total-pagar').textContent = total.toFixed(2);
+
+    //* Voltear tarjeta y actualizar el CCV
+    formulario.inputCCV.addEventListener('keyup', () => {
+        tarjeta.classList.add('active'); // Aseguramos que la clase se agrega siempre
+
+        formulario.inputCCV.value = formulario.inputCCV.value
+                .replace(/\s/g, '') // Eliminamos espacios en blanco
+                .replace(/\D/g, ''); // Eliminamos cualquier letra o caracter no numérico
+
+        // Mostrar el valor en la tarjeta
+        ccv.textContent = formulario.inputCCV.value;
+
+    });
+
+    formulario.inputCCV.addEventListener('focus', () => {
+        tarjeta.classList.add('active'); // Voltea la tarjeta cuando el usuario escribe en el CCV
+        formulario.inputCCV.value = formulario.inputCCV.value
+                .replace(/\s/g, '') // Eliminamos espacios en blanco
+                .replace(/\D/g, ''); // Eliminamos cualquier letra o caracter no numérico
+
+        // Mostrar el valor en la tarjeta
+        ccv.textContent = formulario.inputCCV.value;
+    });
+
+    formulario.inputCCV.addEventListener('blur', () => {
+        tarjeta.classList.remove('active'); // La vuelve a su posición original al salir del input
+        formulario.inputCCV.value = formulario.inputCCV.value
+                .replace(/\s/g, '') // Eliminamos espacios en blanco
+                .replace(/\D/g, ''); // Eliminamos cualquier letra o caracter no numérico
+
+        // Mostrar el valor en la tarjeta
+        ccv.textContent = formulario.inputCCV.value;
+    });
+
+
+    //* Rotacion de la tarjeta
+    tarjeta.addEventListener('click', () => {
+        tarjeta.classList.toggle('active');
+    });
+
+//* Volteamos la tarjeta para mostrar el frente
+    const mostrarFrente = () => {
+        if (tarjeta.classList.contains('active')) {
+            tarjeta.classList.remove('active');
+        }
+    };
+
+//* Select del mes generado dinamicamente
+    for (let i = 1; i <= 12; i++) {
+        let opcion = document.createElement('option');
+        opcion.value = i;
+        opcion.innerText = i;
+        formulario.selectMes.appendChild(opcion);
+    }
+
+//* Select del año generado dinamicamente
+    const yearActual = new Date().getFullYear();
+    for (let i = yearActual; i <= yearActual + 8; i++) {
+        let opcion = document.createElement('option');
+        opcion.value = i;
+        opcion.innerText = i;
+        formulario.selectYear.appendChild(opcion);
+    }
+
+//* Input numero de tarjeta
+    formulario.inputNumero.addEventListener('keyup', (e) => {
+        let valorInput = e.target.value;
+
+        formulario.inputNumero.value = valorInput
+                //* Eliminamos espacios en blanco
+                .replace(/\s/g, '')
+                //* Eliminar las letras
+                .replace(/\D/g, '')
+                //* Ponemos espacio cada cuatro numeros
+                .replace(/([0-9]{4})/g, '$1 ')
+                //* Elimina el ultimo espaciado
+                .trim();
+
+        numeroTarjeta.textContent = valorInput;
+
+        if (valorInput == '') {
+            numeroTarjeta.textContent = '#### #### #### ####';
+            logoMarca.innerHTML = '';
+        }
+
+        if (valorInput[0] == 4) {
+            logoMarca.innerHTML = '';
+            const imagen = document.createElement('img');
+            imagen.src = 'menu/img/logos/visa.png';
+            logoMarca.appendChild(imagen);
+        } else if (valorInput[0] == 5) {
+            logoMarca.innerHTML = '';
+            const imagen = document.createElement('img');
+            imagen.src = 'menu/img/logos/mastercard.png';
+            logoMarca.appendChild(imagen);
+        }
+
+        //* Volteamos la tarjeta para que el usuario vea el frente
+        mostrarFrente();
+
+    });
+
+//* Input nombre de tarjeta
+    formulario.inputNombre.addEventListener('input', (e) => {
+        let valorInput = e.target.value.toUpperCase().replace(/[0-9]/g, ''); // Convierte a mayúsculas y elimina números
+
+        formulario.inputNombre.value = valorInput; // Asigna el valor limpio al input
+        nombreTarjeta.textContent = valorInput || 'JHON DOE'; // Si está vacío, muestra 'JHON DOE'
+        firma.textContent = valorInput;
+
+        mostrarFrente();
+    });
+
+//* Select mes
+    formulario.selectMes.addEventListener('change', (e) => {
+        mesExpiracion.textContent = e.target.value;
+
+        mostrarFrente();
+    });
+
+//* Select año
+    formulario.selectYear.addEventListener('change', (e) => {
+        yearExpiracion.textContent = e.target.value.slice(2);
+
+        mostrarFrente();
+    });
+
+
 }

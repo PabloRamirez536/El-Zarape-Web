@@ -12,12 +12,15 @@
         <meta name="date" content="Junio, 22 2024">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
         <link href="style/css/index.css" rel="stylesheet" type="text/css" />
         <link href="menu/style/css/menu-cliente.css" rel="stylesheet" type="text/css"/>
+        <link href="menu/css/estilos.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato|Liu+Jian+Mao+Cao&display=swap" rel="stylesheet">
     </head>
-
     <body>
         <div class="container-fluid">
             <header class="row">
@@ -26,9 +29,8 @@
                 </div>
             </header>
         </div>
-
         <div class="menuprincipal">
-
+           
             <nav class="navbar navbar-expand-md ">
                 <div class="container-fluid">
                     <!-- Icono o nombre -->
@@ -55,12 +57,8 @@
                             <li class="nav-item" style="display:none;">
                                 <a class="nav-link" href="#" onclick="cargarVistaCombo();"><strong>Combos</strong></a>
                             </li>
-                            <li class="nav-item" style="display:none;">
-                                <a class="nav-link" href="#"><img src="recursos/media/carrito-de-compras.png" class="carrito-icon" alt="carrito"></a>
-                            </li>
                         </ul>
                     </div>
-
                     <!-- Logo que al hacer clic abre el formulario de login -->
                     <div class="btn-group dropstart">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -172,7 +170,7 @@
             <div class="line"></div>
             <p>© Copyright 2024. Technovision</p>
         </footer>
-        
+        <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
         
         <script src="login-cliente.js" type="text/javascript"></script>
         <script src="js/lightbox.js" type="text/javascript"></script>
@@ -181,5 +179,4 @@
         <script src="menu/funciones-menu.js" type="text/javascript"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
-
 </html>

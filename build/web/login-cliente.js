@@ -25,6 +25,7 @@ function mostrarFormularioLogin() {
             // Llamar a la función de validación
             return validateLogin(username, password);
         }
+        
     });
 }
 

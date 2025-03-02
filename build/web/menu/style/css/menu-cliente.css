@@ -97,3 +97,56 @@ p {
     align-items: center;
     color: #fff;
 }
+.comanda-section {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.comanda-title {
+    font-family: Arial;
+    font-size: 30px;
+    color: black;
+    text-align: center;/* Centrar el texto */
+}
+
+.card {
+    background-color: #f8f9fa; /* Fondo claro */
+}
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Fijo en la pantalla */
+    z-index: 1; /* Por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilitar scroll si es necesario */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 2% auto; /* 5% desde la parte superior y centrado */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%; /* Ancho del modal */
+    max-width: 600px; /* Ancho máximo */
+    height: 90%;
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
