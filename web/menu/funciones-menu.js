@@ -552,7 +552,7 @@ async function procesarPago() {
 //        console.log("Respuesta del servidor:", responseBody); // Imprime la respuesta
 
         if (response.ok) {
-//            const data = JSON.parse(responseBody); // Intenta convertir el texto a JSON
+            const data = JSON.parse(responseBody); // Intenta convertir el texto a JSON
             Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
