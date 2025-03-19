@@ -169,7 +169,7 @@ function actualizarTarjetasAlimentos() {
                             contenedorP.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
-                                <img src="./recursos/recursos-menu/${alimento.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
+                                <img src="${alimento.producto.foto}" class="card-img-top alimentos" alt="comida" />
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title">${alimento.producto.nombre}</h5>
                                     <p class="card-text">${alimento.producto.descripcion}</p>
@@ -190,7 +190,7 @@ function actualizarTarjetasAlimentos() {
                             contenedorPos.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
-                                <img src="./recursos/recursos-menu/${alimento.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
+                                <img src="${alimento.producto.foto}" class="card-img-top alimentos" alt="comida" />
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title">${alimento.producto.nombre}</h5>
                                     <p class="card-text">${alimento.producto.descripcion}</p>
@@ -231,7 +231,7 @@ function actualizarTarjetasBebidas() {
                             contenedorJ.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
-                                <img src="./recursos/recursos-menu/${bebida.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
+                                <img src="${bebida.producto.foto}" class="card-img-top alimentos" alt="comida" />
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title">${bebida.producto.nombre}</h5>
                                     <p class="card-text">${bebida.producto.descripcion}</p>
@@ -252,7 +252,7 @@ function actualizarTarjetasBebidas() {
                             contenedorR.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
-                                <img src="./recursos/recursos-menu/${bebida.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
+                                <img src="${bebida.producto.foto}" class="card-img-top alimentos" alt="comida" />
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title">${bebida.producto.nombre}</h5>
                                     <p class="card-text">${bebida.producto.descripcion}</p>
@@ -273,7 +273,7 @@ function actualizarTarjetasBebidas() {
                             contenedorC.innerHTML += `
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
-                                <img src="./recursos/recursos-menu/${bebida.producto.nombre}.jpg" class="card-img-top alimentos" alt="comida" />
+                                <img src="${bebida.producto.foto}" class="card-img-top alimentos" alt="comida" />
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title">${bebida.producto.nombre}</h5>
                                     <p class="card-text">${bebida.producto.descripcion}</p>

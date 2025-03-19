@@ -68,8 +68,9 @@ function mostrarFormulario(index = null) {
             let precioNuevo = document.getElementById('producto-precio').value.trim();
             let activoNuevo = document.getElementById('producto-activo').checked;
             let categoriaSeleccionada = document.getElementById('producto-categoria').value;
+            const fotoInput = document.getElementById('producto-foto');
 
-             // Validar el nombre
+            // Validar el nombre
             if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}$/.test(nombreNuevo)) {
                 Swal.showValidationMessage('El nombre es obligatorio, debe contener solo letras y números (máximo 45 caracteres)');
                 return false;
@@ -82,7 +83,6 @@ function mostrarFormulario(index = null) {
             }
 
             // Validar imagen seleccionada
-            let fotoInput = document.getElementById('producto-foto');
             if (fotoInput.files.length === 0 || !/(\.jpg|\.png)$/i.test(fotoInput.files[0].name)) {
                 Swal.showValidationMessage('Por favor, seleccione una imagen válida (.jpg, .png).');
                 return false;
@@ -99,19 +99,45 @@ function mostrarFormulario(index = null) {
                 return false;
             }
 
-            return Promise.resolve({
-                idProducto: index !== null ? alimentos[index].idProducto : null,
-                producto: {
-                    nombre: nombreNuevo,
-                    descripcion: descripcionNueva,
-                    foto: imagen, // Usar la imagen predeterminada
-                    precio: parseFloat(precioNuevo),
-                    activo: activoNuevo
-                },
-                categoria: {
-                    idCategoria: parseInt(categoriaSeleccionada) // Enviar la categoría seleccionada
-                }
-            });
+            
+            if (fotoInput.files.length > 0) {
+                const file = fotoInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                return new Promise((resolve, reject) => {
+                    reader.onload = () => {
+                        resolve({
+                            idProducto: index !== null ? alimentos[index].idProducto : null,
+                            producto: {
+                                nombre: nombreNuevo,
+                                descripcion: descripcionNueva,
+                                foto: reader.result, // Aquí se agrega la imagen en base64
+                                precio: parseFloat(precioNuevo),
+                                activo: activoNuevo
+                            },
+                            categoria: {
+                                idCategoria: parseInt(categoriaSeleccionada)
+                            }
+                        });
+                    };
+                    reader.onerror = error => reject(error);
+                });
+            } else {
+                // Si no hay imagen seleccionada, usar la imagen existente
+                return Promise.resolve({
+                    idProducto: index !== null ? alimentos[index].idProducto : null,
+                    producto: {
+                        nombre: nombreNuevo,
+                        descripcion: descripcionNueva,
+                        foto: imagen, // Usar la imagen predeterminada
+                        precio: parseFloat(precioNuevo),
+                        activo: activoNuevo
+                    },
+                    categoria: {
+                        idCategoria: parseInt(categoriaSeleccionada)
+                    }
+                });
+            }
         }
     }).then((result) => {
         if (result.isConfirmed) {
@@ -163,21 +189,35 @@ function mostrarFormulario(index = null) {
     }).catch(error => console.error('Error al cargar categorias:', error));
 }
 
+// Agregar el evento change al input de archivo
+document.getElementById('producto-foto').addEventListener('change', previewImage);
+
+// Función para previsualizar la imagen
+function previewImage(event) {
+    const preview = document.getElementById('producto-preview');
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        preview.src = e.target.result; // Muestra la imagen en el preview
+    }
+    reader.readAsDataURL(file);
+}
+
 
 // Actualizar la tabla de alimentos
 function actualizarTablaAlimentos() {
     let ruta = "http://localhost:8080/Zarape/api/alimento/getAllAlimento";
     fetch(ruta)
-        .then(response => response.json())
-        .then(data => {
-            alimentos = data; // Asignar los datos a la variable global
-            const tabla = document.getElementById('tabla-alimentos').getElementsByTagName('tbody')[0];
-            tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
+            .then(response => response.json())
+            .then(data => {
+                alimentos = data; // Asignar los datos a la variable global
+                const tabla = document.getElementById('tabla-alimentos').getElementsByTagName('tbody')[0];
+                tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
 
-            // Recorrer los datos y agregar filas a la tabla
-            data.forEach((alimento, index) => {
-                let fila = tabla.insertRow();
-                fila.innerHTML = `
+                // Recorrer los datos y agregar filas a la tabla
+                data.forEach((alimento, index) => {
+                    let fila = tabla.insertRow();
+                    fila.innerHTML = `
                     <td>${alimento.idAlimento}</td>
                     <td>${alimento.producto.nombre}</td>
                     <td>${alimento.producto.descripcion}</td>
@@ -196,9 +236,9 @@ function actualizarTablaAlimentos() {
                         </button>
                     </td>
                 `;
-            });
-        })
-        .catch(error => console.error('Error al cargar productos:', error));
+                });
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
 }
 
 

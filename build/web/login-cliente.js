@@ -411,8 +411,8 @@ function mostrarFormulario(cliente = null) {
             };
 
             const url = cliente !== null
-                    ? 'http://localhost:8080/Zarape/api/cliente/actualizarCliente'
-                    : 'http://localhost:8080/Zarape/api/cliente/insertarCliente';
+                    ? 'http://localhost:8080/Zarape/api/cliente/actualizarCliente1'
+                    : 'http://localhost:8080/Zarape/api/cliente/insertarCliente1';
 
             fetch(url, requestOptions)
                     .then(response => response.json())

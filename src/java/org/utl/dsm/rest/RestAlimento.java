@@ -1,4 +1,3 @@
-
 package org.utl.dsm.rest;
 
 import com.google.gson.Gson;
@@ -17,9 +16,11 @@ import java.util.List;
 import java.sql.SQLException;
 import org.utl.dsm.controller.ControllerAlimento;
 import org.utl.dsm.controller.ControllerBebida;
+import org.utl.dsm.controller.ControllerProducto;
 import org.utl.dsm.model.Alimento;
 import org.utl.dsm.model.Categoria;
 import org.utl.dsm.model.Producto;
+import org.utl.dsm.model.ProductoResponse;
 
 @Path("alimento")
 public class RestAlimento extends Application {
@@ -42,8 +43,7 @@ public class RestAlimento extends Application {
         }
         return Response.ok(out).build();
     }
-    
-    
+
     @Path("insertAlimento")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,32 +59,31 @@ public class RestAlimento extends Application {
         String out = gson.toJson(a);
         return Response.status(Response.Status.CREATED).entity(out).build();
     }
-    
-    @Path("updateAlimento")
-@POST
-@Produces(MediaType.APPLICATION_JSON)
-public Response updateAlimento(@FormParam("datosAlimento") @DefaultValue("") String alimentoJson) {
-    Alimento alimento = null;
-    Gson gson = new Gson();
-    String out;
-    System.out.println(alimentoJson);
-    try {
-        alimento = gson.fromJson(alimentoJson, Alimento.class);
-        // Aquí puedes procesar la imagen si la necesitas
-        // Foto procesada como InputStream, por ejemplo, guardarla en el servidor
 
-        ControllerAlimento controller = new ControllerAlimento();
-        controller.updateAlimentoObjeto(alimento);
-        out = "{\"result\":\"Bebida actualizada con éxito\"}";
-    } catch (Exception e) {
-        e.printStackTrace();
-        out = "{\"result\":\"Error en la actualización\"}";
+    @Path("updateAlimento")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateAlimento(@FormParam("datosAlimento") @DefaultValue("") String alimentoJson) {
+        Alimento alimento = null;
+        Gson gson = new Gson();
+        String out;
+        System.out.println(alimentoJson);
+        try {
+            alimento = gson.fromJson(alimentoJson, Alimento.class);
+            // Aquí puedes procesar la imagen si la necesitas
+            // Foto procesada como InputStream, por ejemplo, guardarla en el servidor
+
+            ControllerAlimento controller = new ControllerAlimento();
+            controller.updateAlimentoObjeto(alimento);
+            out = "{\"result\":\"Bebida actualizada con éxito\"}";
+        } catch (Exception e) {
+            e.printStackTrace();
+            out = "{\"result\":\"Error en la actualización\"}";
+        }
+
+        return Response.ok(out).build();
     }
 
-    return Response.ok(out).build();
-}
-
-    
     @Path("eliminarAlimento")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -98,8 +97,8 @@ public Response updateAlimento(@FormParam("datosAlimento") @DefaultValue("") Str
                       """;
         return Response.ok(out).build();
     }
-    
-@Path("getAllCategoriaAlimento")
+
+    @Path("getAllCategoriaAlimento")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCategoriaAlimento(@QueryParam("id") @DefaultValue("0") int id) {
@@ -119,5 +118,29 @@ public Response updateAlimento(@FormParam("datosAlimento") @DefaultValue("") Str
         }
         return Response.ok(out).build();
     }
-}
 
+    @Path("getProducto")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProducto(@QueryParam("id") @DefaultValue("0") int id) {
+        ProductoResponse response = new ProductoResponse();
+        Gson gson = new Gson();
+        String out;
+
+        try {
+            ControllerProducto controller = new ControllerProducto();
+            response = controller.getProductoById(id);
+
+            if (response.getAlimento() != null || response.getBebida() != null) {
+                out = gson.toJson(response);
+            } else {
+                out = "{\"result\":\"Producto no encontrado\"}";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            out = "{\"result\":\"Error de servidor\"}";
+        }
+
+        return Response.ok(out).build();
+    }
+}

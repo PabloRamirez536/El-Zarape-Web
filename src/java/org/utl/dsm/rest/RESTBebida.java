@@ -48,29 +48,29 @@ public class RESTBebida {
         return Response.status(Response.Status.CREATED).entity(out).build();
     }
 
-@Path("updateBebida")
-@POST
-@Produces(MediaType.APPLICATION_JSON)
-public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String bebidaJson) {
-    Bebida bebida = null;
-    Gson gson = new Gson();
-    String out;
-    System.out.println(bebidaJson);
-    try {
-        bebida = gson.fromJson(bebidaJson, Bebida.class);
-        // Aquí puedes procesar la imagen si la necesitas
-        // Foto procesada como InputStream, por ejemplo, guardarla en el servidor
+    @Path("updateBebida")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String bebidaJson) {
+        Bebida bebida = null;
+        Gson gson = new Gson();
+        String out;
+        System.out.println(bebidaJson);
+        try {
+            bebida = gson.fromJson(bebidaJson, Bebida.class);
+            // Aquí puedes procesar la imagen si la necesitas
+            // Foto procesada como InputStream, por ejemplo, guardarla en el servidor
 
-        ControllerBebida controller = new ControllerBebida();
-        controller.updateBebidaObjeto(bebida);
-        out = "{\"result\":\"Bebida actualizada con éxito\"}";
-    } catch (Exception e) {
-        e.printStackTrace();
-        out = "{\"result\":\"Error en la actualización\"}";
+            ControllerBebida controller = new ControllerBebida();
+            controller.updateBebidaObjeto(bebida);
+            out = "{\"result\":\"Bebida actualizada con éxito\"}";
+        } catch (Exception e) {
+            e.printStackTrace();
+            out = "{\"result\":\"Error en la actualización\"}";
+        }
+
+        return Response.ok(out).build();
     }
-
-    return Response.ok(out).build();
-}
 
     @Path("getAllBebida")
     @GET
@@ -92,6 +92,7 @@ public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String 
         }
         return Response.ok(out).build();
     }
+
     @Path("getAllCategoriaBebida")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -112,7 +113,7 @@ public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String 
         }
         return Response.ok(out).build();
     }
-    
+
     @Path("eliminarBebida")
     @POST
     @Produces(MediaType.APPLICATION_JSON)

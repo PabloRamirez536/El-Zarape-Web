@@ -97,6 +97,40 @@ public class RestUsuario {
         return Response.ok(response.toString()).build();
     }
 
+    @Path("loginCliente1")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response loginCliente1(
+            @FormParam("usuario") String usuario,
+            @FormParam("contrasenia") String contrasenia,
+            @Context HttpServletRequest request) {
+        ControllerUsuario cu = new ControllerUsuario();
+        boolean valido;
+        JsonObject response = new JsonObject();
+        int[] clienteData = new int[1]; // Para almacenar el ID del cliente
+
+        try {
+            valido = cu.loginCliente(usuario, contrasenia, clienteData);
+            if (valido) {
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", usuario);
+
+                response.addProperty("status", "success");
+                response.addProperty("message", "Usuario válido");
+                response.addProperty("idCliente", clienteData[0]); // ID del cliente
+            } else {
+                response.addProperty("status", "fail");
+                response.addProperty("message", "Credenciales incorrectas");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.addProperty("status", "error");
+            response.addProperty("message", "Error en el servidor");
+        }
+
+        return Response.ok(response.toString()).build();
+    }
+
     @Path("cheecky")
     @GET
     @Produces(MediaType.APPLICATION_JSON)

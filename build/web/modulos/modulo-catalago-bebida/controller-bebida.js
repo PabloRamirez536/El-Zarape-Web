@@ -15,7 +15,7 @@ function mostrarFormulario(index = null) {
     let idProducto = '';
     let nombre = '';
     let descripcion = '';
-    let imagen = "../../recursos/media/refresco.png";  // Ruta de la imagen
+    let imagen = "../../recursos/media/refresco.png";
     let precio = '';
     let categoria = '';
     let activo = true;
@@ -63,6 +63,7 @@ function mostrarFormulario(index = null) {
             let precioNuevo = document.getElementById('producto-precio').value.trim();
             let activoNuevo = document.getElementById('producto-activo').checked;
             let categoriaSeleccionada = document.getElementById('producto-categoria').value;
+            const fotoInput = document.getElementById('producto-foto');
 
             // Validar el nombre
             if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}$/.test(nombreNuevo)) {
@@ -76,37 +77,60 @@ function mostrarFormulario(index = null) {
                 return false;
             }
 
-            // Validar imagen seleccionada
-            let fotoInput = document.getElementById('producto-foto');
-            if (fotoInput.files.length === 0 || !/(\.jpg|\.png)$/i.test(fotoInput.files[0].name)) {
-                Swal.showValidationMessage('Por favor, seleccione una imagen válida (.jpg, .png).');
-                return false;
-            }
-            // Validar precio
-            if (!precioNuevo || !/^\d+(\.\d{1,2})?$/.test(precioNuevo) || parseFloat(precioNuevo) < 0 || parseFloat(precioNuevo) > 99.99) {
-                Swal.showValidationMessage('El precio debe ser un número entre 0 y 99.99, con hasta dos decimales.');
-                return false;
-            }
+            // Leer la imagen como base64
+            if (fotoInput.files.length > 0) {
+                const file = fotoInput.files[0];
+                const reader = new FileReader();
+                return new Promise((resolve, reject) => {
+                    reader.onload = () => {
+                        // Validar precio
+                        if (!precioNuevo || !/^\d+(\.\d{1,2})?$/.test(precioNuevo) || parseFloat(precioNuevo) < 0 || parseFloat(precioNuevo) > 99.99) {
+                            Swal.showValidationMessage('El precio debe ser un número entre 0 y 99.99, con hasta dos decimales.');
+                            reject();
+                            return;
+                        }
 
-            // Validar categoría seleccionada
-            if (!categoriaSeleccionada) {
-                Swal.showValidationMessage('Por favor, seleccione una categoría.');
-                return false;
-            }
+                        // Validar categoría seleccionada
+                        if (!categoriaSeleccionada) {
+                            Swal.showValidationMessage('Por favor, seleccione una categoría.');
+                            reject();
+                            return;
+                        }
 
-            return Promise.resolve({
-                idProducto: index !== null ? bebidas[index].idProducto : null,
-                producto: {
-                    nombre: nombreNuevo,
-                    descripcion: descripcionNueva,
-                    foto: imagen, // Usar la imagen predeterminada
-                    precio: parseFloat(precioNuevo),
-                    activo: activoNuevo
-                },
-                categoria: {
-                    idCategoria: parseInt(categoriaSeleccionada) // Enviar la categoría seleccionada
-                }
-            });
+                        // Finalizar la promesa con los datos del producto
+                        resolve({
+                            idProducto: index !== null ? bebidas[index].idProducto : null,
+                            producto: {
+                                nombre: nombreNuevo,
+                                descripcion: descripcionNueva,
+                                foto: reader.result, // Imagen en base64
+                                precio: parseFloat(precioNuevo),
+                                activo: activoNuevo
+                            },
+                            categoria: {
+                                idCategoria: parseInt(categoriaSeleccionada) // Enviar la categoría seleccionada
+                            }
+                        });
+                    };
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file); // Leer la imagen como Data URL
+                });
+            } else {
+                // Si no hay imagen seleccionada, usar la imagen existente
+                return Promise.resolve({
+                    idProducto: index !== null ? bebidas[index].idProducto : null,
+                    producto: {
+                        nombre: nombreNuevo,
+                        descripcion: descripcionNueva,
+                        foto: imagen, // Usar la imagen predeterminada
+                        precio: parseFloat(precioNuevo),
+                        activo: activoNuevo
+                    },
+                    categoria: {
+                        idCategoria: parseInt(categoriaSeleccionada)
+                    }
+                });
+            }
         }
     }).then((result) => {
         if (result.isConfirmed) {
@@ -158,6 +182,18 @@ function mostrarFormulario(index = null) {
     }).catch(error => console.error('Error al cargar categorias:', error));
 
 }
+
+// Función para previsualizar la imagen
+function previewImage(event) {
+    const preview = document.getElementById('producto-preview');
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        preview.src = e.target.result; // Muestra la imagen en el preview
+    }
+    reader.readAsDataURL(file);
+}
+
 
 function actualizarTablaBebidas() {
     let ruta = "http://localhost:8080/Zarape/api/bebida/getAllBebida";

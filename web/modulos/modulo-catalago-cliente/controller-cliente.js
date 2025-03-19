@@ -205,12 +205,16 @@ function mostrarFormulario(index = null) {
                 });
                 return; 
             }
+            
+            
 
             let params = {
                 datosCliente: JSON.stringify(clienteData),
                 token: token
             };
 
+            console.log(params);
+            
             const requestOptions = {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},

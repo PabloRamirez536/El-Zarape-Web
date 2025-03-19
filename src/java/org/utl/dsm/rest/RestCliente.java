@@ -43,15 +43,15 @@ public class RestCliente {
 
         try {
             ControllerCliente cs = new ControllerCliente();
-            lista = cs.getAllClientes(); 
-            out = gson.toJson(lista); 
+            lista = cs.getAllClientes();
+            out = gson.toJson(lista);
         } catch (Exception e) {
             e.printStackTrace();
             out = "{\"result\":\"Error de servidor\"}";
         }
         return Response.ok(out).build();
     }
-
+    
     @Path("insertarCliente")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -80,6 +80,33 @@ public class RestCliente {
         return Response.ok(out).build();
     }
 
+    @Path("insertarCliente1")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response insertCliente(
+            @FormParam("datosCliente") @DefaultValue("") String datosCliente
+    ) {
+        String out = "";
+        try {
+            Gson gson = new Gson();
+            ControllerCliente controllerCliente = new ControllerCliente();
+
+            // Convertir el JSON recibido a un objeto Cliente
+            Cliente cliente = gson.fromJson(datosCliente, Cliente.class);
+
+            // Llamar al método para insertar el cliente
+            controllerCliente.insertarCliente(cliente);
+
+            // Convertir el cliente nuevamente a JSON para la respuesta
+            out = gson.toJson(cliente);
+        } catch (Exception e) {
+            e.printStackTrace();
+            out = "{\"error\":\"Error al insertar el cliente. Por favor, verifica los datos y vuelve a intentarlo.\"}";
+        }
+        return Response.ok(out).build();
+    }
+    
     @Path("actualizarCliente")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -87,7 +114,7 @@ public class RestCliente {
     public Response actualizarCliente(
             @FormParam("datosCliente") String datosCliente,
             @FormParam("token") String token) throws Exception {
-        
+
         ControllerUsuario cu = new ControllerUsuario();
         if (cu.validateToken(token) == null) {
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -107,14 +134,34 @@ public class RestCliente {
         }
         return Response.ok(out).build();
     }
+    
+    @Path("actualizarCliente1")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response actualizarCliente1(
+            @FormParam("datosCliente") String datosCliente) throws Exception {
+        String out;
+        try {
+            Gson gson = new Gson();
+            ControllerCliente controllerCliente = new ControllerCliente();
+            Cliente cliente = gson.fromJson(datosCliente, Cliente.class);
+            controllerCliente.actualizarCliente(cliente);
+            out = gson.toJson(cliente);
+        } catch (Exception e) {
+            e.printStackTrace();
+            out = "{\"error\":\"Error al actualizar el cliente.\"}";
+        }
+        return Response.ok(out).build();
+    }
 
     @Path("eliminarCliente")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response eliminarCliente(@FormParam("idCliente") int idCliente, 
-                                    @FormParam("token") String token) throws Exception {
-        
+    public Response eliminarCliente(@FormParam("idCliente") int idCliente,
+            @FormParam("token") String token) throws Exception {
+
         ControllerUsuario cu = new ControllerUsuario();
         if (cu.validateToken(token) == null) {
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -131,7 +178,6 @@ public class RestCliente {
                     .entity("{\"result\":\"Error al eliminar cliente\"}").build();
         }
     }
-
 
     @Path("getClientePorId")
     @GET

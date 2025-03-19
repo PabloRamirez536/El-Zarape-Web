@@ -3,36 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RESTCategoria.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/menu/css/estilos.css</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerCiudad.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/menu/vista-alimento.html</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestTicket.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestCliente.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/menu/funciones-menu.js</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/style/js/main-menu.js</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/modulos/modulo-catalago-cliente/controller-cliente.js</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/login-cliente.js</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/model/Ticket.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestUsuario.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/style/css/index.css</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/model/Comanda.java</file>
             <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/index.html</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestCiudad.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerUsuario.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/modulos/burguer.html</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RESTEmpleado.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerTicket.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/model/DetalleTicket.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/menu/vista-bebida.html</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/menu/view-tarjeta.html</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/gestion/gestion-login/login.js</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/gestion/gestion-inicio/view-gestion-inicio.html</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/model/Categoria.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/modulos/modulo-catalago-alimento/controller-alimentos.js</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/model/ProductoResponse.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RESTBebida.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerBebida.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestCliente.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/model/Producto.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerProducto.java</file>
             <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerAlimento.java</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/web/menu/style/css/menu-cliente.css</file>
-            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/controller/ControllerCategoria.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestUsuario.java</file>
+            <file>file:/C:/Users/ramir/OneDrive%20-%20Universidad%20Tecnológica%20de%20León/Documentos/Utl/3erCuatri/DMS305-APWE/Codigos/Zarape/src/java/org/utl/dsm/rest/RestAlimento.java</file>
         </group>
     </open-files>
 </project-private>
