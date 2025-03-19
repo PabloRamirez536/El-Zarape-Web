@@ -15,7 +15,7 @@ function mostrarFormulario(index = null) {
     let idProducto = '';
     let nombre = '';
     let descripcion = '';
-    let imagen = "../../recursos/media/refresco.png";
+    let imagen = '';
     let precio = '';
     let categoria = '';
     let activo = true;
@@ -30,7 +30,7 @@ function mostrarFormulario(index = null) {
         activo = bebida.producto.activo || false;
         categoria = bebida.producto && bebida.producto.idCategoria ? bebida.producto.idCategoria : '';
         // Usar la imagen existente si está disponible
-        imagen = bebida.producto.foto || imagen;
+        imagen = bebida.producto.foto || '';
     }
 
     // Mostrar el formulario con Swal
@@ -180,6 +180,14 @@ function mostrarFormulario(index = null) {
     </option>`;
         });
     }).catch(error => console.error('Error al cargar categorias:', error));
+    // Vista previa de la imagen seleccionada
+    document.getElementById('producto-foto').addEventListener('change', function () {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('producto-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
 
 }
 

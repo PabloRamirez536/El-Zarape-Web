@@ -19,7 +19,7 @@ function mostrarFormulario(index = null) {
     let idProducto = '';
     let nombre = '';
     let descripcion = '';
-    let imagen = "../../recursos/media/alimentos.jpg";  // Ruta de la imagen
+    let imagen = '';  // Ruta de la imagen
     let precio = '';
     let categoria = '';
     let activo = true;
@@ -34,7 +34,7 @@ function mostrarFormulario(index = null) {
         activo = alimento.producto.activo || false;
         categoria = alimento.producto && alimento.producto.idCategoria ? alimento.producto.idCategoria : '';
         // Usar la imagen existente si está disponible
-        imagen = alimento.producto.foto || imagen;
+        imagen = alimento.producto.foto || '';
     }
 
     // Mostrar el formulario con Swal
@@ -187,6 +187,15 @@ function mostrarFormulario(index = null) {
     </option>`;
         });
     }).catch(error => console.error('Error al cargar categorias:', error));
+    
+    // Vista previa de la imagen seleccionada
+    document.getElementById('producto-foto').addEventListener('change', function () {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('producto-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
 }
 
 // Agregar el evento change al input de archivo
