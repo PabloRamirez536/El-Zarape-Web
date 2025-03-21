@@ -212,8 +212,6 @@ function mostrarFormulario(index = null) {
                 datosCliente: JSON.stringify(clienteData),
                 token: token
             };
-
-            console.log(params);
             
             const requestOptions = {
                 method: 'POST',

@@ -7,20 +7,29 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.sql.SQLException;
 import org.utl.dsm.model.Categoria;
 import org.utl.dsm.controller.ControllerCategoria;
 import java.util.List;
+import org.utl.dsm.controller.ControllerUsuario;
 
 @Path("categoria")
 public class RESTCategoria {
-
-    @Path("insertCategoria")
+@Path("insertCategoria")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response insertCategoria(@FormParam("datosCategoria") @DefaultValue("") String categoria) {
+    public Response insertCategoria(@FormParam("datosCategoria") @DefaultValue("") String categoria, @FormParam("token") String token // Obtiene el token del encabezado
+    ) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al insertar la bebida\"}")
+                    .build();
+        }
         Gson gson = new Gson();
         ControllerCategoria cc = new ControllerCategoria();
         Categoria c = gson.fromJson(categoria, Categoria.class);
@@ -32,7 +41,15 @@ public class RESTCategoria {
     @Path("updateCategoria")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCategoria(@FormParam("datosCategoria") @DefaultValue("") String categoria) {
+    public Response updateCategoria(@FormParam("datosCategoria") @DefaultValue("") String categoria, @FormParam("token") String token // Obtiene el token del encabezado
+    ) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al actualizar la categorias\"}")
+                    .build();
+        }
         Gson gson = new Gson();
         String out;
         try {
@@ -54,7 +71,14 @@ public class RESTCategoria {
     @Path("getAllCategoria")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCategoria() {
+    public Response getAllCategoria(@QueryParam("token") String token) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al traer las categorias\"}")
+                    .build();
+        }
         List<Categoria> lista = null;
         Gson gson = new Gson();
         String out;
@@ -74,7 +98,15 @@ public class RESTCategoria {
     @Path("eliminarCategoria")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteCategoria(@FormParam("idCategoria") int idCategoria) throws SQLException {
+    public Response deleteCategoria(@FormParam("idCategoria") int idCategoria, @FormParam("token") String token // Obtiene el token del encabezado
+    ) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al eliminar la bebida\"}")
+                    .build();
+        }
         String out;
         ControllerCategoria cc = new ControllerCategoria();
         cc.delete(idCategoria);

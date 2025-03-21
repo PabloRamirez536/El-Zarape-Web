@@ -15,11 +15,10 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 import java.sql.SQLException;
 import org.utl.dsm.controller.ControllerAlimento;
-import org.utl.dsm.controller.ControllerBebida;
 import org.utl.dsm.controller.ControllerProducto;
+import org.utl.dsm.controller.ControllerUsuario;
 import org.utl.dsm.model.Alimento;
 import org.utl.dsm.model.Categoria;
-import org.utl.dsm.model.Producto;
 import org.utl.dsm.model.ProductoResponse;
 
 @Path("alimento")
@@ -28,7 +27,17 @@ public class RestAlimento extends Application {
     @Path("getAllAlimento")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllAlimento(@QueryParam("id") @DefaultValue("0") int id) {
+    public Response getAllAlimento(@QueryParam("token") String token) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+        System.out.println("Token recibido: " + token); // Depuración
+
+        // Verificar si el token es válido
+        if (token == null || cu.validateToken(token) == null) {
+            System.out.println("Token inválido o no presente"); // Depuración
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+
         List<Alimento> lista = null;
         Gson gson = new Gson();
         String out = null;
@@ -48,8 +57,14 @@ public class RestAlimento extends Application {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response insertAlimento(
-            @FormParam("datosAlimento") @DefaultValue("") String alimento
-    ) {
+            @FormParam("datosAlimento") @DefaultValue("") String alimento,
+            @FormParam("token") String token
+    ) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
         System.out.println(alimento);
         Gson gson = new Gson();
         ControllerAlimento cp = new ControllerAlimento();
@@ -63,7 +78,13 @@ public class RestAlimento extends Application {
     @Path("updateAlimento")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAlimento(@FormParam("datosAlimento") @DefaultValue("") String alimentoJson) {
+    public Response updateAlimento(@FormParam("datosAlimento") @DefaultValue("") String alimentoJson,
+            @FormParam("token") String token) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
         Alimento alimento = null;
         Gson gson = new Gson();
         String out;
@@ -87,7 +108,14 @@ public class RestAlimento extends Application {
     @Path("eliminarAlimento")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAlimento(@FormParam("idProducto") int idProducto) throws SQLException {
+    public Response deleteAlimento(@FormParam("idProducto") int idProducto,
+            @FormParam("token") String token
+    ) throws SQLException, Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
         System.out.println(idProducto);
         String out;
         ControllerAlimento cp = new ControllerAlimento();

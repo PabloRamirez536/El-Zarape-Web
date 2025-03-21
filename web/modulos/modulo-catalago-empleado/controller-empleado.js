@@ -221,9 +221,25 @@ function mostrarFormulario(index = null) {
     }).then((result) => {
         if (result.isConfirmed) {
             const empleadoData = result.value; // Asegúrate de que result.value tenga datos válidos.
+            const token = localStorage.getItem('token');
 
+            if (!token) { 
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, 
+                    showConfirmButton: false, 
+                    timerProgressBar: true 
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; 
+            }
+            
             let params = {
-                datosEmpleado: JSON.stringify(empleadoData)
+                datosEmpleado: JSON.stringify(empleadoData),
+                token: token
             };
 
             const requestOptions = {
@@ -301,7 +317,23 @@ function mostrarFormulario(index = null) {
 // Función para cargar y actualizar la tabla de empleados
 function actualizarEmpleado() {
     document.getElementById("busqueda-empleado").value = ""; // Limpia el campo de búsqueda
-    let ruta = "http://localhost:8080/Zarape/api/empleado/getAllEmpleados"; // Ruta de la API
+    
+    const token = localStorage.getItem('token');
+    if (!token) { // Validar si el token no existe
+        Swal.fire({
+            title: '¡Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000, // Duración de 5 segundos
+            showConfirmButton: false, // Oculta el botón de confirmación
+            timerProgressBar: true // Muestra la barra de progreso
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+        });
+        return; // Detener la ejecución
+    }
+    
+    let ruta = "http://localhost:8080/Zarape/api/empleado/getAllEmpleados?token=" + token; // Ruta de la API
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -368,9 +400,24 @@ function eliminarEmpleado(index) {
     }).then((result) => {
         if (result.isConfirmed) {
             const empleadoId = empleado.idEmpleado;
+            const token = localStorage.getItem('token');
+
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
 
             // Crear el objeto con los parámetros para la solicitud
-            const params = {idEmpleado: empleadoId};
+            const params = {idEmpleado: empleadoId, token: token};
 
             // Hacer la solicitud POST (simulando eliminación lógica)
             fetch('http://localhost:8080/Zarape/api/empleado/eliminarEmpleado', {

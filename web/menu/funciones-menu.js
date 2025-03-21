@@ -155,7 +155,22 @@ window.onclick = function (event) {
 }
 
 function actualizarTarjetasAlimentos() {
-    let ruta = "http://localhost:8080/Zarape/api/alimento/getAllAlimento";
+    const token = localStorage.getItem('tokenCliente');
+    if (!token) { // Validar si el token no existe
+        Swal.fire({
+            title: '¡Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000, // Duración de 5 segundos
+            showConfirmButton: false, // Oculta el botón de confirmación
+            timerProgressBar: true // Muestra la barra de progreso
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+        });
+        return; // Detener la ejecución
+    }
+    
+    let ruta = "http://localhost:8080/Zarape/api/alimento/getAllAlimento?token=" + token;
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -216,7 +231,22 @@ function actualizarTarjetasAlimentos() {
 }
 
 function actualizarTarjetasBebidas() {
-    let ruta = "http://localhost:8080/Zarape/api/bebida/getAllBebida";
+    const token = localStorage.getItem('tokenCliente');
+    if (!token) { // Validar si el token no existe
+        Swal.fire({
+            title: '¡Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000, // Duración de 5 segundos
+            showConfirmButton: false, // Oculta el botón de confirmación
+            timerProgressBar: true // Muestra la barra de progreso
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+        });
+        return; // Detener la ejecución
+    }
+    
+    let ruta = "http://localhost:8080/Zarape/api/bebida/getAllBebida?token=" + token;
     fetch(ruta)
             .then(response => response.json())
             .then(data => {

@@ -5,7 +5,6 @@
 package org.utl.dsm.rest;
 
 import com.google.gson.Gson;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -15,13 +14,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.Base64;
 import java.util.List;
 import org.utl.dsm.controller.ControllerBebida;
+import org.utl.dsm.controller.ControllerUsuario;
 import org.utl.dsm.model.Bebida;
 import org.utl.dsm.model.Categoria;
 
@@ -36,37 +32,63 @@ public class RESTBebida {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response insertBebida(
-            @FormParam("datosBebida") @DefaultValue("") String bebida
-    ) {
+            @FormParam("datosBebida") @DefaultValue("") String bebida,
+            @FormParam("token") String token // Obtiene el token del encabezado
+    ) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+           return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al insertar la bebida\"}")
+                    .build();
+        }
+
         System.out.println(bebida);
         Gson gson = new Gson();
         ControllerBebida cp = new ControllerBebida();
         Bebida b = gson.fromJson(bebida, Bebida.class);
         System.out.println("Bebida:" + b.getProducto().getNombre());
-        cp.insertBebidaObjeto(b);
-        String out = gson.toJson(b);
-        return Response.status(Response.Status.CREATED).entity(out).build();
+
+        try {
+            cp.insertBebidaObjeto(b);
+            String out = gson.toJson(b);
+            return Response.status(Response.Status.CREATED).entity(out).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"message\": \"Error al insertar la bebida\"}")
+                    .build();
+        }
     }
 
     @Path("updateBebida")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBebida(@FormParam("datosBebida") @DefaultValue("") String bebidaJson) {
-        Bebida bebida = null;
+    public Response updateBebida(
+            @FormParam("datosBebida") @DefaultValue("") String bebidaJson,
+            @FormParam("token") String token // Obtiene el token del encabezado
+    ) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al actualizar la bebida\"}")
+                    .build();
+        }
+
+        Bebida bebida;
         Gson gson = new Gson();
         String out;
-        System.out.println(bebidaJson);
+
         try {
             bebida = gson.fromJson(bebidaJson, Bebida.class);
-            // Aquí puedes procesar la imagen si la necesitas
-            // Foto procesada como InputStream, por ejemplo, guardarla en el servidor
-
             ControllerBebida controller = new ControllerBebida();
             controller.updateBebidaObjeto(bebida);
             out = "{\"result\":\"Bebida actualizada con éxito\"}";
         } catch (Exception e) {
             e.printStackTrace();
             out = "{\"result\":\"Error en la actualización\"}";
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(out).build();
         }
 
         return Response.ok(out).build();
@@ -75,62 +97,74 @@ public class RESTBebida {
     @Path("getAllBebida")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllBebida(@QueryParam("id") @DefaultValue("0") int id) {
-        List<Bebida> lista = null;
+    public Response getAllBebida(@QueryParam("token") String token) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al traer las bebida\"}")
+                    .build();
+        }
+        List<Bebida> lista;
         Gson gson = new Gson();
-        String out = null;
-        ControllerBebida cs = null;
+
         try {
-            cs = new ControllerBebida();
+            ControllerBebida cs = new ControllerBebida();
             lista = cs.getAllObjetoBebida();
-            out = gson.toJson(lista);
+            String out = gson.toJson(lista);
+            return Response.ok(out).build();
         } catch (Exception e) {
             e.printStackTrace();
-            out = """
-              {"result":"Error de servidor"}
-              """;
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"result\":\"Error de servidor\" \"token:\" " +token+"\" }")
+                    .build();
         }
-        return Response.ok(out).build();
     }
 
     @Path("getAllCategoriaBebida")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCategoriaBebida(@QueryParam("id") @DefaultValue("0") int id) {
-        List<Categoria> lista = null;
+        List<Categoria> lista;
         Gson gson = new Gson();
-        String out = null;
-        ControllerBebida cs = null;
+
         try {
-            cs = new ControllerBebida();
+            ControllerBebida cs = new ControllerBebida();
             lista = cs.getAllCategoriaBebida();
-            out = gson.toJson(lista);
+            String out = gson.toJson(lista);
+            return Response.ok(out).build();
         } catch (Exception e) {
             e.printStackTrace();
-            out = """
-              {"result":"Error de servidor"}
-              """;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"result\":\"Error de servidor\"}")
+                    .build();
         }
-        return Response.ok(out).build();
     }
 
     @Path("eliminarBebida")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deletePersona(@FormParam("idProducto") int idProducto) {
-        System.out.println(idProducto);
+    public Response eliminarBebida(
+            @FormParam("idProducto") int idProducto,
+            @FormParam("token") String token // Obtiene el token del encabezado
+    ) throws Exception{
+        ControllerUsuario cu = new ControllerUsuario();
+
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"message\": \"Error al eliminar la bebida\"}")
+                    .build();
+        }
+
         String out;
         ControllerBebida cp = new ControllerBebida();
         try {
             cp.eliminarBebida(idProducto);
-            out = """
-                {"result":"Registro eliminado correctamente"}
-            """;
+            out = "{\"result\":\"Registro eliminado correctamente\"}";
         } catch (SQLException e) {
             e.printStackTrace();
-            out = """
-                {"result":"Error al eliminar el registro"}
-            """;
+            out = "{\"result\":\"Error al eliminar el registro\"}";
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(out).build();
         }
         return Response.ok(out).build();
     }

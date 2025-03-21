@@ -75,27 +75,34 @@ function mostrarFormulario(index = null) {
 
     Swal.fire({
         title: titulo,
-        html: `
-            <form id="formulario-sucursal-modal">
+        html: `<form id="formulario-sucursal-modal">
         <label for="sucursal-nombre">Nombre:</label><br>
-        <input type="text" id="sucursal-nombre" class="swal2-input" value="${nombre}"><br>
+        <input type="text" id="sucursal-nombre" class="swal2-input" value="${nombre}" 
+        maxlength="65" required pattern="[a-zA-Z0-9\\s]+"><br>
         <label for="sucursal-latitud">Latitud:</label><br>
-        <input type="text" id="sucursal-latitud" class="swal2-input" value="${latitud}"><br>
+        <input type="text" id="sucursal-latitud" class="swal2-input" value="${latitud}" maxlength="9" required 
+        pattern="^(-?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?))$"><br>
         <label for="sucursal-longitud">Longitud:</label><br>
-        <input type="text" id="sucursal-longitud" class="swal2-input" value="${longitud}"><br>
+        <input type="text" id="sucursal-longitud" class="swal2-input" value="${longitud}" maxlength="10" 
+        required pattern="^(-?([1-1]?\\d{1,2}(\\.\\d+)?|180(\\.0+)?))$"><br>
         <label for="sucursal-foto">Foto:</label><br>
-        <input type="file" id="sucursal-foto" class="swal2-input" accept="image/*"><br>
+        <input type="file" id="sucursal-foto" class="swal2-input" accept=".jpg, .png" required><br>
         <img id="sucursal-preview" src="${foto}" style="max-width: 100%; max-height: 150px; margin-top: 10px;"><br>
         <label for="sucursal-url-web">URL Página Web:</label><br>
-        <input type="text" id="sucursal-url-web" class="swal2-input" value="${urlWeb}"><br>
+        <input type="text" id="sucursal-url-web" class="swal2-input" value="${urlWeb}" maxlength="65" 
+        pattern="https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}" required><br>
         <label for="sucursal-horarios">Horarios:</label><br>
-        <input type="text" id="sucursal-horarios" class="swal2-input" value="${horarios}"><br>
+        <input type="text" id="sucursal-horarios" class="swal2-input" value="${horarios}" maxlength="13" 
+        pattern="^([01]?[0-9]|2[0-3]):([0-5]?[0-9])\\s?a\\s?([01]?[0-9]|2[0-3]):([0-5]?[0-9])$" required><br>
         <label for="sucursal-calle">Calle:</label><br>
-        <input type="text" id="sucursal-calle" class="swal2-input" value="${calle}"><br>
+        <input type="text" id="sucursal-calle" class="swal2-input" value="${calle}" maxlength="65" 
+        pattern="^[a-zA-Z0-9\\s,.-#]+$" required><br>
         <label for="sucursal-num-calle">Número Calle:</label><br>
-        <input type="text" id="sucursal-num-calle" class="swal2-input" value="${numCalle}"><br>
+        <input type="text" id="sucursal-num-calle" class="swal2-input" value="${numCalle}" maxlength="65" 
+        pattern="^[a-zA-Z0-9\\-]+$" required><br>
         <label for="sucursal-colonia">Colonia:</label><br>
-        <input type="text" id="sucursal-colonia" class="swal2-input" value="${colonia}"><br>
+        <input type="text" id="sucursal-colonia" class="swal2-input" value="${colonia}" maxlength="65" 
+        pattern="^[a-zA-Z0-9\\s.,'-]+$" required><br>
         <label for="sucursal-estado">Estado:</label><br>
         <select id="sucursal-estado" class="swal2-input">
             <option value="">Selecciona un estado</option>
@@ -105,9 +112,9 @@ function mostrarFormulario(index = null) {
             <option value="">Selecciona una ciudad</option>
         </select><br>
         <label for="sucursal-estatus">Estatus:</label><br>
-        <input type="checkbox" id="sucursal-activo" class="swal2-checkbox" ${activo ? 'checked' : ''}>
-            </form>
-        `,
+        <input type="checkbox" id="sucursal-activo" class="swal2-checkbox" ${activo ? 'checked' : ''} ${index
+                === null ? 'disabled' : ''}>
+    </form>`,
         showCancelButton: true,
         confirmButtonColor: '#805A3B',
         cancelButtonColor: '#C60000',
@@ -126,10 +133,71 @@ function mostrarFormulario(index = null) {
             let estadoNuevo = document.getElementById('sucursal-estado').value;
             let activoNuevo = document.getElementById('sucursal-activo').checked;
 
-            // Validar que los campos no estén vacíos
-            if (!nombreNuevo || !latitudNueva || !longitudNueva || !urlWebNueva || !horariosNuevos || !calleNueva || !numCalleNuevo || !coloniaNueva || !ciudadNueva || !estadoNuevo) {
-                Swal.showValidationMessage('Por favor, complete todos los campos.');
+//            // Validar que los campos no estén vacíos
+//            if (!nombreNuevo || !latitudNueva || !longitudNueva || !urlWebNueva || !horariosNuevos || !calleNueva || !numCalleNuevo || !coloniaNueva || !ciudadNueva || !estadoNuevo) {
+//                Swal.showValidationMessage('Por favor, complete todos los campos.');
+//                return false;
+//            }
+
+            // Validaciones
+            if (!nombreNuevo || !/^[a-zA-Z0-9\s]{1,65}$/.test(nombreNuevo)) {
+                Swal.showValidationMessage('El nombre es obligatorio y debe contener solo letras, números y espacios (máximo 65 caracteres).');
                 return false;
+            }
+
+            if (!latitudNueva || !/^(-?([1-8]?\d(\.\d+)?|90(\.0+)?))$/.test(latitudNueva)) {
+                Swal.showValidationMessage('La latitud es obligatoria y debe estar en un rango válido (-90.0 a 90.0).');
+                return false;
+            }
+
+            if (!longitudNueva || !/^(-?([1-1]?\d{1,2}(\.\d+)?|180(\.0+)?))$/.test(longitudNueva)) {
+                Swal.showValidationMessage('La longitud es obligatoria y debe estar en un rango válido (-180.0 a 180.0).');
+                return false;
+            }
+
+            if (!urlWebNueva || !/^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(urlWebNueva)) {
+                Swal.showValidationMessage('El URL de la página web es obligatorio y debe tener un formato válido (ejemplo: https://example.com).');
+                return false;
+            }
+
+            if (!horariosNuevos || !/^([01]?[0-9]|2[0-3]):([0-5]?[0-9])\s?a\s?([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/.test(horariosNuevos)) {
+                Swal.showValidationMessage('El horario es obligatorio y debe estar en el formato HH:MM a HH:MM.');
+                return false;
+            }
+
+            if (!calleNueva || !/^[a-zA-Z0-9\s,.\-#]{1,65}$/.test(calleNueva)) {
+                Swal.showValidationMessage('La calle es obligatoria y debe tener un formato válido (máximo 65 caracteres).');
+                return false;
+            }
+
+
+            if (!numCalleNuevo || !/^[a-zA-Z0-9\-]{1,65}$/.test(numCalleNuevo)) {
+                Swal.showValidationMessage('El número de calle es obligatorio y debe tener un formato válido (máximo 65 caracteres).');
+                return false;
+            }
+
+            if (!coloniaNueva || !/^[a-zA-Z0-9\s.,'-]{1,65}$/.test(coloniaNueva)) {
+                Swal.showValidationMessage('La colonia es obligatoria y debe tener un formato válido (máximo 65 caracteres).');
+                return false;
+            }
+
+            if (!estadoNuevo) {
+                Swal.showValidationMessage('Por favor, seleccione un estado.');
+                return false;
+            }
+
+            if (!ciudadNueva) {
+                Swal.showValidationMessage('Por favor, seleccione una ciudad.');
+                return false;
+            }
+
+            if (document.getElementById('sucursal-foto').files[0]) {
+                const file = document.getElementById('sucursal-foto').files[0];
+                const allowedExtensions = ['image/jpeg', 'image/png'];
+                if (!allowedExtensions.includes(file.type)) {
+                    Swal.showValidationMessage('El archivo de foto debe ser de tipo .jpg o .png.');
+                    return false;
+                }
             }
 
             return Promise.resolve({
@@ -151,8 +219,25 @@ function mostrarFormulario(index = null) {
     }).then((result) => {
         if (result.isConfirmed) {
             const sucursalData = result.value;
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html';
+                });
+                return;
+            }
+
             let params = {
-                datosSucursal: JSON.stringify(sucursalData)
+                datosSucursal: JSON.stringify(sucursalData),
+                token: token
             };
             const requestOptions = {
                 method: 'POST',
@@ -223,7 +308,21 @@ function mostrarFormulario(index = null) {
 
 // Función para cargar y actualizar la tabla de sucursales
 function cargarTablaSucursales() {
-    let ruta = "http://localhost:8080/Zarape/api/sucursal/getAllSucursales";
+    const token = localStorage.getItem('token');
+    if (!token) {
+        Swal.fire({
+            title: '¡Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000,
+            showConfirmButton: false,
+            timerProgressBar: true
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html';
+        });
+        return;
+    }
+    let ruta = "http://localhost:8080/Zarape/api/sucursal/getAllSucursales?token=" + token;
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -261,14 +360,14 @@ function cargarTablaSucursales() {
             .catch(error => console.error('Error al cargar sucursales:', error));
 }
 
-
 window.onload = function () {
-    cargarTablaSucursales(); // Asegúrate de cargar las bebidas al inicio
+    cargarTablaSucursales();
 };
+
 /// Función para eliminar una sucursal
 function eliminarSucursal(index) {
-    
-     // Obtener el producto
+
+    // Obtener el producto
     const sucursalesIn = sucursales[index];
     // Verificar si el producto ya está inactivo
     if (!sucursalesIn.activo) {
@@ -294,7 +393,23 @@ function eliminarSucursal(index) {
     }).then((result) => {
         if (result.isConfirmed) {
             const SucursalId = sucursales[index].idSucursal;
-            const params = {idSucursal: SucursalId};
+            const token = localStorage.getItem('token');
+            
+            if(!token){
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html';
+                });
+                return;
+            }
+            
+            const params = {idSucursal: SucursalId, token:token};
 
             fetch('http://localhost:8080/Zarape/api/sucursal/deleteSucursal', {
                 method: 'POST',
@@ -308,7 +423,7 @@ function eliminarSucursal(index) {
                         return response.json();
                     })
                     .then(data => {
-                        
+
                         if (data.result === "Sucursal eliminada correctamente") {
                             sucursales[index].estatus = "Inactivo";
                             cargarTablaSucursales();

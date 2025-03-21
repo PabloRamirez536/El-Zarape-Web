@@ -17,6 +17,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 import org.utl.dsm.controller.ControllerEmpleado;
+import org.utl.dsm.controller.ControllerUsuario;
 import org.utl.dsm.model.Empleado;
 import org.utl.dsm.model.Sucursal;
 
@@ -26,11 +27,17 @@ import org.utl.dsm.model.Sucursal;
  */
 @Path("empleado")
 public class RESTEmpleado {
-    
+
     @Path("getAllEmpleados")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllEmpleados(@QueryParam("id") @DefaultValue("0") int id) {
+    public Response getAllEmpleados(@QueryParam("token") String token) throws Exception {
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+
         List<Empleado> lista = null;
         Gson gson = new Gson();
         String out = null;
@@ -39,7 +46,7 @@ public class RESTEmpleado {
         try {
             cs = new ControllerEmpleado();
             lista = cs.getAllEmpleados();
-            out = gson.toJson(lista); 
+            out = gson.toJson(lista);
         } catch (Exception e) {
             e.printStackTrace();
             out = """
@@ -54,8 +61,14 @@ public class RESTEmpleado {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response insertEmpleado(
-            @FormParam("datosEmpleado") @DefaultValue("") String datosEmpleado
-    ) {
+            @FormParam("datosEmpleado")String datosEmpleado,
+            @FormParam("token") String token) throws Exception{
+        
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
         String out = "";
         try {
             Gson gson = new Gson();
@@ -79,8 +92,15 @@ public class RESTEmpleado {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response actualizarEmpleado(
-            @FormParam("datosEmpleado") @DefaultValue("") String datosEmpleado
-    ) {
+            @FormParam("datosEmpleado") String datosEmpleado,
+            @FormParam("token") String token) throws Exception {
+        
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
+        
         String out = "";
         try {
             Gson gson = new Gson();
@@ -103,7 +123,14 @@ public class RESTEmpleado {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response eliminarEmpleado(@FormParam("idEmpleado") int idEmpleado) {
+    public Response eliminarEmpleado(@FormParam("idEmpleado") int idEmpleado,
+            @FormParam("token") String token) throws Exception {
+        
+        ControllerUsuario cu = new ControllerUsuario();
+        if (cu.validateToken(token) == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\": \"Token no válido\"}").build();
+        }
         ControllerEmpleado controllerEmpleado = new ControllerEmpleado();
         try {
             controllerEmpleado.eliminarEmpleado(idEmpleado); // Llamada a la función de eliminación lógica
@@ -113,7 +140,7 @@ public class RESTEmpleado {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"result\":\"Error al eliminar cliente\"}").build();
         }
     }
-    
+
     @Path("getAllSucursalesActivas")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -135,7 +162,5 @@ public class RESTEmpleado {
         }
         return Response.ok(out).build();
     }
-    
-    
-    
+
 }

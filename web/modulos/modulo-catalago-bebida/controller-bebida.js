@@ -134,9 +134,25 @@ function mostrarFormulario(index = null) {
         }
     }).then((result) => {
         if (result.isConfirmed) {
+            
             const bebidaData = result.value;
+            const token = localStorage.getItem('token');
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: 'Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
             let params = {
-                datosBebida: JSON.stringify(bebidaData)
+                datosBebida: JSON.stringify(bebidaData),
+                token : token
             };
             const requestOptions = {
                 method: 'POST',
@@ -204,7 +220,25 @@ function previewImage(event) {
 
 
 function actualizarTablaBebidas() {
-    let ruta = "http://localhost:8080/Zarape/api/bebida/getAllBebida";
+    const token = localStorage.getItem('token');
+    if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: 'Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
+    let ruta = "http://localhost:8080/Zarape/api/bebida/getAllBebida?token=" + token;
+    const requestOptions = {
+        method: 'GET'
+    };
+
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -269,9 +303,21 @@ function eliminarProductoBebida(index) {
     }).then((result) => {
         if (result.isConfirmed) {
             const bebidaId = productoBebida.idProducto;
-            // Crear el objeto con los parámetros para la solicitud
-            const params = {idProducto: bebidaId};
-            // Hacer la solicitud POST (simulando eliminación lógica)
+            const token = localStorage.getItem('token');
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: 'Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
+            const params = { idProducto: bebidaId, token: token };
             fetch('http://localhost:8080/Zarape/api/bebida/eliminarBebida', {
                 method: 'POST', // Usamos POST ya que el backend espera esta solicitud
                 headers: {

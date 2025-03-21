@@ -143,7 +143,7 @@ public class ControllerUsuario {
         ConexionMysql conexion = new ConexionMysql();
         Connection conn = conexion.open();
 
-        String sql = "SELECT nombre FROM usuario WHERE lastToken = ?;";
+        String sql = "SELECT nombre FROM usuario WHERE lastToken = ? AND NOT lastToken = '';";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, token);
 

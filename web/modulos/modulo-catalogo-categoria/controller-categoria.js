@@ -51,9 +51,24 @@ function mostrarFormulario(index = null) {
     }).then((result) => {
         if (result.isConfirmed) {
             const categoriaData = result.value;
+            const token = localStorage.getItem('token');
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: 'Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
 
             let params = {
-                datosCategoria: JSON.stringify(categoriaData)
+                datosCategoria: JSON.stringify(categoriaData),
+                token: token // Incluir el token en los parámetros
             };
 
             const requestOptions = {
@@ -85,7 +100,22 @@ function mostrarFormulario(index = null) {
 }
 
 function actualizarTablaCategorias() {
-    let ruta = "http://localhost:8080/Zarape/api/categoria/getAllCategoria";
+    const token = localStorage.getItem('token');
+    if (!token) { // Validar si el token no existe
+        Swal.fire({
+            title: 'Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000, // Duración de 5 segundos
+            showConfirmButton: false, // Oculta el botón de confirmación
+            timerProgressBar: true // Muestra la barra de progreso
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+        });
+        return; // Detener la ejecución
+    }
+
+    let ruta = "http://localhost:8080/Zarape/api/categoria/getAllCategoria?token=" + token; // Incluir el token en la URL
     fetch(ruta)
         .then(response => response.json())
         .then(data => {
@@ -150,9 +180,23 @@ function eliminarCategoria(index) {
     }).then((result) => {
         if (result.isConfirmed) {
             const categoriaId = categoria.idCategoria;
+            const token = localStorage.getItem('token');
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: 'Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
 
             // Crear el objeto con los parámetros para la solicitud
-            const params = {idCategoria: categoriaId};
+            const params = { idCategoria: categoriaId, token: token }; // Incluir el token
 
             // Hacer la solicitud POST (simulando eliminación lógica)
             fetch('http://localhost:8080/Zarape/api/categoria/eliminarCategoria', {

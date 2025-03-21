@@ -82,11 +82,6 @@ function mostrarFormulario(index = null) {
                 return false;
             }
 
-            // Validar imagen seleccionada
-            if (fotoInput.files.length === 0 || !/(\.jpg|\.png)$/i.test(fotoInput.files[0].name)) {
-                Swal.showValidationMessage('Por favor, seleccione una imagen válida (.jpg, .png).');
-                return false;
-            }
             // Validar precio
             if (!precioNuevo || !/^\d+(\.\d{1,2})?$/.test(precioNuevo) || parseFloat(precioNuevo) < 0 || parseFloat(precioNuevo) > 99.99) {
                 Swal.showValidationMessage('El precio debe ser un número entre 0 y 99.99, con hasta dos decimales.');
@@ -142,8 +137,24 @@ function mostrarFormulario(index = null) {
     }).then((result) => {
         if (result.isConfirmed) {
             const alimentoData = result.value;
+            const token = localStorage.getItem('token');
+
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
             let params = {
-                datosAlimento: JSON.stringify(alimentoData)
+                datosAlimento: JSON.stringify(alimentoData),
+                token: token
             };
             const requestOptions = {
                 method: 'POST',
@@ -215,7 +226,21 @@ function previewImage(event) {
 
 // Actualizar la tabla de alimentos
 function actualizarTablaAlimentos() {
-    let ruta = "http://localhost:8080/Zarape/api/alimento/getAllAlimento";
+    const token = localStorage.getItem('token');
+    if (!token) { // Validar si el token no existe
+        Swal.fire({
+            title: '¡Acceso denegado!',
+            text: 'Debes iniciar sesión para realizar esta acción.',
+            icon: 'warning',
+            timer: 5000, // Duración de 5 segundos
+            showConfirmButton: false, // Oculta el botón de confirmación
+            timerProgressBar: true // Muestra la barra de progreso
+        }).then(() => {
+            window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+        });
+        return; // Detener la ejecución
+    }
+    let ruta = "http://localhost:8080/Zarape/api/alimento/getAllAlimento?token=" + token;
     fetch(ruta)
             .then(response => response.json())
             .then(data => {
@@ -280,9 +305,24 @@ function eliminarAlimento(index) {
     }).then((result) => {
         if (result.isConfirmed) {
             const alimentoId = productoAlimento.idProducto;
+            const token = localStorage.getItem('token');
 
-            // Crear los parámetros para la solicitud
-            const params = {idProducto: alimentoId};
+            if (!token) { // Validar si el token no existe
+                Swal.fire({
+                    title: '¡Acceso denegado!',
+                    text: 'Debes iniciar sesión para realizar esta acción.',
+                    icon: 'warning',
+                    timer: 5000, // Duración de 5 segundos
+                    showConfirmButton: false, // Oculta el botón de confirmación
+                    timerProgressBar: true // Muestra la barra de progreso
+                }).then(() => {
+                    window.location.href = '../../gestion/gestion-login/view-login.html'; // Redirige a la página de inicio de sesión
+                });
+                return; // Detener la ejecución
+            }
+
+            // Crear el objeto con los parámetros para la solicitud
+            const params = {idProducto: alimentoId, token: token};
 
             // Hacer la solicitud POST para eliminar (marcar como inactivo)
             fetch('http://localhost:8080/Zarape/api/alimento/eliminarAlimento', {

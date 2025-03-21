@@ -79,11 +79,13 @@ public class RestUsuario {
             valido = cu.loginCliente(nombre, contrasenia, clienteData);
             if (valido) {
                 HttpSession session = request.getSession();
+                String token = cu.checkUser(nombre);
                 session.setAttribute("usuario", nombre);
 
                 response.addProperty("status", "success");
                 response.addProperty("message", "Usuario válido");
                 response.addProperty("idCliente", clienteData[0]); // ID del cliente
+                response.addProperty("token", token);
             } else {
                 response.addProperty("status", "fail");
                 response.addProperty("message", "Credenciales incorrectas");
