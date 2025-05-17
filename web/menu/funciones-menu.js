@@ -13,14 +13,10 @@ function actualizarComanda() {
     comandaLista.innerHTML = '';
 
     if (allProducts.length === 0) {
-        // Mostrar mensaje si no hay productos en la comanda
         comandaLista.innerHTML = '<div class="alert alert-info">La comanda está vacía.</div>';
-
-        // Establecer subtotal, IVA y total a cero
         document.getElementById('subtotal').innerText = '0.00';
         document.getElementById('iva').innerText = '0.00';
         document.getElementById('total').innerText = '0.00';
-
         return; // Salir si la comanda está vacía
     }
 
@@ -28,8 +24,12 @@ function actualizarComanda() {
     allProducts.forEach((product, index) => {
         comandaLista.innerHTML += `
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <div class="flex-grow-1" style="font-size: 1.2em;">
-                    ${product.quantity} x ${product.title} ($${(product.price).toFixed(2)})
+                <div class="d-flex align-items-center" style="width: 100%;">
+                    <button class="btn btn-sm btn-secondary" onclick="actualizarCantidad(${index}, -1)" style="margin-right: 5px;">-</button>
+                    <span style="font-size: 1.2em; flex-grow: 1;">
+                        <strong>${product.quantity} </strong> x ${product.title} ($${(product.price).toFixed(2)})
+                    </span>
+                    <button class="btn btn-sm btn-secondary" onclick="actualizarCantidad(${index}, 1)" style="margin-left: 5px; margin-right: 10px;">+</button>
                 </div>
                 <div style="font-size: 1.2em; margin-right: 10px;">
                     $${(product.price * product.quantity).toFixed(2)}
@@ -46,6 +46,15 @@ function actualizarComanda() {
     document.getElementById('subtotal').innerText = subtotal.toFixed(2);
     document.getElementById('iva').innerText = iva.toFixed(2);
     document.getElementById('total').innerText = total.toFixed(2);
+}
+
+function actualizarCantidad(index, change) {
+    if (allProducts[index].quantity + change >= 1) {
+        allProducts[index].quantity += change;
+    }else{
+        eliminarProducto(index);
+    }
+    actualizarComanda(); // Actualiza la comanda después de cambiar la cantidad
 }
 
 

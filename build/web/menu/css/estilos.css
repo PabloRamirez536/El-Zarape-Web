@@ -237,3 +237,69 @@
 .formulario-tarjeta .btn-enviar:hover{
     background: #1850b1;
 }
+.icon-button {
+    background: none;
+    border: none;
+    padding: 1em;
+    cursor: pointer;
+    margin-right: 5px;
+    width: 100px;
+    height: 100px;
+     position: relative; 
+}
+.group-button {
+    align-items: center;
+    display: flex;
+    justify-content: center; /* Cambia flex-start a center */
+    gap: 10px;
+}
+.icon-acciones {
+    display: block;
+    width: 40px;
+    height: auto;
+}
+
+.hover {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    display: none;
+}
+
+
+.icon-button:hover .normal {
+    display: none
+}
+
+.icon-button:hover .hover {
+    display: block; 
+}
+.producto-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px; 
+}
+
+.producto-nombre {
+    flex: 1;
+    font-size: 14px;
+}
+
+.producto-cantidad {
+    width: 60px;
+    font-size: 14px;
+}
+
+.comanda-header {
+    font-size: 1.5em; /* Ajusta el tamaño según sea necesario */
+}
+
+.producto-item {
+    font-size: 1.5em; /* Ajusta el tamaño según sea necesario */
+}
+
+.producto-nombre {
+    font-size: 1.2em; /* Ajusta el tamaño según sea necesario */
+}
+

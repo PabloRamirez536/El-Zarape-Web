@@ -19,6 +19,7 @@ import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
+import java.util.Map;
 
 /**
  *
@@ -33,7 +34,7 @@ public class RestUsuario {
     public Response loginEmpleado(
             @FormParam("nombre") String nombre,
             @FormParam("contrasenia") String contrasenia,
-            @Context HttpServletRequest request // Agregar solicitud HTTP
+            @Context HttpServletRequest request
     ) {
         ControllerUsuario cu = new ControllerUsuario();
         boolean valido;
@@ -42,14 +43,19 @@ public class RestUsuario {
         try {
             valido = cu.loginEmpleado(nombre, contrasenia);
             if (valido) {
-                String token = cu.checkUser(nombre);
+                Map<String, Object> userData = cu.checkUser(nombre);
+                String token = (String) userData.get("token");
+                int rol = (int) userData.get("rol");
+
                 // Inicia la sesión
                 HttpSession session = request.getSession();
-                session.setAttribute("usuario", nombre); // Almacena el usuario en la sesión
+                session.setAttribute("usuario", nombre);
+                session.setAttribute("rol", rol);
 
                 response.addProperty("status", "success");
                 response.addProperty("message", "Usuario válido");
                 response.addProperty("token", token);
+                response.addProperty("rol", rol);
             } else {
                 response.addProperty("status", "fail");
                 response.addProperty("message", "Credenciales incorrectas");
@@ -78,8 +84,9 @@ public class RestUsuario {
         try {
             valido = cu.loginCliente(nombre, contrasenia, clienteData);
             if (valido) {
+                Map<String, Object> userData = cu.checkUser(nombre);
                 HttpSession session = request.getSession();
-                String token = cu.checkUser(nombre);
+                String token = (String) userData.get("token");
                 session.setAttribute("usuario", nombre);
 
                 response.addProperty("status", "success");
@@ -137,19 +144,18 @@ public class RestUsuario {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkingUser(@QueryParam("nombreU") @DefaultValue("") String nombreU) {
-        String out = null;
-        String usuario = null;
+        String out;
+        Map<String, Object> usuarioInfo = null; // Cambia el tipo a Map
         ControllerUsuario cu = new ControllerUsuario();
 
         try {
-            usuario = cu.checkUser(nombreU);
-            out = new Gson().toJson(usuario);
+            usuarioInfo = cu.checkUser(nombreU);
+            out = new Gson().toJson(usuarioInfo); // Convierte el mapa a JSON
         } catch (Exception e) {
             out = """
-                  {"error": "Por ahi no joven"}
-                  """;
+              {"error": "Por ahí no joven"}
+              """;
             System.out.println(e.getMessage());
-
         }
         return Response.status(Response.Status.OK).entity(out).build();
     }
@@ -211,5 +217,4 @@ public class RestUsuario {
                     .build();
         }
     }
-
 }

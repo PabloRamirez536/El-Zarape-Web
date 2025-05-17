@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.utl.dsm.bd.ConexionMysql;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -75,40 +77,49 @@ public class ControllerUsuario {
         return valido;
     }
 
-    public String checkUser(String nombreU) throws Exception {
-        String sql = "SELECT * FROM usuario WHERE nombre =" + "'" + nombreU + "';";
-        ConexionMysql conexion = new ConexionMysql();
-        Connection conn = conexion.open();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        ResultSet rs = pstmt.executeQuery();
-        String name = null;
-        String tok = null;
-        String takenizer = null;
-        Date myDate = new Date();
-        String fecha = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss").format(myDate);
-        String sql2 = "";
-        while (rs.next()) {
-            name = rs.getString("nombre");
-            tok = rs.getString(6);
-            tok = tok.trim();
+public Map<String, Object> checkUser(String nombreU) throws Exception {
+    String sql = "SELECT * FROM usuario WHERE nombre =" + "'" + nombreU + "';";
+    ConexionMysql conexion = new ConexionMysql();
+    Connection conn = conexion.open();
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    ResultSet rs = pstmt.executeQuery();
+    String name = null;
+    int rol = 0;
+    String tok = null;
+    String takenizer = null;
+    Date myDate = new Date();
+    String fecha = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss").format(myDate);
+    String sql2 = "";
+    
+    Map<String, Object> result = new HashMap<>();
+    
+    while (rs.next()) {
+        name = rs.getString("nombre");
+        rol = rs.getInt("rol");
+        tok = rs.getString(6);
+        tok = tok.trim();
 
-            if (!tok.isEmpty()) {
-                takenizer = tok;
-                sql2 = "UPDATE usuario SET dateLastToken = '" + fecha + "' WHERE nombre = '" + name + "';";
-            } else {
-                String token = "ZARAPE" + "." + name + "." + fecha;
-                takenizer = DigestUtils.md5Hex(token);
-                sql2 = "UPDATE usuario SET lastToken = '" + takenizer + "', dateLastToken = '" + fecha + "' WHERE nombre = '" + name + "';";
-            }
-            Connection connect = conexion.open();
-            PreparedStatement ps = connect.prepareStatement(sql2);
-            ps.executeUpdate();
-
-            return takenizer;
+        if (!tok.isEmpty()) {
+            takenizer = tok;
+            sql2 = "UPDATE usuario SET dateLastToken = '" + fecha + "' WHERE nombre = '" + name + "';";
+        } else {
+            String token = "ZARAPE" + "." + name + "." + fecha;
+            takenizer = DigestUtils.md5Hex(token);
+            sql2 = "UPDATE usuario SET lastToken = '" + takenizer + "', dateLastToken = '" + fecha + "' WHERE nombre = '" + name + "';";
         }
-        return name;
+        Connection connect = conexion.open();
+        PreparedStatement ps = connect.prepareStatement(sql2);
+        ps.executeUpdate();
 
+        result.put("token", takenizer);
+        result.put("rol", rol);
+        return result;
     }
+    
+    result.put("name", name);
+    result.put("rol", rol);
+    return result;
+}
 
     public boolean closeCheckUser(String nombreU) throws Exception {
         String sql = "UPDATE usuario SET lastToken = '' WHERE nombre = ?;";

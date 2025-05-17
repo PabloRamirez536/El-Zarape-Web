@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Comandas</title>
+        <link rel="shortcut icon" href="../recursos/media/logoSinFondo.png">
+        <meta name="nombre" content="Vista Comandas">
+        <meta name="description" content="Página donde se muestran las comandas">
+        <meta name="keywords" content="comanda, vista, producto, restaurante, consultar">
+        <meta name="author" content="TechnoVision">
+        <meta name="date" content="Marzo, 20 2025">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../style/css/index.css" rel="stylesheet" type="text/css"/>
+        <link href="../style/css/menu-cliente.css" rel="stylesheet" type="text/css"/>
+        <link href='../menu/css/estilos.css' rel='stylesheet' type='text/css'/>
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato|Liu+Jian+Mao+Cao&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <header class="row">
+                <div class="col-12 titulo">
+                    <h1 class="text-light text-center" style="font-weight: bold;">Restaurante "El Zarape"</h1>
+                    <h1 class="text-light text-center" style="font-weight: bold;">Comandas:  <span id="estatusTitle" style="font-weight: bold;"></span> </h1>
+                </div>
+            </header>
+        </div>
+        
+
+        <div class="menuprincipal">
+            <nav class="navbar navbar-expand-md">
+                <div class="container-fluid">
+                    <!-- Icono o nombre -->
+                    <div class="logo">
+                        <a href="../index.html">
+                            <img src="../recursos/media/logoSinFondo.png" alt="logo" width="80px">
+                        </a>
+                    </div>
+
+                    <!-- Botón del menú -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="color: black">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Elementos del menú colapsable -->
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="cargarVistaProceso();"><strong>En proceso</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="cargarVistaTerminado();"><strong>Terminado</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="cargarVistaEntregado();"><strong>Entregado</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="cargarVistaCancelado();"><strong>Cancelado</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="logout();"><img src="../recursos/media/logout.png" alt="Icono entregado" title="Cerrar Sesion" style=" width: 40px; height: auto;"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>  
+            </nav>
+        </div>
+        <section id="contenedorPrincipal">
+            <div class="row" id="comandas-container">
+                <!-- Aquí se mostrarán las comandas -->
+            </div>
+        </section>
+        <footer>
+            <!-- Pie de página si es necesario -->
+        </footer>
+
+        <!-- Script corregido con posible ruta relativa -->
+        <script src="../comanda/controller-comanda.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../style/js/bootstrap.bundle.js" type="text/javascript"></script>
+        <script>
+                                    window.onload = function () {
+                                        // Llamamos a la función que carga las comandas en proceso
+                                        cargarVistaProceso(); // Esto cargará tanto la vista como las comandas
+                                    }
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        // Obtener el nombre del usuario desde localStorage
+                                        const username = localStorage.getItem('username');
+                                        const token = localStorage.getItem('token');
+
+                                        if (username && token) {
+                                            // Mostrar el saludo usando SweetAlert2
+                                            Swal.fire({
+                                                title: '¡Hola, ' + username + '!',
+                                                text: 'Bienvenido a las Comandas de "El Zarape".',
+                                                icon: 'success',
+                                                timer: 5000, // Duración de 5 segundos
+                                                showConfirmButton: false, // Oculta el botón de confirmación
+                                                timerProgressBar: true // Muestra la barra de progreso
+                                            });
+                                        }
+
+                                        if (!token) { // Validar si el token no existe
+                                            Swal.fire({
+                                                title: '¡Acceso denegado!',
+                                                text: 'Debes iniciar sesión para realizar esta acción.',
+                                                icon: 'warning',
+                                                timer: 5000, // Duración de 5 segundos
+                                                showConfirmButton: false, // Oculta el botón de confirmación
+                                                timerProgressBar: true // Muestra la barra de progreso
+                                            }).then(() => {
+                                                window.location.href = '../index.html'; // Redirige a la página de inicio de sesión
+                                            });
+                                            return; // Detener la ejecución
+                                        }
+
+                                    });
+        </script>
+    </body>
+</html>

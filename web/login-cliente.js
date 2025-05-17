@@ -25,7 +25,7 @@ function mostrarFormularioLogin() {
             // Llamar a la función de validación
             return validateLogin(username, password);
         }
-        
+
     });
 }
 
@@ -77,10 +77,12 @@ function validateLogin(username, password) {
                         text: 'Inicio de sesión exitoso.',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
+                        localStorage.setItem('username', username || '');
                         localStorage.setItem('usuarioAutenticado', 'true');
                         localStorage.setItem('idCliente', data.idCliente); // Guardar el ID del cliente
                         //Token
                         localStorage.setItem('tokenCliente', data.token || '');
+
                         // Actualizar el menú del usuario
                         actualizarMenuUsuario({idCliente: data.idCliente});
                         window.location.href = 'index.html'; // Redirigir a la página principal
@@ -124,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-
                         window.location.href = 'gestion/gestion-inicio/view-gestion-inicio.html';
                     } else {
                         cerrarSesion(); // Token no válido, cerrar sesión
@@ -206,9 +207,10 @@ function desactivarCuenta(idCliente) {
 
 
 function cerrarSesion() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('tokenCliente');
     localStorage.removeItem('usuarioAutenticado');
     localStorage.removeItem('idCliente');
+    localStorage.removeItem('username');
     Swal.fire({
         icon: 'info',
         title: 'Sesión cerrada',
@@ -217,8 +219,8 @@ function cerrarSesion() {
     }).then(() => {
         const menuUsuario = document.getElementById('menu-usuario');
         menuUsuario.innerHTML = `
-            <li><a class="dropdown-item" href="#" onclick="mostrarFormularioLogin();">Iniciar Sesión</a></li>
-            <li><a class="dropdown-item" href="#" onclick="mostrarFormulario();">Crear Cuenta</a></li>
+<li><a class="dropdown-item" href="#" onclick="mostrarFormularioLogin();">Iniciar Sesión</a></li>
+<li><a class="dropdown-item" href="#" onclick="mostrarFormulario();">Crear Cuenta</a></li>
         `;
         const menuItems = document.querySelectorAll('.nav-item');
         menuItems.forEach(item => {

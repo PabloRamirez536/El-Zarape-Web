@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pedidos</title>
+        <link rel="shortcut icon" href="../recursos/media/logoSinFondo.png">
+        <meta name="nombre" content="Vista Turnos Cliente">
+        <meta name="description" content="Página donde se muestran los turnos para clientes">
+        <meta name="keywords" content="turno, cliente, restaurante, consultar">
+        <meta name="author" content="TechnoVision">
+        <meta name="date" content="Marzo, 20 2025">
+        <link href="../style/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../style/css/index.css" rel="stylesheet" type="text/css"/>
+        <link href="../style/css/menu-cliente.css" rel="stylesheet" type="text/css"/>
+        <link href='../menu/css/estilos.css' rel='stylesheet' type='text/css'/>
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato|Liu+Jian+Mao+Cao&display=swap" rel="stylesheet">
+        <style>
+            .menuprincipal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgb(255, 251, 251);
+                padding: 10px;
+            }
+            .modulo-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .modulo-header {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-bottom: 15px;
+                color: #343a40;
+                text-align: center;
+                background-color: #007bff;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+            .turno-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                margin: 5px 0;
+                border-radius: 5px;
+                background-color: #f1f1f1;
+            }
+
+            .turno-id {
+                font-weight: bold;
+                color: #495057;
+            }
+
+            .turno-estado {
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 0.9rem;
+                font-weight: bold;
+                color: white;
+            }
+
+            .estado-proceso {
+                background-color: #ffc107;
+            }
+
+            .estado-terminado {
+                background-color: #28a745;
+            }
+
+            .estado-entregado {
+                background-color: #17a2b8;
+            }
+
+            .estado-cancelado {
+                background-color: #6c757d;
+            }
+
+            .info-panel {
+                background-color: #805A3B;
+                color: white;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .fecha-hora {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+
+            .mensaje-cliente {
+                font-style: italic;
+                margin-top: 10px;
+            }
+
+            #modulos-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .titulo-turnos {
+                color: white;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            }
+
+            .table-container {
+                margin: 20px;
+            }
+            .col-md-4 {
+                width: 30%; /* Ajusta según tu diseño */
+                margin: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+            }
+            sticky-top {
+                position: sticky;
+                top: 0;
+                z-index: 1020; /* Asegura que esté por encima del contenido */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sticky-top p-0">
+            <div class="container-fluid">
+                <header class="row">
+                    <div class="col-12 titulo">
+                        <h1 class="text-light text-center" style="font-weight: bold;">Restaurante "El Zarape"</h1>
+                    </div>
+                </header>
+            </div
+
+            <div class="menuprincipal">
+                <nav class="navbar navbar-expand-md" style="background-color: white;">
+                    <div class="container-fluid">
+                        <div class="logo">
+                            <a href="../index.html">
+                                <img src="../recursos/media/logoSinFondo.png" alt="logo" width="80px">
+                            </a>
+                        </div>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="color: black">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="menu">
+                            <ul class="navbar-nav me-auto" style="display: flex; justify-content: center; width: 100%;">
+                                <li class="nav-item">
+                                    <p class="nav-link" style="font-weight: bold;">Pedidos</p>
+                                </li>
+                            </ul>
+
+                            <!-- Añadir fecha y hora aquí -->
+                            <div class="d-flex align-items-center">
+                                <h4 class="fecha-hora mb-0" id="fecha-hora" style="font-size: 1.1rem; font-weight: bold; color: #333;"></h4>
+                            </div>
+                        </div>
+                    </div>  
+                </nav>
+            </div>
+        </div>
+
+
+        <section id="contenedorPrincipal">
+            <div id="modulos-container">
+                <!-- Aquí se mostrarán los módulos con los turnos -->
+            </div>
+
+            <div class="container">
+                <div class="info-panel">
+                    <h4 class="mensaje-cliente">Gracias por su preferencia</h4>
+                </div>
+            </div>
+        </section>
+    </body>
+    <script src="controller-comanda-cliente.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</html>

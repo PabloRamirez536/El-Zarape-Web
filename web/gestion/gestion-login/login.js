@@ -22,8 +22,12 @@ function validateForm() {
                 localStorage.setItem('token', data.token || '');
                 localStorage.setItem('username', username);
                 
-                // Redirige a la página de inicio
-                window.location.href = '../gestion-inicio/view-gestion-inicio.html';
+                if(data.rol === 1){
+                  window.location.href = '../../comanda/vista-proceso.html';   
+                }
+                else{
+                  window.location.href = '../gestion-inicio/view-gestion-inicio.html';   
+                }
             } else {
                 // Muestra el mensaje de error
                 errorMessage.textContent = data.message;

@@ -1,4 +1,4 @@
-/*Copyright 2024*/
+/* Copyright 2024 */
 body {
     background-color: #FD974F;
     font-family: Arial;
@@ -9,19 +9,19 @@ body {
 
 .titulo {
     background-color: #C60000;
-    font-family: Arial;
 }
 
-/*menu inicia*/
+/* Menu inicia */
 .menuprincipal {
     display: flex;
     align-items: center;
     background: rgb(255, 251, 251);
+    flex-wrap: wrap; /* Permite que los elementos se ajusten */
 }
 
 .logo {
     margin-left: 20px;
-    margin-right: 350px;
+    margin-right: 20px; /* Ajustar margen para pantallas pequeñas */
 }
 
 .nav-container {
@@ -38,17 +38,12 @@ body {
 }
 
 .nav-list li {
-    margin: 0 50px;
+    margin: 0 20px; /* Reducir el margen para pantallas pequeñas */
 }
 
 .nav-list li a {
-    font-family: Arial;
-    text-decoration: none;
-    font-size: 25px;
-    color: black;
-    padding: 20px;
-    display: block;
-    text-align: center;
+    font-size: 20px; /* Ajustar tamaño de fuente */
+    padding: 10px; /* Reducir padding */
 }
 
 .nav-list li a:hover {
@@ -81,23 +76,15 @@ body {
 }
 
 .section-title {
-    width: 100%;
     font-size: 1.75rem;
     font-weight: bold;
     text-align: center;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin: 1.5rem 0;
     color: #000000;
     border-bottom: 3px solid #000000;
-    display: inline-block;
 }
 
-.alimentos {
-    height: 200px;
-    width: auto;
-}
-
-.combo {
+.alimentos, .combo {
     height: 200px;
     width: auto;
 }
@@ -109,7 +96,7 @@ body {
 
 footer {
     background: #805A3B;
-    padding-bottom: 0.1px;
+    padding: 0.1px;
 }
 
 .footer-content {
@@ -117,8 +104,7 @@ footer {
     text-align: center;
     align-items: center;
     flex-wrap: wrap;
-    padding-top: 60px;
-    padding-bottom: 40px;
+    padding: 60px 0 40px;
 }
 
 .contact-us {
@@ -127,12 +113,11 @@ footer {
 }
 
 .brand {
-    font-weight: 500;
-    font-size: 40px;
     font-weight: bold;
+    font-size: 40px;
 }
 
-.brand+p {
+.brand + p {
     font-weight: 500;
 }
 
@@ -140,7 +125,6 @@ footer {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    border-radius: 3px;
     height: 5px;
     background: #fff;
     margin-bottom: 30px;
@@ -148,6 +132,25 @@ footer {
 
 p {
     text-align: center;
-    align-items: center;
     color: #fff;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+        padding: 0; /* Ajustar padding */
+    }
+
+    .nav-list li {
+        margin: 10px 0; /* Ajustar márgenes en columna */
+    }
+
+    .nav-list li a {
+        font-size: 18px; /* Ajustar tamaño de fuente */
+    }
+
+    .logo {
+        margin-right: 0; /* Eliminar margen derecho en pantallas pequeñas */
+    }
 }

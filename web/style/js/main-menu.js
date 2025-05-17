@@ -19,6 +19,22 @@ function cargarVistaAlimento() {
         .catch(error => console.error('Error al cargar vista de alimento:', error));
 }
 
+function cargarVistaComanda() {
+    fetch("")
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (html) {
+            document.getElementById("contenedorPrincipal").innerHTML = html;
+            import("../../menu/funciones-menu.js").then(function (controller) {
+                vistaAlimento = controller;
+                actualizarComanda();
+                actualizarTarjetasAlimentos(); // Llama aquí
+            });
+        })
+        .catch(error => console.error('Error al cargar vista de alimento:', error));
+}
+
 function cargarVistaBebida() {
     fetch("menu/vista-bebida.html")
         .then(function (response) {

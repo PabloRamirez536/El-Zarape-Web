@@ -38,7 +38,7 @@ function mostrarFormulario(index = null) {
         title: titulo,
         html: `<form id="formulario-cliente-modal">
                 <label for="producto-nombre">Nombre:</label><br>
-                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}"required><br>
+                <input type="text" id="producto-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.;]{1,45}"required><br>
                 <label for="producto-descripcion">Descripción:</label><br>
                 <input type="text" id="producto-descripcion" class="swal2-input" placeholder="Descripción" value="${descripcion}" maxlength="45" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}" required><br>
                 <label for="producto-foto">Foto Producto:</label><br>
@@ -66,8 +66,8 @@ function mostrarFormulario(index = null) {
             const fotoInput = document.getElementById('producto-foto');
 
             // Validar el nombre
-            if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0123456789\s.;]{1,45}$/.test(nombreNuevo)) {
-                Swal.showValidationMessage('El nombre es obligatorio, debe contener solo letras y números (máximo 45 caracteres)');
+            if (!nombreNuevo || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.;]{1,45}$/.test(nombreNuevo)) {
+                Swal.showValidationMessage('El nombre es obligatorio, debe contener solo letras (máximo 45 caracteres)');
                 return false;
             }
 

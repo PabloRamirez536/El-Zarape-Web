@@ -2,7 +2,6 @@
 body {
     font-family: Arial;
     background-color: #FD974F;
-   
     box-sizing: border-box;
 }
 
@@ -46,6 +45,16 @@ nav {
 }
 
 .navbar-nav li a {
+    font-family: Arial;
+    text-decoration: none;
+    font-size: 30px; 
+    color: black;
+    padding: 10px;
+    display: block;
+    text-align: center;
+}
+
+.navbar-nav li p {
     font-family: Arial;
     text-decoration: none;
     font-size: 30px; 
